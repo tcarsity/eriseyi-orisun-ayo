@@ -256,7 +256,7 @@ const Header = ({ showAllLinks }) => {
 
                       {/*RIGHT: social icons + avatar + bell + toggle */}
                       <div className="d-flex align-items-center gap-3 navbar-right">
-                        <div className="social-icons d-xl-flex align-items-center gap-2">
+                        <div className="social-icons d-flex align-items-center gap-2">
                           <a
                             href="#"
                             target="_blank"
