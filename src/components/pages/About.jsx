@@ -1,5 +1,5 @@
 import React from "react";
-import AboutImg from "../../assets/images/church.webP";
+import AboutImg from "../../assets/images/church.webp";
 import ScrollFloat from "../../animation/ScrollFloat";
 
 const About = () => {

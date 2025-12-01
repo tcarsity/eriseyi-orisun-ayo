@@ -1,8 +1,8 @@
 import React from "react";
-import ShilohImg from "../../assets/images/shiloh.webP";
-import VigilImg from "../../assets/images/vigil.webP";
-import TeachImg from "../../assets/images/teach.webP";
-import SundayImg from "../../assets/images/sunday.webP";
+import ShilohImg from "../../assets/images/shiloh.webp";
+import VigilImg from "../../assets/images/vigil.webp";
+import TeachImg from "../../assets/images/teach.webp";
+import SundayImg from "../../assets/images/sunday.webp";
 import AnimatedCard from "../../animation/AnimatedCard";
 
 const Service = () => {
