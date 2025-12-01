@@ -1,0 +1,213 @@
+import React, { lazy, Suspense, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+
+import Layout from "../common/Layout";
+import { useAuth } from "../context/AuthContext";
+import SideBar from "./SideBar";
+import { useDashboardStats } from "../../hooks/useDashboardStats";
+import { useInView } from "react-intersection-observer";
+import useEvents from "../../hooks/useEvents";
+import { useNewMembers } from "../../hooks/useNewMembers";
+import dayjs from "dayjs";
+import api from "../../api/axios";
+import { useTheme } from "../context/ThemeContext";
+
+const AdminPerformanceCard = lazy(() =>
+  import("../admin/AdminPerformanceCard")
+);
+const DashboardEventsCard = lazy(() => import("../admin/DashboardEventsCard"));
+const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
+
+const AdminDashboard = () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      api
+        .post("/heartbeat")
+        .catch((err) => console.error("Heartbeat error:", err));
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const { ref: memberRef, inView: memberInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  const { ref: eventRef, inView: eventInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  const { ref: performanceRef, inView: performanceInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  const { events, isLoading, error } = useEvents();
+
+  const {
+    data,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useDashboardStats();
+
+  const { darkMode, toggleTheme } = useTheme();
+
+  const { data: newMembers = [] } = useNewMembers();
+
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    return newMembers.filter((m) => {
+      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
+      return joinedDate === today;
+    });
+  }, [newMembers, today]);
+
+  const newMembersCount = newMembersToday.length;
+
+  const { user, greeting } = useAuth();
+
+  const rolePrefix = useMemo(
+    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
+    [user?.role]
+  );
+
+  const CardLoader = () => (
+    <div className="card shadow-sm border-0 p-4 text-center text-muted">
+      <div className="spinner-border text-success mb-2" role="status"></div>
+      <div>Loading chart...</div>
+    </div>
+  );
+
+  return (
+    <>
+      <Layout>
+        <section className="dashboard">
+          <div className="container pb-5 pt-3">
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                  <Link
+                    to={`/${rolePrefix}-dashboard`}
+                    className="text-decoration-none"
+                  >
+                    {greeting}
+                  </Link>
+                </li>
+                <li
+                  className="breadcrumb-item active bread"
+                  aria-current="page"
+                >
+                  You are logged in as <strong>{user?.role}</strong>
+                </li>
+              </ol>
+            </nav>
+
+            {newMembersCount > 0 && (
+              <div className="alert alert-success d-flex justify-content-between align-items-center shadow mb-4">
+                <div>
+                  <strong>🎉 {newMembersCount} </strong>
+                  {newMembersCount === 1
+                    ? "new member joined today!"
+                    : "new members joined today!"}
+                </div>
+                <Link to={`/${rolePrefix}-members`} className="btn btn-primary">
+                  View Members
+                </Link>
+              </div>
+            )}
+
+            <div className="row">
+              <div className="col-md-12 mt-5 mb-3">
+                <div className="d-flex justify-content-between">
+                  <h2 className="h4 mb-0 pb-0">Admin Dashboard</h2>
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="darkModeSwitch"
+                      checked={darkMode}
+                      onChange={toggleTheme}
+                    />
+                    <label
+                      htmlFor="darkModeSwitch"
+                      className="form-check-label"
+                    >
+                      {darkMode ? "Dark" : "Light"} Mode
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 sidebar">
+                <SideBar />
+              </div>
+              <div className="col-lg-9 board">
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{data?.members?.count ?? 0}</h2>
+                        <strong>Total Members</strong>
+                      </div>
+                      <div className="card-footer">&nbsp;</div>
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 test">
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{data?.testimonials?.count ?? 0}</h2>
+                        <strong>Testimonials</strong>
+                      </div>
+                      <div className="card-footer">&nbsp;</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row g-3 py-5">
+                  <div className="col-md-6 col-lg-6" ref={memberRef}>
+                    <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                      {memberInView ? (
+                        <MembersStatsCard
+                          totalMembers={data?.members?.count}
+                          newMembers={data?.newMembers?.count}
+                          trend={data?.newMembers?.trend}
+                          growth={data?.newMembers?.growth}
+                          isLoading={statsLoading}
+                          error={statsError}
+                        />
+                      ) : null}
+                    </Suspense>
+                  </div>
+
+                  <div className="col-md-6" ref={eventRef}>
+                    <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                      {eventInView ? (
+                        <DashboardEventsCard
+                          data={events}
+                          isLoading={isLoading}
+                          error={error}
+                        />
+                      ) : null}
+                    </Suspense>
+                  </div>
+                </div>
+
+                <div className="row py-5">
+                  <div className="col-md-6" ref={performanceRef}>
+                    <Suspense fallback={<CardLoader />}>
+                      {performanceInView ? <AdminPerformanceCard /> : null}
+                    </Suspense>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    </>
+  );
+};
+
+export default React.memo(AdminDashboard);

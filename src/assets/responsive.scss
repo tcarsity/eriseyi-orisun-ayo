@@ -1,0 +1,410 @@
+@media (min-width: 992px) and (max-width: 1280px) {
+  header .floating-navbar {
+    padding: 8px 12px !important;
+  }
+
+  header .floating-inner {
+    gap: 6px !important;
+  }
+
+  .navbar-left .logo img {
+    width: 40px !important;
+  }
+
+  .brand-text {
+    font-size: 0.85rem !important;
+  }
+
+  .nav-center .nav-link {
+    font-size: 0.85rem !important;
+  }
+
+  .navbar-right .social-icons a {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .navbar-right .notif-wrap {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  header {
+    .logo {
+      img {
+        width: 50px;
+      }
+    }
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table td,
+  .table th {
+    white-space: nowrap;
+  }
+
+  .navbar .nav-link,
+  .navbar a,
+  .nav-link {
+    font-size: 0.9rem !important;
+  }
+
+  .navbar .rounded-circle {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 12px !important;
+  }
+
+  .btn {
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .btn-sm {
+    padding: 0.45rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .page-link {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .input-group.search {
+    width: 50% !important;
+    flex-wrap: wrap;
+  }
+
+  .input-group.search input {
+    width: 50% !important;
+    min-width: 100% !important;
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+
+  .breadcrumb {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+
+  strong,
+  p,
+  td,
+  th,
+  li {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+
+  .chart-wrapper {
+    height: 100px;
+    margin-top: 12px;
+  }
+
+  .card .fw-bold {
+    font-size: 1.2rem;
+  }
+
+  footer {
+    .foot {
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+
+  .section-1 {
+    .hero {
+      background-position: center top;
+      background-size: cover;
+      height: 80vh;
+      padding: 0 1.5rem;
+
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+
+      h1 {
+        font-size: clamp(1.5rem, 3vw, 2.5rem);
+      }
+
+      p {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        max-width: 80%;
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .login {
+    .card {
+      margin: 0 auto;
+    }
+  }
+
+  .section-2 {
+    img {
+      margin: 0% auto;
+      width: 60%;
+    }
+
+    .content {
+      margin-top: 30px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .section-3 {
+    h4 {
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 500;
+    }
+
+    p {
+      font-size: clamp(0.95rem, 1.4vw, 1.125rem);
+      line-height: 1.6;
+      margin: 0 auto;
+      max-width: 65ch;
+    }
+  }
+
+  .section-4 {
+    .content {
+      margin-top: 30px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .dashboard {
+    .board {
+      margin-top: 30px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .col-md-6,
+  .col-lg-6 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table td,
+  .table th {
+    white-space: nowrap;
+  }
+
+  .board {
+    width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+
+  .breadcrumb {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+
+  strong,
+  p,
+  td,
+  th,
+  li {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .input-group.search {
+    width: 50% !important;
+    flex-wrap: wrap;
+  }
+
+  .input-group.search input {
+    width: 50% !important;
+    min-width: 100% !important;
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .btn-sm {
+    padding: 0.45rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .page-link {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .chart-wrapper,
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  header {
+    .logo {
+      font-size: 12px;
+      img {
+        width: 40px;
+      }
+    }
+  }
+
+  .chart-wrapper {
+    height: 100px;
+    margin-top: 12px;
+  }
+
+  .card .fw-bold {
+    font-size: 1.2rem;
+  }
+
+  .forgotpassword {
+    .pass {
+      margin: 0 auto;
+      .card {
+        width: 100%;
+        margin: auto;
+      }
+    }
+  }
+
+  .reset-password {
+    .pass {
+      margin: 0 auto;
+      .card {
+        width: 100%;
+        margin: auto;
+      }
+    }
+  }
+
+  .dashboard {
+    padding: 1rem;
+    .search input {
+      width: 25%;
+    }
+    .board {
+      margin-top: 30px;
+      .test {
+        margin-top: 30px;
+      }
+      .admins {
+        margin-top: 30px;
+      }
+    }
+  }
+
+  .login {
+    .admin {
+      .card {
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  form {
+    padding: 0.75rem;
+  }
+
+  .form-control {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  footer {
+    .foot {
+      text-align: center;
+
+      .foot-content {
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: clamp(0.9rem, 1.2vw, 1rem);
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .section-1 {
+    .hero {
+      background-position: center top;
+      background-size: cover;
+
+      padding: 0 1.5rem;
+
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+  }
+
+  .section-2 {
+    img {
+      display: none;
+    }
+
+    .content {
+      margin-top: 30px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .section-4 {
+    .content {
+      margin-top: 30px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .section-6 {
+    .card {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
