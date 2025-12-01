@@ -23,7 +23,7 @@ import Show from "./components/members/Show";
 import Edit from "./components/members/Edit";
 import Create from "./components/members/Create";
 import AdminDashboard from "./components/admincontrol/AdminDashboard";
-import ChangePassword from "./components/admin/changePassword";
+import ChangePassword from "./components/admin/ChangePassword";
 import ForgotPassword from "./components/admin/ForgotPassword";
 import ResetPassword from "./components/admin/ResetPassword";
 import EditProfile from "./components/admin/EditProfile";
