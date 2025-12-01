@@ -265,14 +265,13 @@ canvas {
       color: $church-color;
     }
 
-    h2 {
-      font-weight: 700;
-
-      color: $church-color;
+    .link {
+      text-decoration: none;
     }
-  }
-  .link {
-    text-decoration: none;
+
+    .card {
+      margin-left: 25px;
+    }
   }
 }
 
