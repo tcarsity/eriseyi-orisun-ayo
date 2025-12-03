@@ -147,6 +147,28 @@ const AddMember = () => {
                       </div>
 
                       <div className="mb-3">
+                        <label className="form-label">Gender</label>
+                        <select
+                          {...register("gender", {
+                            required: "The gender field is required",
+                          })}
+                          className={`form-select form-select-sm ${
+                            errors.gender && "is-invalid"
+                          }`}
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                        </select>
+
+                        {errors.gender && (
+                          <p className="invalid-feedback">
+                            {errors.gender?.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="mb-3">
                         <label className="form-label">Birth Month</label>
                         <select
                           {...register("birth_month", {

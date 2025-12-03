@@ -145,6 +145,7 @@ const Show = () => {
                               <th>Name</th>
                               <th>Phone</th>
                               <th>Address</th>
+                              <th>Gender</th>
                               <th>Birth Month</th>
                               <th>Birth Date</th>
                               <th>Edit</th>
@@ -163,6 +164,7 @@ const Show = () => {
                                   <td>{member.name}</td>
                                   <td>{member.phone}</td>
                                   <td>{member.address}</td>
+                                  <td>{member.gender}</td>
                                   <td>{member.birth_month}</td>
                                   <td>{member.birth_day}</td>
                                   <td>
@@ -197,7 +199,7 @@ const Show = () => {
                               ))
                             ) : (
                               <tr>
-                                <td colSpan="8" className="text-center">
+                                <td colSpan="9" className="text-center">
                                   No members yet
                                 </td>
                               </tr>

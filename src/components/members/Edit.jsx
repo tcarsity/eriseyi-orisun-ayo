@@ -31,6 +31,7 @@ const Edit = () => {
           ? member.phone.slice(4) // remove +234
           : member.phone,
         address: member.address,
+        gender: member.gender,
         birth_month: member.birth_month,
         birth_day: member.birth_day,
       };
@@ -199,6 +200,28 @@ const Edit = () => {
                               {errors.address && (
                                 <p className="invalid-feedback">
                                   {errors.address?.message}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="mb-3">
+                              <label className="form-label">Gender</label>
+                              <select
+                                {...register("gender", {
+                                  required: "The gender field is required",
+                                })}
+                                className={`form-select form-select-sm ${
+                                  errors.gender && "is-invalid"
+                                }`}
+                              >
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                              </select>
+
+                              {errors.gender && (
+                                <p className="invalid-feedback">
+                                  {errors.gender?.message}
                                 </p>
                               )}
                             </div>
