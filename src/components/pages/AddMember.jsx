@@ -195,11 +195,11 @@ const AddMember = () => {
                       <div className="mb-3">
                         <label className="form-label">Birth Date</label>
                         <select
-                          {...register("birth_day", {
+                          {...register("birth_date", {
                             required: "The date field is required",
                           })}
                           className={`form-select form-select-sm ${
-                            errors.birth_day && "is-invalid"
+                            errors.birth_date && "is-invalid"
                           }`}
                         >
                           <option value="">Select date</option>
@@ -209,9 +209,9 @@ const AddMember = () => {
                             </option>
                           ))}
                         </select>
-                        {errors.birth_day && (
+                        {errors.birth_date && (
                           <p className="invalid-feedback">
-                            {errors.birth_day?.message}
+                            {errors.birth_date?.message}
                           </p>
                         )}
                       </div>

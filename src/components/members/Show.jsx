@@ -166,7 +166,7 @@ const Show = () => {
                                   <td>{member.address}</td>
                                   <td>{member.gender}</td>
                                   <td>{member.birth_month}</td>
-                                  <td>{member.birth_day}</td>
+                                  <td>{member.birth_date}</td>
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
