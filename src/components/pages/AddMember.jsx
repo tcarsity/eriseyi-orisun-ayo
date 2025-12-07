@@ -37,7 +37,7 @@ const AddMember = () => {
   const mutation = useMutation({
     mutationFn: async (formData) => {
       const payload = { ...formData, phone: `${formData.phone}` };
-      const { data } = await api.post("/members", payload);
+      const { data } = await api.post("/members/public", payload);
       return data;
     },
     onSuccess: () => {
