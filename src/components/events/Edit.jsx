@@ -57,9 +57,7 @@ const Edit = () => {
 
   const mutation = useMutation({
     mutationFn: async (fd) => {
-      return await api.post(`/events/${id}?_method=PUT`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      return await api.post(`/events/${id}?_method=PUT`, fd);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["events"]);
@@ -80,8 +78,12 @@ const Edit = () => {
       fd.append("event_date", data.event_date);
       fd.append("event_time", data.event_time);
 
-      if (data.image && data.image[0]) {
-        fd.append("image", data.image[0]);
+      if (data.image) {
+        if (data.image instanceof FileList) {
+          fd.append("image", data.image[0]);
+        } else if (data.image instanceof File) {
+          fd.append("image", data.image);
+        }
       }
       mutation.mutate(fd);
     },

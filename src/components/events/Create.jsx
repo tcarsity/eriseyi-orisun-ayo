@@ -32,9 +32,7 @@ const Create = () => {
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
-      return await api.post("/events", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      return await api.post("/events", formData);
     },
     onSuccess: () => {
       toast.success("Event added successfully");
@@ -61,8 +59,13 @@ const Create = () => {
       formData.append("location", data.location);
       formData.append("event_date", data.event_date);
       formData.append("event_time", data.event_time);
-      if (data.image[0]) {
-        formData.append("image", data.image[0]);
+
+      if (data.image) {
+        if (data.image instanceof FileList) {
+          formData.append("image", data.image[0]);
+        } else if (data.image instanceof File) {
+          formData.append("image", data.image);
+        }
       }
       mutation.mutate(formData);
     },

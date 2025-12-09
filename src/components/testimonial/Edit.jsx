@@ -60,9 +60,7 @@ const Edit = () => {
 
   const updateMutation = useMutation({
     mutationFn: async (fd) => {
-      return await api.post(`/testimonials/${id}?_method=PUT`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      return await api.post(`/testimonials/${id}?_method=PUT`, fd);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["testimonials"]);
@@ -81,8 +79,12 @@ const Edit = () => {
       fd.append("designation", data.designation);
       fd.append("message", data.message);
 
-      if (data.image && data.image[0]) {
-        fd.append("image", data.image[0]);
+      if (data.image) {
+        if (data.image instanceof FileList) {
+          fd.append("image", data.image[0]);
+        } else if (data.image instanceof File) {
+          fd.append("image", data.image);
+        }
       }
       updateMutation.mutate(fd);
     },
