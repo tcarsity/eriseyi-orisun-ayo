@@ -78,12 +78,8 @@ const Edit = () => {
       fd.append("event_date", data.event_date);
       fd.append("event_time", data.event_time);
 
-      if (data.image) {
-        if (data.image instanceof FileList) {
-          fd.append("image", data.image[0]);
-        } else if (data.image instanceof File) {
-          fd.append("image", data.image);
-        }
+      if (data.image && data.image[0]) {
+        fd.append("image", data.image[0]);
       }
       mutation.mutate(fd);
     },
@@ -249,6 +245,7 @@ const Edit = () => {
                             <div className="mb-3 input-group">
                               <input
                                 {...register("image")}
+                                multiple={false}
                                 type="file"
                                 onChange={handleImageChange}
                                 className={`form-control ${

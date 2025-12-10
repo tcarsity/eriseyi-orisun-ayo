@@ -60,12 +60,8 @@ const Create = () => {
       formData.append("designation", data.designation);
       formData.append("message", data.message);
 
-      if (data.image) {
-        if (data.image instanceof FileList) {
-          formData.append("image", data.image[0]);
-        } else if (data.image instanceof File) {
-          formData.append("image", data.image);
-        }
+      if (data.image && data.image[0]) {
+        formData.append("image", data.image[0]);
       }
       mutation.mutate(formData);
     },
@@ -178,6 +174,7 @@ const Create = () => {
                           <div className="mb-3 input-group">
                             <input
                               {...register("image")}
+                              multiple={false}
                               type="file"
                               onChange={handleImageChange}
                               className={`form-control ${
