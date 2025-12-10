@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 
 const Create = () => {
   const [preview, setPreview] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const queryClient = useQueryClient();
 
   const { user } = useAuth();
@@ -18,7 +19,6 @@ const Create = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
     reset,
     setError,
@@ -28,7 +28,7 @@ const Create = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
-      setValue("image", file);
+      setSelectedImage(file);
     }
   };
 
@@ -62,8 +62,8 @@ const Create = () => {
       formData.append("event_date", data.event_date);
       formData.append("event_time", data.event_time);
 
-      if (data.image) {
-        formData.append("image", data.image);
+      if (selectedImage) {
+        formData.append("image", selectedImage);
       }
       mutation.mutate(formData);
     },
@@ -215,7 +215,6 @@ const Create = () => {
                           <label className="form-label">Upload Image</label>
                           <div className="mb-3 input-group">
                             <input
-                              {...register("image")}
                               accept="image/*"
                               type="file"
                               onChange={handleImageChange}

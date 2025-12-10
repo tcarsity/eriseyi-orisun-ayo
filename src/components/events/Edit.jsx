@@ -9,6 +9,8 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 
 const Edit = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const queryClient = useQueryClient();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,7 +18,6 @@ const Edit = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: async () => {
@@ -38,7 +39,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
-      setValue("image", file);
+      setSelectedImage(file);
     }
   };
 
@@ -78,8 +79,8 @@ const Edit = () => {
       fd.append("event_date", data.event_date);
       fd.append("event_time", data.event_time);
 
-      if (data.image) {
-        fd.append("image", data.image);
+      if (selectedImage) {
+        fd.append("image", selectedImage);
       }
       mutation.mutate(fd);
     },
@@ -244,7 +245,6 @@ const Edit = () => {
                             <label className="form-label">Upload Image</label>
                             <div className="mb-3 input-group">
                               <input
-                                {...register("image")}
                                 accept="image/*"
                                 type="file"
                                 onChange={handleImageChange}

@@ -11,6 +11,8 @@ import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
 
 const Edit = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const queryClient = useQueryClient();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,9 +20,6 @@ const Edit = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    reset,
-    setError,
   } = useForm({
     defaultValues: async () => {
       if (!id) return {};
@@ -56,7 +55,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
-      setValue("image", file);
+      setSelectedImage(file);
     }
   };
 
@@ -81,8 +80,8 @@ const Edit = () => {
       fd.append("designation", data.designation);
       fd.append("message", data.message);
 
-      if (data.image) {
-        fd.append("image", data.image);
+      if (selectedImage) {
+        fd.append("image", selectedImage);
       }
       updateMutation.mutate(fd);
     },
@@ -201,7 +200,6 @@ const Edit = () => {
                             <label className="form-label">Upload Image</label>
                             <div className="mb-3 input-group">
                               <input
-                                {...register("image")}
                                 accept="image/*"
                                 type="file"
                                 className="form-control"
