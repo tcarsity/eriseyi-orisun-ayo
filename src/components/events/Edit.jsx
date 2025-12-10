@@ -16,6 +16,7 @@ const Edit = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
     setError,
@@ -39,6 +40,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
+      setValue("image", e.target.files);
     }
   };
 

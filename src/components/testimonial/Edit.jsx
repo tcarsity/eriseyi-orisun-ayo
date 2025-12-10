@@ -18,6 +18,7 @@ const Edit = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset,
     setError,
   } = useForm({
@@ -55,6 +56,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
+      setValue("image", e.target.files);
     }
   };
 
