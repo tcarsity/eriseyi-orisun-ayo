@@ -56,7 +56,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
-      setValue("image", e.target.files);
+      setValue("image", file);
     }
   };
 
@@ -81,8 +81,8 @@ const Edit = () => {
       fd.append("designation", data.designation);
       fd.append("message", data.message);
 
-      if (data.image && data.image[0]) {
-        fd.append("image", data.image[0]);
+      if (data.image) {
+        fd.append("image", data.image);
       }
       updateMutation.mutate(fd);
     },
@@ -202,9 +202,8 @@ const Edit = () => {
                             <div className="mb-3 input-group">
                               <input
                                 {...register("image")}
-                                multiple={false}
-                                type="file"
                                 accept="image/*"
+                                type="file"
                                 className="form-control"
                                 onChange={handleImageChange}
                               />

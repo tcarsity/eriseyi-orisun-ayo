@@ -18,8 +18,6 @@ const Edit = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-    reset,
-    setError,
   } = useForm({
     defaultValues: async () => {
       if (!id) return {};
@@ -40,7 +38,7 @@ const Edit = () => {
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
-      setValue("image", e.target.files);
+      setValue("image", file);
     }
   };
 
@@ -80,8 +78,8 @@ const Edit = () => {
       fd.append("event_date", data.event_date);
       fd.append("event_time", data.event_time);
 
-      if (data.image && data.image[0]) {
-        fd.append("image", data.image[0]);
+      if (data.image) {
+        fd.append("image", data.image);
       }
       mutation.mutate(fd);
     },
@@ -247,7 +245,7 @@ const Edit = () => {
                             <div className="mb-3 input-group">
                               <input
                                 {...register("image")}
-                                multiple={false}
+                                accept="image/*"
                                 type="file"
                                 onChange={handleImageChange}
                                 className={`form-control ${
