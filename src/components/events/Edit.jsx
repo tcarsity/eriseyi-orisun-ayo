@@ -247,6 +247,7 @@ const Edit = () => {
                               <input
                                 accept="image/*"
                                 type="file"
+                                {...register("image")}
                                 onChange={handleImageChange}
                                 className={`form-control ${
                                   errors.image && "is-invalid"

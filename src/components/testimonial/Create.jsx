@@ -29,8 +29,8 @@ const Create = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPreview(URL.createObjectURL(file));
       setSelectedImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
@@ -177,6 +177,7 @@ const Create = () => {
                             <input
                               accept="image/*"
                               type="file"
+                              {...register("image")}
                               onChange={handleImageChange}
                               className={`form-control ${
                                 errors.image && "is-invalid"

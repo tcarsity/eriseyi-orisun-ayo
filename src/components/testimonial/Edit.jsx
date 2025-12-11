@@ -202,6 +202,7 @@ const Edit = () => {
                               <input
                                 accept="image/*"
                                 type="file"
+                                {...register("image")}
                                 className="form-control"
                                 onChange={handleImageChange}
                               />
