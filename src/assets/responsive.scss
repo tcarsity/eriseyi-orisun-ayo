@@ -453,4 +453,36 @@
   header .floating-inner {
     padding-right: 0 !important;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-size: clamp(0.85rem, 3vw, 1.2rem);
+  }
+
+  .breadcrumb {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+  }
+
+  strong,
+  p,
+  td,
+  th,
+  li {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+  }
+
+  .btn {
+    font-size: 0.8rem !important;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem !important;
+  }
+
+  .page-link {
+    font-size: 0.75rem !important;
+  }
 }
