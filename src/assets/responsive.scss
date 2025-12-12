@@ -436,3 +436,27 @@
     }
   }
 }
+
+@media (max-width: 360px) {
+  header .navbar-left .logo img {
+    width: 40px !important;
+  }
+
+  header .brand-text {
+    font-size: 0.7rem !important;
+  }
+
+  header .navbar-toggler {
+    transform: scale(0.8);
+  }
+
+  header .floating-inner {
+    padding-right: 0 !important;
+  }
+}
+
+@media (max-width: 320px) {
+  header .brand-text {
+    display: none !important;
+  }
+}
