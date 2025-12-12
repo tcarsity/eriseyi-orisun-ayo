@@ -437,7 +437,7 @@
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 375px) {
   header .navbar-left .logo img {
     width: 40px !important;
   }
@@ -452,11 +452,5 @@
 
   header .floating-inner {
     padding-right: 0 !important;
-  }
-}
-
-@media (max-width: 320px) {
-  header .brand-text {
-    display: none !important;
   }
 }
