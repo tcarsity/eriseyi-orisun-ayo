@@ -443,10 +443,7 @@
   }
 
   header .brand-text {
-    white-space: nowrap;
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: none !important;
   }
 
   header .navbar-toggler {
