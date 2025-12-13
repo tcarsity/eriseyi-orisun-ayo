@@ -20,7 +20,7 @@ const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
 
   if (error) {
     return (
-      <div className="card shadow-sm border-0 p-3 text-center text-danger">
+      <div className="card shadow border-0 p-3 text-center text-danger">
         Failed to load admin activity
       </div>
     );
@@ -28,13 +28,13 @@ const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
 
   if (!Array.isArray(data) || data.length === 0) {
     return (
-      <div className="card shadow-sm border-0 p-3 text-center">
+      <div className="card shadow border-0 p-3 text-center">
         <p className="text-muted fw-bold mb-0">No Admin Data Available</p>
       </div>
     );
   }
   return (
-    <div className="card shadow-sm border-0 p-3">
+    <div className="card shadow border-0 p-3">
       <h6 className="text-muted mb-3">
         <RiAdminFill className="me-2 text-primary" />
         Admin Activity
@@ -65,16 +65,6 @@ const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
                 </div>
                 <h6 className="mt-2"> {admin.events_created} events</h6>
               </div>
-
-              {/* <strong>{admin.name}</strong>
-              <div className="d-flex align-items-center">
-                 className="me-1 text-success" />
-                {admin.members_created} members
-              </div>
-              <div className="d-flex align-items-center">
-                <FaCalendarAlt className="me-1 text-info" />
-                {admin.events_created} events
-              </div> */}
             </div>
           </motion.div>
         ))}

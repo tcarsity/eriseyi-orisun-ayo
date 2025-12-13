@@ -5,7 +5,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 const DashboardEventsCard = ({ data, isLoading, error }) => {
   if (isLoading) {
     return (
-      <div className="card shadow-sm border-0 p-4 text-center">
+      <div className="card shadow border-0 p-4 text-center">
         <div
           className="spinner-border text-primary"
           role="status"
@@ -19,7 +19,7 @@ const DashboardEventsCard = ({ data, isLoading, error }) => {
 
   if (error) {
     return (
-      <div className="card shadow-sm border-0 p-3 text-center text-danger">
+      <div className="card shadow border-0 p-3 text-center text-danger">
         Failed to load events
       </div>
     );

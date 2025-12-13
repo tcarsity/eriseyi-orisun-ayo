@@ -131,7 +131,7 @@ const MembersStatsCard = ({
   }, []);
 
   return (
-    <div className="card shadow-sm border-0 p-3 d-flex flex-column justify-content-between h-100 ">
+    <div className="card shadow border-0 p-3 d-flex flex-column justify-content-between h-100 ">
       {isLoading && (
         <div className="text-center p-4">
           <div
