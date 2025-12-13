@@ -150,7 +150,7 @@ const Show = () => {
                                 <td>
                                   <Link
                                     to={`/${rolePrefix}-event/edit/${event.id}`}
-                                    className="btn btn-info btn-icon"
+                                    className="btn btn-light btn-icon"
                                   >
                                     <FaEdit className="me-2" />
                                     Edit

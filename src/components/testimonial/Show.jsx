@@ -134,7 +134,7 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-testimonial/edit/${testimonial.id}`}
-                                      className="btn btn-info btn-icon"
+                                      className="btn btn-light btn-icon"
                                     >
                                       <FaEdit className="me-2" />
                                       Edit

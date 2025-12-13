@@ -157,7 +157,7 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/superadmin-admin/edit/${user.id}`}
-                                      className="btn btn-info btn-icon"
+                                      className="btn btn-light btn-icon"
                                     >
                                       <FaEdit className="me-2" />
                                       Edit
