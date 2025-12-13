@@ -80,23 +80,12 @@ const Dashboard = () => {
 
   const { darkMode, toggleTheme } = useTheme();
 
-  const { user } = useAuth();
+  const { user, greeting } = useAuth();
 
   const rolePrefix = useMemo(
     () => (user?.role === "superadmin" ? "superadmin" : "admin"),
     [user?.role]
   );
-
-  const welcomeText = useMemo(() => {
-    if (!user) return "";
-
-    const key = `lastLogin_${user.id}`;
-    const hasLoggedInBefore = localStorage.getItem(key);
-
-    return hasLoggedInBefore
-      ? `Welcome back, ${user.name}`
-      : `Welcome, ${user.name}`;
-  }, [user]);
 
   const CardLoader = () => (
     <div className="card shadow-sm border-0 p-4 text-center text-muted">
@@ -114,7 +103,12 @@ const Dashboard = () => {
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <Link to={`/${rolePrefix}-dashboard`}>{welcomeText}</Link>
+                  <Link
+                    to={`/${rolePrefix}-dashboard`}
+                    className="text-decoration-none"
+                  >
+                    {greeting}
+                  </Link>
                 </li>
                 <li
                   className="breadcrumb-item active bread"
