@@ -93,7 +93,7 @@ const Create = () => {
                   <h2 className="h4 mb-0 pb-0">Add Event</h2>
                   <Link
                     to={`/${rolePrefix}-events`}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary"
                   >
                     Back
                   </Link>

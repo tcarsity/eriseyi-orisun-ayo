@@ -6,6 +6,8 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import SideBar from "../admincontrol/SideBar";
 import SearchBar from "../common/SearchBar";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -102,7 +104,7 @@ const Show = () => {
                   <h2 className="h4 mb-0 pb-0">Admins</h2>
                   <Link
                     to={`/superadmin-admin/create`}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary"
                   >
                     + Add Admin
                   </Link>
@@ -155,14 +157,15 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/superadmin-admin/edit/${user.id}`}
-                                      className="btn btn-info btn-sm"
+                                      className="btn btn-info btn-icon"
                                     >
+                                      <FaEdit className="me-2" />
                                       Edit
                                     </Link>
                                   </td>
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-sm"
+                                      className="btn btn-danger btn-icon"
                                       disabled={deletingId === user.id}
                                       onClick={() => {
                                         if (
@@ -175,6 +178,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
+                                      <MdDelete className="me-2" />
                                       {deletingId === user.id
                                         ? "Deleting..."
                                         : "Delete"}

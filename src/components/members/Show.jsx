@@ -113,7 +113,7 @@ const Show = () => {
                   <h2 className="h4 mb-0 pb-0">Members</h2>
                   <Link
                     to={`/${rolePrefix}-member/create`}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary"
                   >
                     + Add Member
                   </Link>
@@ -171,7 +171,7 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
-                                      className="btn btn-light  btn-icon"
+                                      className="btn btn-light btn-icon"
                                     >
                                       <FaEdit className="me-2" />
                                       Edit

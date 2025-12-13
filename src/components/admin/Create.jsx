@@ -72,10 +72,7 @@ const Create = () => {
               <div className="col-md-12 mt-5 mb-3">
                 <div className="d-flex justify-content-between">
                   <h2 className="h4 mb-0 pb-0">Add Admin</h2>
-                  <Link
-                    to="/superadmin-admins"
-                    className="btn btn-primary btn-sm"
-                  >
+                  <Link to="/superadmin-admins" className="btn btn-primary">
                     Back
                   </Link>
                 </div>

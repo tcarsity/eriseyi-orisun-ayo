@@ -6,6 +6,8 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -65,7 +67,7 @@ const Show = () => {
                   <h2 className="h4 mb-0 pb-0">Testimonials</h2>
                   <Link
                     to={`/${rolePrefix}-testimonail/create`}
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary"
                   >
                     + Add Testimonial
                   </Link>
@@ -132,14 +134,15 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-testimonial/edit/${testimonial.id}`}
-                                      className="btn btn-info btn-sm"
+                                      className="btn btn-info btn-icon"
                                     >
+                                      <FaEdit className="me-2" />
                                       Edit
                                     </Link>
                                   </td>
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-sm"
+                                      className="btn btn-danger btn-icon"
                                       disabled={deletingId === testimonial.id}
                                       onClick={() => {
                                         if (
@@ -152,6 +155,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
+                                      <MdDelete className="me-2" />
                                       {deletingId === testimonial.id
                                         ? "Deleting..."
                                         : "Delete"}

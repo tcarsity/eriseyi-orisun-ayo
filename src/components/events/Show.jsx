@@ -6,6 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
 import Layout from "../common/Layout";
 import toast from "react-hot-toast";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -148,14 +150,15 @@ const Show = () => {
                                 <td>
                                   <Link
                                     to={`/${rolePrefix}-event/edit/${event.id}`}
-                                    className="btn btn-info btn-sm"
+                                    className="btn btn-info btn-icon"
                                   >
+                                    <FaEdit className="me-2" />
                                     Edit
                                   </Link>
                                 </td>
                                 <td>
                                   <button
-                                    className="btn btn-danger btn-sm"
+                                    className="btn btn-danger btn-icon"
                                     disabled={deletingId === event.id}
                                     onClick={() => {
                                       if (
@@ -168,6 +171,7 @@ const Show = () => {
                                       }
                                     }}
                                   >
+                                    <MdDelete className="me-2" />
                                     {deletingId === event.id
                                       ? "Deleting..."
                                       : "Delete"}
