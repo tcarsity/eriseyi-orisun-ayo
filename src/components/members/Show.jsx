@@ -173,7 +173,7 @@ const Show = () => {
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
                                       className="btn btn-light btn-sm btn-icon"
                                     >
-                                      <FaEdit size={14} />
+                                      <FaEdit size={18} className="me-2" />
                                       Edit
                                     </Link>
                                   </td>
@@ -192,7 +192,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
-                                      <MdDelete size={14} />
+                                      <MdDelete size={18} className="me-2" />
                                       {deletingId === member.id
                                         ? "Deleting..."
                                         : "Delete"}
