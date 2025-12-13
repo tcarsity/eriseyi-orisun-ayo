@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
 import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -170,14 +171,15 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
-                                      className="btn btn-light btn-sm"
+                                      className="btn btn-light btn-sm btn-icon"
                                     >
+                                      <FaEdit size={14} />
                                       Edit
                                     </Link>
                                   </td>
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-sm"
+                                      className="btn btn-danger btn-sm btn-icon"
                                       disabled={deletingId === member.id}
                                       onClick={() => {
                                         if (
@@ -190,6 +192,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
+                                      <MdDelete size={14} />
                                       {deletingId === member.id
                                         ? "Deleting..."
                                         : "Delete"}
