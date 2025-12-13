@@ -171,15 +171,15 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
-                                      className="btn btn-light btn-sm btn-icon"
+                                      className="btn btn-light  btn-icon"
                                     >
-                                      <FaEdit size={18} className="me-2" />
+                                      <FaEdit className="me-2" />
                                       Edit
                                     </Link>
                                   </td>
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-sm btn-icon"
+                                      className="btn btn-danger btn-icon"
                                       disabled={deletingId === member.id}
                                       onClick={() => {
                                         if (
@@ -192,7 +192,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
-                                      <MdDelete size={18} className="me-2" />
+                                      <MdDelete className="me-2" />
                                       {deletingId === member.id
                                         ? "Deleting..."
                                         : "Delete"}
