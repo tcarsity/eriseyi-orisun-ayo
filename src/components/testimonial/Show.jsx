@@ -170,7 +170,6 @@ const Show = () => {
                                             "Are you sure you want to delete this testimonial?"
                                           )
                                         ) {
-                                          setDeletingId(testimonial.id);
                                           deleteMutation.mutate(testimonial.id);
                                         }
                                       }}
