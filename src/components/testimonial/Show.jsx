@@ -21,15 +21,35 @@ const Show = () => {
     mutationFn: async (id) => {
       return await api.delete(`/testimonials/${id}`);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["testimonials"]);
+
+    // 🔥 optimistic update
+    onMutate: async (id) => {
+      await queryClient.cancelQueries(["testimonials"]);
+
+      const previousTestimonials = queryClient.getQueryData(["testimonials"]);
+
+      // remove immediately from UI
+      queryClient.setQueryData(["testimonials"], (old) =>
+        old?.filter((item) => item.id !== id)
+      );
+
       toast.success("Testimonial deleted successfully");
-      setDeletingId(null);
+
+      return { previousTestimonials };
     },
-    onError: (error) => {
+
+    // rollback if delete fails
+    onError: (error, id, context) => {
+      queryClient.setQueryData(["testimonials"], context.previousTestimonials);
+
       const message =
         error.response?.data?.message || "Failed to delete testimonial";
       toast.error(message);
+    },
+
+    // refetch in background (optional but good)
+    onSettled: () => {
+      queryClient.invalidateQueries(["testimonials"]);
       setDeletingId(null);
     },
   });
