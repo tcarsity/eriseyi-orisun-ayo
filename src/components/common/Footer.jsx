@@ -50,6 +50,9 @@ const Footer = () => {
                   <li>
                     <a href="#testimonials">Testimonials</a>
                   </li>
+                  <li>
+                    <a href="#event">Events</a>
+                  </li>
                 </ul>
               </div>
             )}
