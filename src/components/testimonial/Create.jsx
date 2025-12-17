@@ -9,6 +9,7 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
+import { resizeImage } from "../../utils/resizeImage";
 
 const Create = () => {
   const [preview, setPreview] = useState(null);
@@ -26,12 +27,13 @@ const Create = () => {
     setError,
   } = useForm();
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setSelectedImage(file);
-      setPreview(URL.createObjectURL(file));
-    }
+    if (!file) return;
+
+    const resized = await resizeImage(file, 300, 300);
+    setSelectedImage(resized);
+    setPreview(URL.createObjectURL(resized));
   };
 
   const mutation = useMutation({

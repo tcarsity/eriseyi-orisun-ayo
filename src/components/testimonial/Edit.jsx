@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
+import { resizeImage } from "../../utils/resizeImage";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -51,12 +52,13 @@ const Edit = () => {
 
   const [preview, setPreview] = useState(testimonial?.data.image || null);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setSelectedImage(file);
-    }
+    if (!file) return;
+
+    const resized = await resizeImage(file, 300, 300);
+    setSelectedImage(resized);
+    setPreview(URL.createObjectURL(resized));
   };
 
   const updateMutation = useMutation({

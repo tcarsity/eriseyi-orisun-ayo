@@ -7,6 +7,7 @@ import Layout from "../common/Layout";
 import SideBar from "../admincontrol/SideBar";
 import api from "../../api/axios";
 import toast from "react-hot-toast";
+import { resizeImage } from "../../utils/resizeImage";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -35,12 +36,13 @@ const Edit = () => {
     },
   });
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-      setSelectedImage(file);
-    }
+    if (!file) return;
+
+    const resized = await resizeImage(file, 600, 400);
+    setSelectedImage(resized);
+    setPreview(URL.createObjectURL(resized));
   };
 
   const { user } = useAuth();
