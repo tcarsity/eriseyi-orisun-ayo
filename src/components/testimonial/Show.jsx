@@ -11,6 +11,7 @@ import { FaEdit } from "react-icons/fa";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
+
   const queryClient = useQueryClient();
 
   const { user } = useAuth();
@@ -21,35 +22,20 @@ const Show = () => {
     mutationFn: async (id) => {
       return await api.delete(`/testimonials/${id}`);
     },
-
-    // 🔥 optimistic update
-    onMutate: async (id) => {
-      await queryClient.cancelQueries(["testimonials"]);
-
-      const previousTestimonials = queryClient.getQueryData(["testimonials"]);
-
-      // remove immediately from UI
-      queryClient.setQueryData(["testimonials"], (old) =>
-        old?.filter((item) => item.id !== id)
-      );
-
+    onSuccess: (_data, id) => {
       toast.success("Testimonial deleted successfully");
 
-      return { previousTestimonials };
+      // remove immediately (no waiting)
+      queryClient.setQueryData(["testimonials"], (old) =>
+        old?.filter((t) => t.id !== id)
+      );
+
+      setDeletingId(null);
     },
-
-    // rollback if delete fails
-    onError: (error, id, context) => {
-      queryClient.setQueryData(["testimonials"], context.previousTestimonials);
-
-      const message =
-        error.response?.data?.message || "Failed to delete testimonial";
-      toast.error(message);
-    },
-
-    // refetch in background (optional but good)
-    onSettled: () => {
-      queryClient.invalidateQueries(["testimonials"]);
+    onError: (error, id) => {
+      toast.error(
+        error.response?.data?.message || "Failed to delete testimonial"
+      );
       setDeletingId(null);
     },
   });
@@ -170,6 +156,7 @@ const Show = () => {
                                             "Are you sure you want to delete this testimonial?"
                                           )
                                         ) {
+                                          setDeletingId(testimonial.id);
                                           deleteMutation.mutate(testimonial.id);
                                         }
                                       }}
