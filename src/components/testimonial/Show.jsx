@@ -11,7 +11,6 @@ import { FaEdit } from "react-icons/fa";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
-
   const queryClient = useQueryClient();
 
   const { user } = useAuth();
@@ -19,23 +18,35 @@ const Show = () => {
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
 
   const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      return await api.delete(`/testimonials/${id}`);
-    },
-    onSuccess: (_data, id) => {
-      toast.success("Testimonial deleted successfully");
+    mutationFn: (id) => api.delete(`/testimonials/${id}`),
 
-      // remove immediately (no waiting)
+    // 🔥 optimistic update
+    onMutate: async (id) => {
+      await queryClient.cancelQueries(["testimonials"]);
+
+      const previousData = queryClient.getQueryData(["testimonials"]);
+
       queryClient.setQueryData(["testimonials"], (old) =>
         old?.filter((t) => t.id !== id)
       );
 
-      setDeletingId(null);
+      return { previousData };
     },
-    onError: (error, id) => {
+
+    onSuccess: () => {
+      toast.success("Testimonial deleted successfully");
+    },
+
+    onError: (error, id, context) => {
+      // rollback if failed
+      queryClient.setQueryData(["testimonials"], context.previousData);
+
       toast.error(
         error.response?.data?.message || "Failed to delete testimonial"
       );
+    },
+
+    onSettled: () => {
       setDeletingId(null);
     },
   });
