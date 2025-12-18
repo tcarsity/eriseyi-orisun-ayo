@@ -18,34 +18,19 @@ const Show = () => {
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => api.delete(`/testimonials/${id}`),
-
-    onMutate: async (id) => {
-      await queryClient.cancelQueries(["testimonials"]);
-
-      const previousTestimonials = queryClient.getQueryData(["testimonials"]);
-
-      // 🔥 remove instantly from UI
-      queryClient.setQueryData(["testimonials"], (old) =>
-        old?.filter((t) => t.id !== id)
-      );
-
-      return { previousTestimonials };
+    mutationFn: async (id) => {
+      return await api.delete(`/testimonials/${id}`);
     },
-
     onSuccess: () => {
-      toast.success("Testimonial deleted successfully");
-    },
-
-    onError: (error, id, context) => {
-      // rollback if delete fails
-      queryClient.setQueryData(["testimonials"], context.previousTestimonials);
-
-      toast.error("Failed to delete testimonial");
-    },
-
-    onSettled: () => {
       queryClient.invalidateQueries(["testimonials"]);
+      toast.success("Testimonial deleted successfully");
+      setDeletingId(null);
+    },
+    onError: (error) => {
+      toast.error(
+        error.response?.data?.message || "Failed to delete testimonial"
+      );
+      setDeletingId(null);
     },
   });
 
@@ -158,14 +143,22 @@ const Show = () => {
                                   <td>
                                     <button
                                       className="btn btn-danger btn-icon"
+                                      disabled={deletingId === testimonial.id}
                                       onClick={() => {
-                                        if (window.confirm("Are you sure?")) {
+                                        if (
+                                          window.confirm(
+                                            "Are you sure you want to delete this testimonial?"
+                                          )
+                                        ) {
+                                          setDeletingId(testimonial.id);
                                           deleteMutation.mutate(testimonial.id);
                                         }
                                       }}
                                     >
                                       <MdDelete className="me-2" />
-                                      Delete
+                                      {deletingId === testimonial.id
+                                        ? "Deleting..."
+                                        : "Delete"}
                                     </button>
                                   </td>
                                 </tr>
