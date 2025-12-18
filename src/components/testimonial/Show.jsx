@@ -18,38 +18,18 @@ const Show = () => {
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => api.delete(`/testimonials/${id}`),
-
-    onMutate: async (id) => {
-      // cancel outgoing refetches
-      await queryClient.cancelQueries(["testimonials"]);
-
-      // snapshot previous data
-      const previousTestimonials = queryClient.getQueryData(["testimonials"]);
-
-      // remove immediately from UI
-      queryClient.setQueryData(["testimonials"], (old) =>
-        old?.filter((t) => t.id !== id)
-      );
-
-      // show success immediately
-      toast.success("Testimonial deleted successfully");
-
-      return { previousTestimonials };
+    mutationFn: async (id) => {
+      return await api.delete(`/testimonials/${id}`);
     },
-
-    onError: (error, id, context) => {
-      // rollback if delete fails
-      queryClient.setQueryData(["testimonials"], context.previousTestimonials);
-
+    onSuccess: () => {
+      queryClient.invalidateQueries(["testimonials"]);
+      toast.success("Testimonial deleted successfully");
+      setDeletingId(null);
+    },
+    onError: (error) => {
       toast.error(
         error.response?.data?.message || "Failed to delete testimonial"
       );
-    },
-
-    onSettled: () => {
-      // optional background sync
-      queryClient.invalidateQueries(["testimonials"]);
       setDeletingId(null);
     },
   });
