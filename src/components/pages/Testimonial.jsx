@@ -13,6 +13,8 @@ const Testimonial = () => {
       const res = await api.get("/public-testimonials");
       return res.data.data;
     },
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading)
@@ -39,6 +41,7 @@ const Testimonial = () => {
               ipsum dolor, sit amet consectetur adipisicing elit.
             </p>
           </div>
+
           {!data || data.length === 0 ? (
             <h5 className="text-center text-muted fw-bold">
               No testimonails available yet.

@@ -10,17 +10,9 @@ const EventsSection = () => {
       const res = await api.get("/events");
       return res.data.data;
     },
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
   });
-
-  if (isLoading)
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    );
-
-  if (isError)
-    return <p className="text-center text-danger"> Failed to load events.</p>;
 
   return (
     <>
@@ -28,17 +20,29 @@ const EventsSection = () => {
         <div className="container py-5">
           <div className="section-header text-center">
             <span>Events</span>
-            <h2> Upcoming Events</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
-              ipsum dolor, sit amet consectetur adipisicing elit.
-            </p>
+            <h2>Upcoming Events</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
           </div>
-          {!data || data.length === 0 ? (
+
+          {isLoading && (
+            <h5 className="text-center text-muted fw-bold">
+              Loading events...
+            </h5>
+          )}
+
+          {isError && (
+            <h5 className="text-center text-danger fw-bold">
+              Failed to load events.
+            </h5>
+          )}
+
+          {!isLoading && !isError && (!data || data.length === 0) && (
             <h5 className="text-center text-muted fw-bold">
               No Event available yet.
             </h5>
-          ) : (
+          )}
+
+          {!isLoading && !isError && data?.length > 0 && (
             <div className="row g-4 mt-4 events-grid">
               {data.map((event) => (
                 <div className="col-md-6 col-lg-3" key={event.id}>
@@ -61,9 +65,9 @@ const EventsSection = () => {
                       <p className="text-muted mb-2">
                         {new Date(event.event_date).toLocaleDateString()}
                       </p>
-                      <p className="text-muted mb-2">
-                        {event.event_time && `🕛 ${event.event_time}`}
-                      </p>
+                      {event.event_time && (
+                        <p className="text-muted mb-2">🕛 {event.event_time}</p>
+                      )}
                       <p className="text-secondary small">
                         {event.description?.slice(0, 80)}...
                       </p>
