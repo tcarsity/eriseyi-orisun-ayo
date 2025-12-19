@@ -196,7 +196,7 @@ const AdminDashboard = () => {
 
                 <div className="row py-5">
                   <div className="col-md-6" ref={performanceRef}>
-                    <Suspense fallback={<CardLoader />}>
+                    <Suspense fallback={<div style={{ height: 200 }}></div>}>
                       {performanceInView ? <AdminPerformanceCard /> : null}
                     </Suspense>
                   </div>

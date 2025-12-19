@@ -202,7 +202,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="col-md-6 col-lg-6" ref={adminStatusRef}>
-                    <Suspense fallback={<CardLoader />}>
+                    <Suspense fallback={<div style={{ height: 200 }}></div>}>
                       {adminStatusInView ? <ActiveAdminsCard /> : null}
                     </Suspense>
                   </div>
