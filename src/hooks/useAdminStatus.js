@@ -8,6 +8,7 @@ export const useAdminStatus = () => {
       const { data } = await api.get("/admin-status");
       return data.data || [];
     },
-    refetchInterval: 30000,
+    refetchInterval: 5000,
+    refetchOnWindowFocus: true,
   });
 };
