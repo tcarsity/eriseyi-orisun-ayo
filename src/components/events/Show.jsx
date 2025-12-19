@@ -81,21 +81,19 @@ const Show = () => {
               <div className="col-lg-9 board">
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="table-responsive">
-                      {isLoading ? (
-                        <div className="d-flex justify-content-center align-items-center py-5">
-                          <div
-                            className="spinner-border text-primary"
-                            role="status"
-                          >
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
+                    {isLoading ? (
+                      <div className="d-flex justify-content-center align-items-center py-5">
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
                         </div>
-                      ) : error ? (
-                        <p>failed to load events</p>
-                      ) : events.length === 0 ? (
-                        <p className="text-center">No Events yet</p>
-                      ) : (
+                      </div>
+                    ) : error ? (
+                      <p>failed to load events</p>
+                    ) : (
+                      <div className="table-responsive">
                         <table className="table table-striped table-hover">
                           <thead>
                             <tr>
@@ -113,76 +111,84 @@ const Show = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {events.map((event, index) => (
-                              <tr key={event.id}>
-                                <td>{index + 1}</td>
-                                <td>{event.title}</td>
-                                <td>{event.description}</td>
-                                <td>{event.location}</td>
-                                <td>
-                                  {new Date(
-                                    event.event_date
-                                  ).toLocaleDateString()}
-                                </td>
-                                <td>{event.event_time}</td>
-                                <td>
-                                  {event.image ? (
-                                    <img
-                                      src={event.image}
-                                      alt={event.title}
-                                      style={{
-                                        width: "60px",
-                                        height: "60px",
-                                        objectFit: "cover",
-                                        borderRadius: "8px",
+                            {events.length > 0 ? (
+                              events.map((event, index) => (
+                                <tr key={event.id}>
+                                  <td>{index + 1}</td>
+                                  <td>{event.title}</td>
+                                  <td>{event.description}</td>
+                                  <td>{event.location}</td>
+                                  <td>
+                                    {new Date(
+                                      event.event_date
+                                    ).toLocaleDateString()}
+                                  </td>
+                                  <td>{event.event_time}</td>
+                                  <td>
+                                    {event.image ? (
+                                      <img
+                                        src={event.image}
+                                        alt={event.title}
+                                        style={{
+                                          width: "60px",
+                                          height: "60px",
+                                          objectFit: "cover",
+                                          borderRadius: "8px",
+                                        }}
+                                      />
+                                    ) : (
+                                      "No Image"
+                                    )}
+                                  </td>
+                                  <td>
+                                    <span className="badge bg-light text-dark">
+                                      {event.creator?.name || "Superadmin"}
+                                    </span>
+                                  </td>
+                                  <td>{event.created_at}</td>
+                                  <td>
+                                    <Link
+                                      to={`/${rolePrefix}-event/edit/${event.id}`}
+                                      className="btn btn-light btn-icon"
+                                    >
+                                      <FaEdit className="me-2" />
+                                      Edit
+                                    </Link>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="btn btn-danger btn-icon"
+                                      disabled={deletingId === event.id}
+                                      onClick={() => {
+                                        if (
+                                          window.confirm(
+                                            "Are you sure you want to delete this event?"
+                                          )
+                                        ) {
+                                          setDeletingId(event.id);
+                                          deleteMutation.mutate(event.id);
+                                        }
                                       }}
-                                    />
-                                  ) : (
-                                    "No Image"
-                                  )}
-                                </td>
-                                <td>
-                                  <span className="badge bg-light text-dark">
-                                    {event.creator?.name || "Superadmin"}
-                                  </span>
-                                </td>
-                                <td>{event.created_at}</td>
-                                <td>
-                                  <Link
-                                    to={`/${rolePrefix}-event/edit/${event.id}`}
-                                    className="btn btn-light btn-icon"
-                                  >
-                                    <FaEdit className="me-2" />
-                                    Edit
-                                  </Link>
-                                </td>
-                                <td>
-                                  <button
-                                    className="btn btn-danger btn-icon"
-                                    disabled={deletingId === event.id}
-                                    onClick={() => {
-                                      if (
-                                        window.confirm(
-                                          "Are you sure you want to delete this event?"
-                                        )
-                                      ) {
-                                        setDeletingId(event.id);
-                                        deleteMutation.mutate(event.id);
-                                      }
-                                    }}
-                                  >
-                                    <MdDelete className="me-2" />
-                                    {deletingId === event.id
-                                      ? "Deleting..."
-                                      : "Delete"}
-                                  </button>
+                                    >
+                                      <MdDelete className="me-2" />
+                                      {deletingId === event.id
+                                        ? "Deleting..."
+                                        : "Delete"}
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan="11" className="text-center">
+                                  No events yet
                                 </td>
                               </tr>
-                            ))}
+                            )}
                           </tbody>
                         </table>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
