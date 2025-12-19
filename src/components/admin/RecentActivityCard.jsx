@@ -136,7 +136,7 @@ const RecentActivityCard = () => {
                   />
 
                   <div>
-                    <strong>{a.user_name || "Unknown"}</strong> - {a.action}
+                    <strong>{a.user_name || "Unknown"}</strong>
                     <div className="text-muted small">{a.details}</div>
                   </div>
                 </div>
