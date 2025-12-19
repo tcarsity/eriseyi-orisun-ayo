@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       api
-        .post("/heartbeat")
+        .get("/heartbeat")
         .catch((err) => console.error("Heartbeat error:", err));
     }, 60000);
     return () => clearInterval(interval);
