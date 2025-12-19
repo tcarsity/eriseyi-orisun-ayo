@@ -17,18 +17,6 @@ const Testimonial = () => {
     refetchOnWindowFocus: true,
   });
 
-  if (isLoading)
-    return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    );
-
-  if (isError)
-    return (
-      <p className="text-center text-danger"> Failed to load testimonials.</p>
-    );
-
   return (
     <>
       <section className="section-5 py-5 bg-light" id="testimonials">
@@ -42,11 +30,25 @@ const Testimonial = () => {
             </p>
           </div>
 
-          {!data || data.length === 0 ? (
+          {isLoading && (
             <h5 className="text-center text-muted fw-bold">
-              No testimonails available yet.
+              Loading testimonial...
             </h5>
-          ) : (
+          )}
+
+          {isError && (
+            <h5 className="text-center text-danger fw-bold">
+              Failed to load testimonial.
+            </h5>
+          )}
+
+          {!isLoading && !isError && (!data || data.length === 0) && (
+            <h5 className="text-center text-muted fw-bold">
+              No Testimonial available yet.
+            </h5>
+          )}
+
+          {!isLoading && !isError && data?.length > 0 && (
             <Swiper
               modules={[Pagination]}
               spaceBetween={50}
