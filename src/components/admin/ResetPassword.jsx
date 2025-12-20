@@ -39,7 +39,7 @@ const ResetPassword = () => {
 
   const onSubmit = useCallback(
     (data) => {
-      mutation.mutate({ ...data, token });
+      mutation.mutate({ ...data, token, email });
     },
     [mutation]
   );
@@ -100,7 +100,7 @@ const ResetPassword = () => {
                             })}
                             type="password"
                             className={`form-control ${
-                              errors.new_password_confirmation && "is-invalid"
+                              errors.password_confirmation && "is-invalid"
                             }`}
                             placeholder="Please confirm password"
                           />
