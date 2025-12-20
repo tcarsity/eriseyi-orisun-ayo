@@ -1,6 +1,5 @@
-import React, { lazy, Suspense, useEffect, useMemo } from "react";
+import React, { lazy, Suspense, useMemo } from "react";
 import { Link } from "react-router-dom";
-
 import Layout from "../common/Layout";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "./SideBar";
@@ -9,8 +8,8 @@ import { useInView } from "react-intersection-observer";
 import useEvents from "../../hooks/useEvents";
 import { useNewMembers } from "../../hooks/useNewMembers";
 import dayjs from "dayjs";
-import api from "../../api/axios";
 import { useTheme } from "../context/ThemeContext";
+import { useHeartbeat } from "../../hooks/useHeartbeat";
 
 const AdminPerformanceCard = lazy(() =>
   import("../admin/AdminPerformanceCard")
@@ -19,14 +18,7 @@ const DashboardEventsCard = lazy(() => import("../admin/DashboardEventsCard"));
 const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
 
 const AdminDashboard = () => {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      api
-        .get("/heartbeat")
-        .catch((err) => console.error("Heartbeat error:", err));
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  useHeartbeat();
 
   const { ref: memberRef, inView: memberInView } = useInView({
     triggerOnce: true,
