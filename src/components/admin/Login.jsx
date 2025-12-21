@@ -143,7 +143,7 @@ const Login = () => {
     <>
       <Layout>
         <section className="login py-5">
-          <div className="container">
+          <div className="container py-5">
             <div className="row justify-content-center">
               <div className="col-md-12 col-md-8 col-lg-6 admin">
                 <div className="card shadow border-0 p-4">

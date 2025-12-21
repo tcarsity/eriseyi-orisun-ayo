@@ -51,7 +51,7 @@ const ResetPassword = () => {
         <section className="reset-password py-5">
           <div className="container py-5">
             <div className="row">
-              <div className="col-md-4 pass">
+              <div className="col-md-12 col-md-8 col-lg-6 pass">
                 <div className="card border-0 shadow">
                   <div className="card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
