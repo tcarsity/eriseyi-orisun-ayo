@@ -39,7 +39,7 @@ const ForgotPassword = () => {
       <section className="forgotpassword py-5">
         <div className="container py-5">
           <div className="row">
-            <div className="col-md-12 pass">
+            <div className="col-md-12 col-md-8 col-lg-6 pass">
               <div className="card border-0 shadow ">
                 <div className="card-body p-4">
                   <form onSubmit={handleSubmit(onSubmit)}>
