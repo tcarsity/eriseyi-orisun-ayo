@@ -8,8 +8,7 @@ const Preloader = () => {
       try {
         // Example critical calls
         await Promise.all([
-          api.get("/me"), // auth check
-          api.get("/testimonials"), // homepage data
+          api.get("/public-testimonials"), // homepage data
           api.get("/events"), // homepage data
         ]);
       } catch (error) {
