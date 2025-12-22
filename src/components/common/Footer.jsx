@@ -1,5 +1,4 @@
 import React from "react";
-import FooterDivider from "../FooterDivider";
 import { useLocation } from "react-router-dom";
 
 const Footer = () => {
