@@ -1,17 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
-
 import AddMember from "./components/pages/AddMember";
 import Login from "./components/admin/Login";
-
 import { default as ShowAdmins } from "./components/admin/Show";
 import { default as EditAdmins } from "./components/admin/Edit";
 import { default as CreateAdmins } from "./components/admin/Create";
 import { default as ShowTestimonials } from "./components/testimonial/Show";
 import { default as EditTestimonial } from "./components/testimonial/Edit";
 import { default as CreateTestimonial } from "./components/testimonial/Create";
-
 import { default as ShowEvents } from "./components/events/Show";
 import { default as CreateEvents } from "./components/events/Create";
 import { default as EditEvent } from "./components/events/Edit";
@@ -30,6 +27,20 @@ import EditProfile from "./components/admin/EditProfile";
 import { ThemeProvider } from "./components/context/ThemeContext";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500); // duration before site shows
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Preloader />;
+  }
+
   return (
     <>
       <ThemeProvider>
