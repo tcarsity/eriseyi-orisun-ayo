@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
 import AddMember from "./components/pages/AddMember";
@@ -26,9 +26,28 @@ import ResetPassword from "./components/admin/ResetPassword";
 import EditProfile from "./components/admin/EditProfile";
 import { ThemeProvider } from "./components/context/ThemeContext";
 import Preloader from "./components/Preloader";
+import api from "./api/axios";
 
 function App() {
   const [appReady, setAppReady] = useState(false);
+
+  useEffect(() => {
+    const prepareApp = async () => {
+      try {
+        // Example critical calls
+        await Promise.all([
+          api.get("/public-testimonials"), // homepage data
+          api.get("/events"), // homepage data
+        ]);
+      } catch (error) {
+        console.error("App init error:", error);
+      } finally {
+        setAppReady(true);
+      }
+    };
+
+    prepareApp();
+  }, []);
 
   if (!appReady) {
     return <Preloader />; // your logo fadeInFadeOut loader
