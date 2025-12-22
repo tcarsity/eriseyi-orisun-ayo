@@ -5,7 +5,7 @@ export default function RequireAuth({ allowedRoles }) {
   const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to={`/admin/login`} />;
+    return <Navigate to={`/admin/login`} replace />;
   }
 
   if (!allowedRoles.includes(user?.role)) {
