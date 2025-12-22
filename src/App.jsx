@@ -25,6 +25,7 @@ import ForgotPassword from "./components/admin/ForgotPassword";
 import ResetPassword from "./components/admin/ResetPassword";
 import EditProfile from "./components/admin/EditProfile";
 import { ThemeProvider } from "./components/context/ThemeContext";
+import Preloader from "./components/Preloader";
 
 function App() {
   const [loading, setLoading] = useState(true);
