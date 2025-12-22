@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
 import AddMember from "./components/pages/AddMember";
@@ -28,18 +28,12 @@ import { ThemeProvider } from "./components/context/ThemeContext";
 import Preloader from "./components/Preloader";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2500); // duration before site shows
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [loading, setLoading] = useState(
+    !sessionStorage.getItem("site_loaded")
+  );
 
   if (loading) {
-    return <Preloader />;
+    return <Preloader onFinish={() => setLoading(false)} />;
   }
 
   return (
