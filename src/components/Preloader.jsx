@@ -1,15 +1,25 @@
 import React, { useEffect } from "react";
 import logo from "../assets/images/logo.jpg";
 
-const Preloader = ({ onFinish }) => {
+const Preloader = () => {
   useEffect(() => {
-    const timer = setTimeout(() => {
-      sessionStorage.setItem("site_loaded", "true");
-      onFinish();
-    }, 2500); // duration before site shows
+    const prepareApp = async () => {
+      try {
+        // Example critical calls
+        await Promise.all([
+          api.get("/me"), // auth check
+          api.get("/testimonials"), // homepage data
+          api.get("/events"), // homepage data
+        ]);
+      } catch (error) {
+        console.error("App init error:", error);
+      } finally {
+        setAppReady(true);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [onFinish]);
+    prepareApp();
+  }, []);
 
   return (
     <div className="preloader">

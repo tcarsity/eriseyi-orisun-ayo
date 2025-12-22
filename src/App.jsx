@@ -28,12 +28,10 @@ import { ThemeProvider } from "./components/context/ThemeContext";
 import Preloader from "./components/Preloader";
 
 function App() {
-  const [loading, setLoading] = useState(
-    !sessionStorage.getItem("site_loaded")
-  );
+  const [appReady, setAppReady] = useState(false);
 
-  if (loading) {
-    return <Preloader onFinish={() => setLoading(false)} />;
+  if (!appReady) {
+    return <Preloader />; // your logo fadeInFadeOut loader
   }
 
   return (
