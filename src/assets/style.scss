@@ -230,7 +230,7 @@ table td {
 
 .preloader-logo {
   width: 120px; /* adjust if needed */
-  animation: fadePulse 2s ease-in-out infinite;
+  animation: fadeInOut 2s ease-in-out infinite;
 }
 
 @keyframes fadeInOut {
