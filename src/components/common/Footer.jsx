@@ -13,9 +13,11 @@ const Footer = () => {
               <h3>C & S Eriseyi Orisun Ayo Agbara Kan-Naa</h3>
               <div>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Ducimus cum corrupti vero inventore atque cupiditate placeat
-                  voluptate!
+                  We are a Christ-centered church committed to raising believers
+                  through faith, prayer, and the undiluted Word of God. At C & S
+                  Eriseyi Orisun Ayo Agbara Kan-Naa, lives are transformed, hope
+                  is restored, and God’s power is made manifest for all who seek
+                  Him.
                 </p>
               </div>
             </div>
@@ -23,10 +25,18 @@ const Footer = () => {
             <div className="col-md-6 col-lg-3">
               <h3 className="mb-3">Our Services</h3>
               <ul>
-                <li>Tuesday Shiloh</li>
-                <li>Friday Vigil</li>
-                <li>Sunday School</li>
-                <li>Sunday Service</li>
+                <li>
+                  Tuesday Shiloh : <strong>10:00am to 2:00pm</strong>
+                </li>
+                <li>
+                  Friday Vigil : <strong>12:00am to 4:00am</strong>
+                </li>
+                <li>
+                  Sunday School : <strong>9:00am to 10:00am</strong>
+                </li>
+                <li>
+                  Sunday Service : <strong>10:00am to 2:00pm</strong>
+                </li>
               </ul>
             </div>
 
