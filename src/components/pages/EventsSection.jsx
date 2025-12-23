@@ -21,7 +21,12 @@ const EventsSection = () => {
           <div className="section-header text-center">
             <span>Events</span>
             <h2>Upcoming Events</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p>
+              Join us for upcoming events designed to strengthen faith, build
+              fellowship, and encourage spiritual growth. From worship
+              gatherings to special programs, there’s always something happening
+              for everyone. Stay connected and be part of what God is doing.
+            </p>
           </div>
 
           {isLoading && (

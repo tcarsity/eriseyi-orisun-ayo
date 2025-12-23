@@ -44,14 +44,15 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                More contents to write here
+                Moments of worship. Times of growth.
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                another testing for contents coming up later
+                A place where faith comes alive, hope is restored, and lives are
+                transformed by the love of Christ.
               </motion.p>
 
               <Link to="/add-member" className="btn btn-primary">

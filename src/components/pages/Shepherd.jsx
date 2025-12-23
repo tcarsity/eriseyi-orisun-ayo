@@ -13,24 +13,16 @@ const Shepherd = () => {
                   <span className="float-item d-block">about the shepherd</span>
                   <h2 className="float-item">Shepherd's journey with God.</h2>
                   <p className="float-item">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Voluptates alias, hic sapiente aliquam at nulla totam quasi
-                    cumque commodi quo, tempora quam pariatur aperiam veritatis
-                    ad nihil provident tempore? Nisi. Lorem ipsum dolor sit,
-                    amet consectetur adipisicing elit. Accusantium cupiditate
-                    deserunt illum vero, deleniti blanditiis quas dicta, aliquid
-                    quos provident quia officia modi. Magnam eos velit veniam
-                    beatae rerum deserunt!
+                    Our shepherd is a devoted servant of God with a heart for
+                    people and a passion for teaching the Word with clarity and
+                    truth. With years of ministry experience, he leads the
+                    church with humility, wisdom, and a strong commitment to
+                    spiritual growth and godly leadership.
                   </p>
                   <p className="float-item">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Iusto quae quis voluptate accusamus neque aut odit assumenda
-                    eius, quo, sint nesciunt consequuntur iure. Recusandae
-                    corporis quam hic asperiores magnam maxime? Lorem ipsum
-                    dolor sit amet consectetur adipisicing elit. Enim deserunt
-                    illo eligendi at accusamus dicta adipisci aliquid iste? Quae
-                    debitis assumenda laboriosam amet temporibus odit
-                    necessitatibus neque nemo sapiente sunt!
+                    His vision is to see lives restored, faith strengthened, and
+                    believers equipped to walk boldly in their God-given
+                    purpose.
                   </p>
                 </ShepherdFloat>
               </div>

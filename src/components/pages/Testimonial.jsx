@@ -25,8 +25,10 @@ const Testimonial = () => {
             <span>Testimonials</span>
             <h2>What our members are saying about the church.</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
-              ipsum dolor, sit amet consectetur adipisicing elit.
+              Every testimony is a reflection of God’s faithfulness. Through
+              worship, teaching, and community, lives have been touched,
+              restored, and renewed. These stories represent the work of God in
+              our midst and encourage us to trust Him more.
             </p>
           </div>
 
