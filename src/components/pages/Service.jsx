@@ -35,9 +35,9 @@ const Service = () => {
                       <p>
                         Our Shiloh Service is a special time of prayer,
                         prophetic declarations, and divine encounters. Join us
-                        every Tuesday from <strong>10:00am to 2:00pm</strong>
-                        as we seek God’s presence for breakthrough, direction,
-                        and restoration.
+                        every Tuesday from <strong>10:00am to 2:00pm</strong> as
+                        we seek God’s presence for breakthrough, direction, and
+                        restoration.
                       </p>
                     </div>
                   </div>
@@ -91,7 +91,7 @@ const Service = () => {
                     <div className="service-content">
                       <p>
                         Our Bible Study is a time of in-depth Bible teaching and
-                        spiritual growth. Join us every Sunday from
+                        spiritual growth. Join us every Sunday from{" "}
                         <strong>9:00am to 10:00am</strong> as we study God’s
                         Word, build strong foundations, and grow together in
                         faith.
@@ -120,7 +120,7 @@ const Service = () => {
                     <div className="service-content">
                       <p>
                         Our Sunday Service is a joyful celebration of worship,
-                        the Word, and fellowship. Join us every Sunday from
+                        the Word, and fellowship. Join us every Sunday from{" "}
                         <strong>10:00am to 2:00pm</strong> for an uplifting
                         service filled with praise, teaching, and life-changing
                         encounters with God.
