@@ -11,7 +11,7 @@ const Preloader = ({ progress }) => {
 
       {/* Bottom text + percentage */}
       <div className="preloader-footer">
-        <span className="left-text">Brewing your experience</span>
+        <span className="left-text">Moments of worship. Times of growth.</span>
         <span className="right-text">{progress}%</span>
       </div>
 

@@ -36,7 +36,7 @@ const Hero = () => {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="d-block mb-2"
               >
-                Welcome to Orisun Ayo
+                Welcome Home
               </motion.span>
 
               <motion.h2
@@ -44,7 +44,7 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
               >
-                Moments of worship. Times of growth.
+                Gather. Grow. Serve.
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
