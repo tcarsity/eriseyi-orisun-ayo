@@ -25,18 +25,10 @@ const Footer = () => {
             <div className="col-md-6 col-lg-3">
               <h3 className="mb-3">Our Services</h3>
               <ul>
-                <li>
-                  Tuesday Shiloh : <strong>10:00am to 2:00pm</strong>
-                </li>
-                <li>
-                  Friday Vigil : <strong>12:00am to 4:00am</strong>
-                </li>
-                <li>
-                  Sunday School : <strong>9:00am to 10:00am</strong>
-                </li>
-                <li>
-                  Sunday Service : <strong>10:00am to 2:00pm</strong>
-                </li>
+                <li>Tuesday Shiloh : 10:00am to 2:00pm</li>
+                <li>Friday Vigil : 12:00am to 4:00am</li>
+                <li>Sunday School : 9:00am to 10:00am</li>
+                <li>Sunday Service : 10:00am to 2:00pm</li>
               </ul>
             </div>
 
