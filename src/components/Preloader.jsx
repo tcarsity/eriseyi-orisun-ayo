@@ -6,7 +6,7 @@ const Preloader = ({ progress }) => {
     <div className="preloader">
       {/* Center logo */}
       <div className="preloader-logo">
-        <img src="/assets/images/logo.png" alt="logo" />
+        <img src={logo} alt="logo" />
       </div>
 
       {/* Bottom text + percentage */}
