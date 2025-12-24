@@ -12,9 +12,10 @@ import api from "../../api/axios";
 
 const Home = () => {
   const queryClient = useQueryClient();
+  const TOTAL_TASKS = 2;
+
   const [appReady, setAppReady] = useState(false);
   const [progress, setProgress] = useState(0);
-  const TOTAL_TASKS = 2;
 
   useEffect(() => {
     const prepareApp = async () => {
@@ -26,31 +27,27 @@ const Home = () => {
       };
 
       try {
-        await Promise.all([
-          queryClient.prefetchQuery({
-            queryKey: ["publicTestimonials"],
-            queryFn: async () => {
-              const res = await api.get("/public-testimonials");
-              updateProgress();
-              return res.data;
-            },
-          }),
+        await queryClient.prefetchQuery({
+          queryKey: ["publicTestimonials"],
+          queryFn: async () => {
+            const res = await api.get("/public-testimonials");
+            updateProgress();
+            return res.data;
+          },
+        });
 
-          queryClient.prefetchQuery({
-            queryKey: ["publicEvents"],
-            queryFn: async () => {
-              const res = await api.get("/public-events");
-              updateProgress();
-              return res.data;
-            },
-          }),
-        ]);
+        await queryClient.prefetchQuery({
+          queryKey: ["publicEvents"],
+          queryFn: async () => {
+            const res = await api.get("/public-events");
+            updateProgress();
+            return res.data;
+          },
+        });
       } catch (err) {
-        console.error("App init error:", err);
+        console.error(err);
       } finally {
-        setTimeout(() => {
-          setAppReady(true);
-        }, 300); // small delay so 100% is visible
+        setTimeout(() => setAppReady(true), 300); // smooth exit
       }
     };
 
