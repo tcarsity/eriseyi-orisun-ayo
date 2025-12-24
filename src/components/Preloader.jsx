@@ -10,7 +10,7 @@ const Preloader = ({ progress }) => {
         <div className="progress-bar" style={{ width: `${progress}%` }} />
       </div>
 
-      <small>{progress}%</small>
+      <small className="progress-text">{progress}%</small>
     </div>
   );
 };

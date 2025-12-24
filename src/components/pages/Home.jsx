@@ -17,32 +17,31 @@ const Home = () => {
 
   useEffect(() => {
     const prepareApp = async () => {
-      const tasks = [
-        () =>
-          queryClient.prefetchQuery({
-            queryKey: ["publicTestimonials"],
-            queryFn: () =>
-              api.get("/public-testimonials").then((res) => res.data),
-          }),
-
-        () =>
-          queryClient.prefetchQuery({
-            queryKey: ["publicEvents"],
-            queryFn: () => api.get("/public-events").then((res) => res.data),
-          }),
-      ];
-
-      const total = tasks.length;
-      let completed = 0;
-
       try {
-        await Promise.all(
-          tasks.map(async (task) => {
-            await task();
-            completed += 1;
-            setProgress(Math.round((completed / total) * 100));
-          })
-        );
+        let completed = 0;
+
+        const updateProgress = () => {
+          completed += 1;
+          setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+        };
+
+        await queryClient.prefetchQuery({
+          queryKey: ["publicTestimonials"],
+          queryFn: async () => {
+            const res = await api.get("/public-testimonials");
+            updateProgress();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["publicEvents"],
+          queryFn: async () => {
+            const res = await api.get("/public-events");
+            updateProgress();
+            return res.data;
+          },
+        });
       } catch (err) {
         console.error("App init error:", err);
       } finally {
