@@ -221,7 +221,7 @@ table td {
 .preloader {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: $primary-white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,7 +254,7 @@ table td {
   right: 24px;
   display: flex;
   justify-content: space-between;
-  color: #fff;
+  color: $text-color;
   font-size: 14px;
 }
 
@@ -270,7 +270,7 @@ table td {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ffffff, #9f9f9f);
+  background: linear-gradient(90deg, $church-color);
   width: 0%;
   transition: width 0.4s ease;
 }
