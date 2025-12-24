@@ -14,38 +14,43 @@ const Home = () => {
   const queryClient = useQueryClient();
   const [appReady, setAppReady] = useState(false);
   const [progress, setProgress] = useState(0);
+  const TOTAL_TASKS = 2;
 
   useEffect(() => {
     const prepareApp = async () => {
+      let completed = 0;
+
+      const updateProgress = () => {
+        completed += 1;
+        setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+      };
+
       try {
-        let completed = 0;
+        await Promise.all([
+          queryClient.prefetchQuery({
+            queryKey: ["publicTestimonials"],
+            queryFn: async () => {
+              const res = await api.get("/public-testimonials");
+              updateProgress();
+              return res.data;
+            },
+          }),
 
-        const updateProgress = () => {
-          completed += 1;
-          setProgress(Math.round((completed / TOTAL_TASKS) * 100));
-        };
-
-        await queryClient.prefetchQuery({
-          queryKey: ["publicTestimonials"],
-          queryFn: async () => {
-            const res = await api.get("/public-testimonials");
-            updateProgress();
-            return res.data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["publicEvents"],
-          queryFn: async () => {
-            const res = await api.get("/public-events");
-            updateProgress();
-            return res.data;
-          },
-        });
+          queryClient.prefetchQuery({
+            queryKey: ["publicEvents"],
+            queryFn: async () => {
+              const res = await api.get("/public-events");
+              updateProgress();
+              return res.data;
+            },
+          }),
+        ]);
       } catch (err) {
         console.error("App init error:", err);
       } finally {
-        setAppReady(true);
+        setTimeout(() => {
+          setAppReady(true);
+        }, 300); // small delay so 100% is visible
       }
     };
 
