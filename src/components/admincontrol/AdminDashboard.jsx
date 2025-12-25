@@ -21,10 +21,57 @@ const DashboardEventsCard = lazy(() => import("../admin/DashboardEventsCard"));
 const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
 
 const AdminDashboard = () => {
+  useHeartbeat();
   const queryClient = useQueryClient();
   const { user, greeting, token } = useAuth(); // from AuthContext
   const [dashboardReady, setDashboardReady] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
+
+  const {
+    events,
+    isLoading: eventLoading,
+    error: eventError,
+  } = useEvents({
+    enabled: dashboardReady,
+  });
+
+  const {
+    data,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useDashboardStats({
+    enabled: dashboardReady,
+  });
+
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady,
+  });
+
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+
+    return newMembers.filter((m) => {
+      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
+      return joinedDate === today;
+    });
+  }, [newMembers, today]);
+
+  const newMembersCount = newMembersToday.length;
+
+  const rolePrefix = useMemo(
+    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
+    [user?.role]
+  );
+
+  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
+  const [memberRef, memberInView] = useInView(inViewConfig);
+
+  const [eventRef, eventInView] = useInView(inViewConfig);
+
+  const [performanceRef, performanceInView] = useInView(inViewConfig);
 
   useEffect(() => {
     if (!user || !token) return;
@@ -87,58 +134,6 @@ const AdminDashboard = () => {
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
-
-  useHeartbeat();
-
-  const { ref: memberRef, inView: memberInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: eventRef, inView: eventInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: performanceRef, inView: performanceInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { events, isLoading, error } = useEvents();
-
-  const {
-    data,
-    isLoading: statsLoading,
-    error: statsError,
-  } = useDashboardStats();
-
-  const { darkMode, toggleTheme } = useTheme();
-
-  const { data: newMembers = [] } = useNewMembers();
-
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    return newMembers.filter((m) => {
-      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
-      return joinedDate === today;
-    });
-  }, [newMembers, today]);
-
-  const newMembersCount = newMembersToday.length;
-
-  const rolePrefix = useMemo(
-    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
-    [user?.role]
-  );
-
-  const CardLoader = () => (
-    <div className="card shadow-sm border-0 p-4 text-center text-muted">
-      <div className="spinner-border text-success mb-2" role="status"></div>
-      <div>Loading chart...</div>
-    </div>
-  );
 
   return (
     <>
@@ -246,8 +241,8 @@ const AdminDashboard = () => {
                       {eventInView ? (
                         <DashboardEventsCard
                           data={events}
-                          isLoading={isLoading}
-                          error={error}
+                          isLoading={eventLoading}
+                          error={eventError}
                         />
                       ) : null}
                     </Suspense>

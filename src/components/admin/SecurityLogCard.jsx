@@ -21,7 +21,8 @@ const SecurityLogCard = () => {
   const deleteLogs = useDeleteSecurityLogs();
   const { data, isLoading, isError } = useSecurityLogs(page);
   const logs = data?.data || [];
-  const meta = data?.meta;
+  const safeLogs = Array.isArray(logs) ? logs : [];
+  const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
     if (!isLoading && logs.length === 0 && page > 1) {
@@ -44,10 +45,10 @@ const SecurityLogCard = () => {
   };
 
   const handleAllSelectAll = () => {
-    if (selectedLogs.length === logs.length) {
+    if (selectedLogs.length === safeLogs.length) {
       setSelectedLogs([]);
     } else {
-      setSelectedLogs(logs.map((log) => log.id));
+      setSelectedLogs(safeLogs.map((log) => log.id));
     }
   };
 
@@ -109,7 +110,7 @@ const SecurityLogCard = () => {
           <div className="text-center py-5 text-danger">
             Failed to load security logs.
           </div>
-        ) : logs.length > 0 ? (
+        ) : safeLogs.length > 0 ? (
           <>
             <ul className="list-group list-group-flush">
               {/* select all checkbox*/}
@@ -119,15 +120,16 @@ const SecurityLogCard = () => {
                     type="checkbox"
                     className="form-check-input me-3"
                     checked={
-                      selectedLogs.length === logs.length && logs.length > 0
+                      selectedLogs.length === safeLogs.length &&
+                      safeLogs.length > 0
                     }
                     onChange={handleAllSelectAll}
                   />
                   <span>Select All</span>
                 </div>
-                <span>Total: {logs.length}</span>
+                <span>Total: {safeLogs.length}</span>
               </li>
-              {logs.slice(0, 15).map((log) => (
+              {safeLogs.slice(0, 15).map((log) => (
                 <li
                   key={log.id}
                   className={`list-group-item d-flex justify-content-between align-items-start ${
@@ -166,7 +168,7 @@ const SecurityLogCard = () => {
 
             {/* Pagination controls */}
             {meta && (
-              <div className="d-flext justify-content-between align-items-center p-3 border-top bg-light">
+              <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
                 <nav aria-label="Page navigation">
                   <ul className="pagination justify-content-center mb-0">
                     <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
