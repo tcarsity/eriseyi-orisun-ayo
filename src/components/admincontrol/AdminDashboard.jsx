@@ -22,13 +22,13 @@ const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
 
 const AdminDashboard = () => {
   const queryClient = useQueryClient();
+  const TOTAL_TASKS = 4;
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const prepareDashboard = async () => {
       let completed = 0;
-      const TOTAL_TASKS = 4;
 
       const tick = () => {
         completed += 1;
