@@ -13,8 +13,8 @@ import { useTheme } from "../context/ThemeContext";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
 import DashboardPreloader from "../DashboardPreloader";
-const ActiveAdminsCard = lazy(() => import("./ActiveAdminsCard"));
 
+const ActiveAdminsCard = lazy(() => import("./ActiveAdminsCard"));
 const RecentActivityCard = lazy(() => import("./RecentActivityCard"));
 const DashboardAdminActivityCard = lazy(() =>
   import("./DashboardAdminActivityCard")
@@ -24,15 +24,53 @@ const AdminStatsCard = lazy(() => import("./AdminStatsCard"));
 const MembersStatsCard = lazy(() => import("./MembersStatsCard"));
 
 const Dashboard = () => {
+  // ✅ ALL HOOKS FIRST — NO RETURNS ABOVE THIS LINE
   const queryClient = useQueryClient();
-  const { user, greeting, token } = useAuth(); // from AuthContext
+  const { user, greeting, token } = useAuth();
+  const { darkMode, toggleTheme } = useTheme();
+
+  const { events } = useEvents(); // reads from cache
+  const {
+    data,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useDashboardStats();
+  const { data: newMembers = [] } = useNewMembers();
+
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    return newMembers.filter((m) => {
+      return dayjs(m.created_at).format("DD-MM-YYYY") === today;
+    });
+  }, [newMembers, today]);
+
+  const newMembersCount = newMembersToday.length;
+
+  const rolePrefix = useMemo(
+    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
+    [user?.role]
+  );
+
+  // InView hooks
+  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
+  const [adminRef, adminInView] = useInView(inViewConfig);
+  const [adminStatusRef, adminStatusInView] = useInView(inViewConfig);
+  const [memberRef, memberInView] = useInView(inViewConfig);
+  const [eventRef, eventInView] = useInView(inViewConfig);
+  const [adminActivityRef, adminActivityInView] = useInView(inViewConfig);
+  const [securityLogRef, securityLogInView] = useInView(inViewConfig);
+  const [recentAdminActivityRef, recentAdminActivityInView] =
+    useInView(inViewConfig);
+
+  // ✅ DASHBOARD PRELOADER (runs ONCE after login)
   useEffect(() => {
     if (!user || !token) return;
 
-    const TOTAL_TASKS = 6; // adjust if you add/remove APIs
+    const TOTAL_TASKS = 6;
     let completed = 0;
 
     const updateProgress = () => {
@@ -63,7 +101,7 @@ const Dashboard = () => {
         await queryClient.prefetchQuery({
           queryKey: ["recent-members"],
           queryFn: async () => {
-            const res = await api.get("recent-public-members");
+            const res = await api.get("/recent-public-members");
             updateProgress();
             return res.data;
           },
@@ -95,8 +133,8 @@ const Dashboard = () => {
             return res.data;
           },
         });
-      } catch (err) {
-        console.error("Dashboard init error:", err);
+      } catch (e) {
+        console.error("Dashboard preload failed", e);
       } finally {
         setDashboardReady(true);
       }
@@ -105,82 +143,20 @@ const Dashboard = () => {
     prepareDashboard();
   }, [user, token, queryClient]);
 
-  const { ref: adminRef, inView: adminInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: adminStatusRef, inView: adminStatusInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: memberRef, inView: memberInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: eventRef, inView: eventInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: adminActivityRef, inView: adminActivityInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: securityLogRef, inView: securityLogInView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const { ref: recentAdminActivityRef, inView: recentAdminActivityInView } =
-    useInView({
-      triggerOnce: true,
-      threshold: 0.2,
-    });
-
-  const { events, isLoading, error } = useEvents();
-
-  const {
-    data,
-    isLoading: statsLoading,
-    error: statsError,
-  } = useDashboardStats();
-
-  const { data: newMembers = [] } = useNewMembers();
-
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    return newMembers.filter((m) => {
-      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
-      return joinedDate === today;
-    });
-  }, [newMembers, today]);
-
-  const newMembersCount = newMembersToday.length;
-
-  const { darkMode, toggleTheme } = useTheme();
-
-  const rolePrefix = useMemo(
-    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
-    [user?.role]
-  );
-
-  const CardLoader = () => (
-    <div className="card shadow-sm border-0 p-4 text-center text-muted">
-      <div className="spinner-border text-success mb-2" role="status"></div>
-      <div>Loading chart...</div>
-    </div>
-  );
-
+  // ✅ SAFE CONDITIONAL RETURN (after hooks)
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
 
   if (!user) return null;
+
+  const CardLoader = () => (
+    <div className="card shadow-sm border-0 p-4 text-center text-muted">
+      <div className="spinner-border text-success mb-2" />
+      Loading...
+    </div>
+  );
+
   return (
     <>
       <Layout>
