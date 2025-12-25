@@ -31,7 +31,7 @@ const Dashboard = () => {
   useEffect(() => {
     const prepareDashboard = async () => {
       let completed = 0;
-      const TOTAL_TASKS = 7;
+      const TOTAL_TASKS = 6;
 
       const tick = () => {
         completed += 1;
@@ -88,15 +88,6 @@ const Dashboard = () => {
           queryKey: ["adminStatus"],
           queryFn: async () => {
             const res = await api.get("/admin-status");
-            tick();
-            return res.data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["adminPerformance"],
-          queryFn: async () => {
-            const res = await api.get("/admin/activities/performance");
             tick();
             return res.data;
           },
