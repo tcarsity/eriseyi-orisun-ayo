@@ -32,7 +32,11 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { events } = useEvents({
+  const {
+    events,
+    isLoading: eventLoading,
+    error: eventError,
+  } = useEvents({
     enabled: dashboardReady,
   }); // reads from cache
   const {
@@ -303,8 +307,8 @@ const Dashboard = () => {
                       {eventInView ? (
                         <DashboardEventsCard
                           data={events}
-                          isLoading={isLoading}
-                          error={error}
+                          isLoading={eventLoading}
+                          error={eventError}
                         />
                       ) : null}
                     </Suspense>
