@@ -105,10 +105,6 @@ const Dashboard = () => {
     prepareDashboard();
   }, [user, token, queryClient]);
 
-  if (!dashboardReady) {
-    return <DashboardPreloader progress={progress} />;
-  }
-
   const { ref: adminRef, inView: adminInView } = useInView({
     triggerOnce: true,
     threshold: 0.2,
@@ -179,6 +175,10 @@ const Dashboard = () => {
       <div>Loading chart...</div>
     </div>
   );
+
+  if (!dashboardReady) {
+    return <DashboardPreloader progress={progress} />;
+  }
 
   if (!user) return null;
   return (
