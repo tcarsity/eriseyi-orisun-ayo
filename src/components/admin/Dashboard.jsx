@@ -25,25 +25,28 @@ const MembersStatsCard = lazy(() => import("./MembersStatsCard"));
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
-  const TOTAL_TASKS = 7;
-  const [ready, setReady] = useState(false);
+  const { user, greeting, token } = useAuth(); // from AuthContext
+  const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (!user || !token) return;
+
+    const TOTAL_TASKS = 7; // adjust if you add/remove APIs
+    let completed = 0;
+
+    const updateProgress = () => {
+      completed += 1;
+      setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+    };
+
     const prepareDashboard = async () => {
-      let completed = 0;
-
-      const tick = () => {
-        completed += 1;
-        setProgress(Math.round((completed / TOTAL_TASKS) * 100));
-      };
-
       try {
         await queryClient.prefetchQuery({
           queryKey: ["dashboardStats"],
           queryFn: async () => {
             const res = await api.get("/dashboard-stats");
-            tick();
+            updateProgress();
             return res.data;
           },
         });
@@ -52,16 +55,7 @@ const Dashboard = () => {
           queryKey: ["adminActivities"],
           queryFn: async () => {
             const res = await api.get("/admin/activities");
-            tick();
-            return res.data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["events"],
-          queryFn: async () => {
-            const res = await api.get("/events");
-            tick();
+            updateProgress();
             return res.data;
           },
         });
@@ -70,7 +64,7 @@ const Dashboard = () => {
           queryKey: ["recent-members"],
           queryFn: async () => {
             const res = await api.get("recent-public-members");
-            tick();
+            updateProgress();
             return res.data;
           },
         });
@@ -79,7 +73,16 @@ const Dashboard = () => {
           queryKey: ["securityLogs"],
           queryFn: async () => {
             const res = await api.get("/security-logs");
-            tick();
+            updateProgress();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["events"],
+          queryFn: async () => {
+            const res = await api.get("/events");
+            updateProgress();
             return res.data;
           },
         });
@@ -88,7 +91,7 @@ const Dashboard = () => {
           queryKey: ["adminStatus"],
           queryFn: async () => {
             const res = await api.get("/admin-status");
-            tick();
+            updateProgress();
             return res.data;
           },
         });
@@ -97,19 +100,21 @@ const Dashboard = () => {
           queryKey: ["adminPerformance"],
           queryFn: async () => {
             const res = await api.get("/admin/activities/performance");
-            tick();
+            updateProgress();
             return res.data;
           },
         });
+      } catch (err) {
+        console.error("Dashboard init error:", err);
       } finally {
-        setReady(true);
+        setDashboardReady(true);
       }
     };
 
     prepareDashboard();
-  }, [queryClient]);
+  }, [user, token, queryClient]);
 
-  if (!ready) {
+  if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
 
@@ -171,8 +176,6 @@ const Dashboard = () => {
   const newMembersCount = newMembersToday.length;
 
   const { darkMode, toggleTheme } = useTheme();
-
-  const { user, greeting } = useAuth();
 
   const rolePrefix = useMemo(
     () => (user?.role === "superadmin" ? "superadmin" : "admin"),
