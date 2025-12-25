@@ -25,11 +25,11 @@ const SecurityLogCard = () => {
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (!isLoading && logs.length === 0 && page > 1) {
+    if (!isLoading && safeLogs.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
       setSelectedLogs([]);
     }
-  }, [logs, isLoading, page]);
+  }, [safeLogs, isLoading, page]);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= meta?.last_page) {

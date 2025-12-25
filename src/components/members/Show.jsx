@@ -66,7 +66,7 @@ const Show = () => {
   );
 
   const members = data?.data ?? [];
-  const meta = data?.meta ?? {};
+  const meta = typeof data?.meta === "object" ? data.meta : null;
 
   const safeLastPage = meta?.last_page || 1;
   const safeCurrentPage = meta?.current_page || 1;

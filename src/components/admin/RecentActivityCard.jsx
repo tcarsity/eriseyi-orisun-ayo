@@ -17,10 +17,10 @@ const RecentActivityCard = () => {
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (!isLoading && activities.length === 0 && page > 1) {
+    if (!isLoading && safeActivities.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
     }
-  }, [activities, isLoading, page]);
+  }, [safeActivities, isLoading, page]);
 
   const deletedActivities = useDeleteActivities();
 
@@ -39,10 +39,10 @@ const RecentActivityCard = () => {
   };
 
   const handleAllSelectAll = () => {
-    if (selectedActivity.length === activities.length) {
+    if (selectedActivity.length === safeActivities.length) {
       setSelectedActivity([]);
     } else {
-      setSelectedActivity(activities.map((a) => a.id));
+      setSelectedActivity(safeActivities.map((a) => a.id));
     }
   };
 
