@@ -35,14 +35,17 @@ const Dashboard = () => {
     isLoading: statsLoading,
     error: statsError,
   } = useDashboardStats();
-  const { data: newMembers = [] } = useNewMembers();
 
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const today = dayjs().format("DD-MM-YYYY");
 
+  const { data: newMembers = [] } = useNewMembers();
+
   const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+
     return newMembers.filter((m) => {
       return dayjs(m.created_at).format("DD-MM-YYYY") === today;
     });
