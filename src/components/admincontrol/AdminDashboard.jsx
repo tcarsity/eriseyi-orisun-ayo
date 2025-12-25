@@ -22,7 +22,7 @@ const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
 
 const AdminDashboard = () => {
   const queryClient = useQueryClient();
-  const TOTAL_TASKS = 3;
+  const TOTAL_TASKS = 4;
   const [ready, setReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -58,6 +58,15 @@ const AdminDashboard = () => {
           queryKey: ["recent-members"],
           queryFn: async () => {
             const res = await api.get("recent-public-members");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminPerformance"],
+          queryFn: async () => {
+            const res = await api.get("/admin/activities/performance");
             tick();
             return res.data;
           },
