@@ -12,7 +12,8 @@ const RecentActivityCard = () => {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState([]);
   const { data, isLoading, isError } = useAdminActivities(page);
-  const activities = Array.isArray(data?.data) ? data.data : [];
+  const activities = data?.data || [];
+  const safeActivities = Array.isArray(activities) ? activities : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const RecentActivityCard = () => {
           <p className="text-danger text-center py-5">
             Failed tol load activities.
           </p>
-        ) : activities.length === 0 ? (
+        ) : safeActivities.length === 0 ? (
           <p className="text-muted mb-0">No activity yet</p>
         ) : (
           <ul className="list-group list-group-flush">
@@ -108,16 +109,16 @@ const RecentActivityCard = () => {
                   type="checkbox"
                   className="form-check-input me-3"
                   checked={
-                    selectedActivity.length === activities.length &&
-                    activities.length > 0
+                    selectedActivity.length === safeActivities.length &&
+                    safeActivities.length > 0
                   }
                   onChange={handleAllSelectAll}
                 />
                 <span>Select All</span>
               </div>
-              <span>Total: {activities.length}</span>
+              <span>Total: {safeActivities.length}</span>
             </li>
-            {activities.map((a) => (
+            {safeActivities.map((a) => (
               <li
                 key={a.id}
                 className={`list-group-item d-flex justify-content-between align-items-start ${

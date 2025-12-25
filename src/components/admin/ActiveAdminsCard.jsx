@@ -15,7 +15,12 @@ dayjs.tz.setDefault("Africa/Lagos");
 const ActiveAdminsCard = () => {
   const { data, isLoading, isError } = useAdminStatus();
 
-  const admins = Array.isArray(data) ? data : [];
+  const admins = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.data)
+    ? data.data
+    : [];
+
   return (
     <div className="card shadow border-0 p-3">
       <h6 className="fw-bold text-muted mb-3">Admin Activity Status</h6>

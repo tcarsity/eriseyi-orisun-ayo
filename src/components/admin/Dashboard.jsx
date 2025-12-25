@@ -29,19 +29,25 @@ const Dashboard = () => {
   const { user, greeting, token } = useAuth();
   const { darkMode, toggleTheme } = useTheme();
 
-  const { events } = useEvents(); // reads from cache
+  const [dashboardReady, setDashboardReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const { events } = useEvents({
+    enabled: dashboardReady,
+  }); // reads from cache
   const {
     data,
     isLoading: statsLoading,
     error: statsError,
-  } = useDashboardStats();
-
-  const [dashboardReady, setDashboardReady] = useState(false);
-  const [progress, setProgress] = useState(0);
+  } = useDashboardStats({
+    enabled: dashboardReady,
+  });
 
   const today = dayjs().format("DD-MM-YYYY");
 
-  const { data: newMembers = [] } = useNewMembers();
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady,
+  });
 
   const newMembersToday = useMemo(() => {
     if (!Array.isArray(newMembers)) return [];
