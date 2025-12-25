@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from "react";
+import React, { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../common/Layout";
 import { useAuth } from "../context/AuthContext";
@@ -10,6 +10,9 @@ import { useNewMembers } from "../../hooks/useNewMembers";
 import dayjs from "dayjs";
 import { useTheme } from "../context/ThemeContext";
 import { useHeartbeat } from "../../hooks/useHeartbeat";
+import DashboardPreloader from "../DashboardPreloader";
+import { useQueryClient } from "@tanstack/react-query";
+import api from "../../api/axios";
 
 const AdminPerformanceCard = lazy(() =>
   import("../admin/AdminPerformanceCard")
@@ -18,6 +21,68 @@ const DashboardEventsCard = lazy(() => import("../admin/DashboardEventsCard"));
 const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
 
 const AdminDashboard = () => {
+  const queryClient = useQueryClient();
+  const [ready, setReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const prepareDashboard = async () => {
+      let completed = 0;
+      const TOTAL_TASKS = 4;
+
+      const tick = () => {
+        completed += 1;
+        setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+      };
+
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: ["dashboardStats"],
+          queryFn: async () => {
+            const res = await api.get("/dashboard-stats");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["events"],
+          queryFn: async () => {
+            const res = await api.get("/events");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("recent-public-members");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminPerformance"],
+          queryFn: async () => {
+            const res = await api.get("/admin/activities/performance");
+            tick();
+            return res.data;
+          },
+        });
+      } finally {
+        setReady(true);
+      }
+    };
+
+    prepareDashboard();
+  }, [queryClient]);
+
+  if (!ready) {
+    return <DashboardPreloader progress={progress} />;
+  }
+
   useHeartbeat();
 
   const { ref: memberRef, inView: memberInView } = useInView({

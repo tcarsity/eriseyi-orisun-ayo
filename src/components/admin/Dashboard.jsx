@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo } from "react";
+import React, { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import Layout from "../common/Layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -10,6 +10,9 @@ import { useNewMembers } from "../../hooks/useNewMembers";
 import dayjs from "dayjs";
 import SecurityLogCard from "./SecurityLogCard";
 import { useTheme } from "../context/ThemeContext";
+import { useQueryClient } from "@tanstack/react-query";
+import api from "../../api/axios";
+import DashboardPreloader from "../DashboardPreloader";
 const ActiveAdminsCard = lazy(() => import("./ActiveAdminsCard"));
 
 const RecentActivityCard = lazy(() => import("./RecentActivityCard"));
@@ -21,6 +24,95 @@ const AdminStatsCard = lazy(() => import("./AdminStatsCard"));
 const MembersStatsCard = lazy(() => import("./MembersStatsCard"));
 
 const Dashboard = () => {
+  const queryClient = useQueryClient();
+  const [ready, setReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const prepareDashboard = async () => {
+      let completed = 0;
+      const TOTAL_TASKS = 7;
+
+      const tick = () => {
+        completed += 1;
+        setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+      };
+
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: ["dashboardStats"],
+          queryFn: async () => {
+            const res = await api.get("/dashboard-stats");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminActivities"],
+          queryFn: async () => {
+            const res = await api.get("/admin/activities");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["events"],
+          queryFn: async () => {
+            const res = await api.get("/events");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("recent-public-members");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["securityLogs"],
+          queryFn: async () => {
+            const res = await api.get("/security-logs");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminStatus"],
+          queryFn: async () => {
+            const res = await api.get("/admin-status");
+            tick();
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminPerformance"],
+          queryFn: async () => {
+            const res = await api.get("/admin/activities/performance");
+            tick();
+            return res.data;
+          },
+        });
+      } finally {
+        setReady(true);
+      }
+    };
+
+    prepareDashboard();
+  }, [queryClient]);
+
+  if (!ready) {
+    return <DashboardPreloader progress={progress} />;
+  }
+
   const { ref: adminRef, inView: adminInView } = useInView({
     triggerOnce: true,
     threshold: 0.2,
