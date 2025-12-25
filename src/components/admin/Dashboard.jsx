@@ -32,7 +32,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!user || !token) return;
 
-    const TOTAL_TASKS = 7; // adjust if you add/remove APIs
+    const TOTAL_TASKS = 6; // adjust if you add/remove APIs
     let completed = 0;
 
     const updateProgress = () => {
@@ -91,15 +91,6 @@ const Dashboard = () => {
           queryKey: ["adminStatus"],
           queryFn: async () => {
             const res = await api.get("/admin-status");
-            updateProgress();
-            return res.data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["adminPerformance"],
-          queryFn: async () => {
-            const res = await api.get("/admin/activities/performance");
             updateProgress();
             return res.data;
           },
