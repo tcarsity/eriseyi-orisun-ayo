@@ -12,8 +12,8 @@ const RecentActivityCard = () => {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState([]);
   const { data, isLoading, isError } = useAdminActivities(page);
-  const activities = data?.data || [];
-  const meta = data?.meta;
+  const activities = Array.isArray(data?.data) ? data.data : [];
+  const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
     if (!isLoading && activities.length === 0 && page > 1) {
@@ -149,7 +149,7 @@ const RecentActivityCard = () => {
         )}
 
         {!isLoading && meta && (
-          <div className="d-flext justify-content-between align-items-center p-3 border-top bg-light">
+          <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
             <nav aria-label="Page navigation">
               <ul className="pagination justify-content-center mb-0">
                 <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
@@ -210,4 +210,4 @@ const RecentActivityCard = () => {
   );
 };
 
-export default RecentActivityCard;
+export default React.memo(RecentActivityCard);

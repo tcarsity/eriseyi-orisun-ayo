@@ -13,7 +13,9 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Africa/Lagos");
 
 const ActiveAdminsCard = () => {
-  const { data: admins = [], isLoading, isError } = useAdminStatus();
+  const { data, isLoading, isError } = useAdminStatus();
+
+  const admins = Array.isArray(data) ? data : [];
   return (
     <div className="card shadow border-0 p-3">
       <h6 className="fw-bold text-muted mb-3">Admin Activity Status</h6>
@@ -63,4 +65,4 @@ const ActiveAdminsCard = () => {
   );
 };
 
-export default ActiveAdminsCard;
+export default React.memo(ActiveAdminsCard);

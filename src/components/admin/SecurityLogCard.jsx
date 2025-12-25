@@ -235,4 +235,4 @@ const SecurityLogCard = () => {
   );
 };
 
-export default SecurityLogCard;
+export default React.memo(SecurityLogCard);
