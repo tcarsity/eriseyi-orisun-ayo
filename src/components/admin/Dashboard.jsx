@@ -47,7 +47,8 @@ const Dashboard = () => {
     if (!Array.isArray(newMembers)) return [];
 
     return newMembers.filter((m) => {
-      return dayjs(m.created_at).format("DD-MM-YYYY") === today;
+      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
+      return joinedDate === today;
     });
   }, [newMembers, today]);
 
