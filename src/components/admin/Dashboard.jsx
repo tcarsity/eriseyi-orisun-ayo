@@ -232,27 +232,33 @@ const Dashboard = () => {
 
             <div className="col-lg-9 board">
               {/* Top stats */}
-              <div className="row mb-4">
+              <div className="row">
                 <div className="col-md-4">
                   <div className="card shadow border-0 p-3">
-                    <h2>{data?.members?.count ?? 0}</h2>
-                    <strong>Total Members</strong>
+                    <div className="card-body p-3">
+                      <h2>{data?.members?.count ?? 0}</h2>
+                      <strong>Total Members</strong>
+                    </div>
                     <div className="card-footer">&nbsp;</div>
                   </div>
                 </div>
                 <div className="col-md-4 admins">
                   <div className="card shadow border-0 p-3">
-                    <h2>{data?.admins?.count ?? 0}</h2>
-                    <strong>Total Admins</strong>
+                    <div className="card-body p-3">
+                      <h2>{data?.admins?.count ?? 0}</h2>
+                      <strong>Total Admins</strong>
+                    </div>
+                    <div className="card-footer">&nbsp;</div>
                   </div>
-                  <div className="card-footer">&nbsp;</div>
                 </div>
                 <div className="col-md-4 test">
                   <div className="card shadow border-0 p-3">
-                    <h2>{data?.testimonials?.count ?? 0}</h2>
-                    <strong>Testimonials</strong>
+                    <div className="card-body p-3">
+                      <h2>{data?.testimonials?.count ?? 0}</h2>
+                      <strong>Testimonials</strong>
+                    </div>
+                    <div className="card-footer">&nbsp;</div>
                   </div>
-                  <div className="card-footer">&nbsp;</div>
                 </div>
               </div>
 
