@@ -40,7 +40,7 @@ const Dashboard = () => {
   /* =======================
      READ FROM CACHE ONLY
   ======================== */
-  const { data: stats } = useDashboardStats({ enabled: dashboardReady });
+  const { data } = useDashboardStats({ enabled: dashboardReady });
 
   const { events } = useEvents({ enabled: dashboardReady });
 
@@ -177,7 +177,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <section className="dashboard">
-        <div className="container py-3">
+        <div className="container pb-5 pt-3">
           {/* Breadcrumb */}
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
@@ -189,15 +189,15 @@ const Dashboard = () => {
                   {greeting}
                 </Link>
               </li>
-              <li className="breadcrumb-item active">
-                Logged in as <strong>{user.role}</strong>
+              <li className="breadcrumb-item active bread" aria-current="page">
+                You are logged in as <strong>{user?.role}</strong>
               </li>
             </ol>
           </nav>
 
           {/* New members alert */}
           {newMembersToday.length > 0 && (
-            <div className="alert alert-success d-flex justify-content-between align-items-center mb-4">
+            <div className="alert alert-success d-flex justify-content-between align-items-center shadow mb-4">
               <div>
                 🎉 <strong>{newMembersToday.length}</strong> new member(s)
                 joined today
@@ -208,24 +208,24 @@ const Dashboard = () => {
             </div>
           )}
 
-          <div className="d-flex justify-content-between mb-4">
-            <h2>Super Admin Dashboard</h2>
-
-            {/* DARK MODE — KEPT */}
-            <div className="form-check form-switch">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                checked={darkMode}
-                onChange={toggleTheme}
-              />
-              <label className="form-check-label">
-                {darkMode ? "Dark" : "Light"} Mode
-              </label>
-            </div>
-          </div>
-
           <div className="row">
+            <div className="col-md-12 mt-5 mb-3">
+              <div className="d-flex justify-content-between">
+                <h2 className="h4 mb-0 pb-0">Admin Dashboard</h2>
+                <div className="form-check form-switch">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="darkModeSwitch"
+                    checked={darkMode}
+                    onChange={toggleTheme}
+                  />
+                  <label htmlFor="darkModeSwitch" className="form-check-label">
+                    {darkMode ? "Dark" : "Light"} Mode
+                  </label>
+                </div>
+              </div>
+            </div>
             <div className="col-lg-3">
               <SideBar />
             </div>
@@ -254,62 +254,68 @@ const Dashboard = () => {
               </div>
 
               {/* Cards */}
-              <div className="row g-4">
-                <div className="col-md-6" ref={adminRef}>
+              <div className="row g-3 py-5 ">
+                <div className="col-md-6 col-lg-6" ref={adminRef}>
                   <Suspense fallback={<CardLoader />}>
-                    {adminInView && (
+                    {adminInView ? (
                       <AdminStatsCard
-                        active={stats?.admins?.active}
-                        inactive={stats?.admins?.inactive}
+                        active={data?.admins?.active}
+                        inactive={data?.admins?.inactive}
                       />
-                    )}
+                    ) : null}
                   </Suspense>
                 </div>
 
-                <div className="col-md-6" ref={adminStatusRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {adminStatusInView && <ActiveAdminsCard />}
+                <div className="col-md-6 col-lg-6" ref={adminStatusRef}>
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {adminStatusInView ? <ActiveAdminsCard /> : null}
                   </Suspense>
                 </div>
+              </div>
 
+              <div className="row py-5">
                 <div className="col-md-12" ref={memberRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {memberInView && (
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {memberInView ? (
                       <MembersStatsCard
-                        totalMembers={stats?.members?.count}
-                        newMembers={stats?.newMembers?.count}
-                        trend={stats?.newMembers?.trend}
-                        growth={stats?.newMembers?.growth}
+                        totalMembers={data?.members?.count}
+                        newMembers={data?.newMembers?.count}
+                        trend={data?.newMembers?.trend}
+                        growth={data?.newMembers?.growth}
                       />
-                    )}
+                    ) : null}
                   </Suspense>
                 </div>
+              </div>
 
+              <div className="row g-3 py-5">
                 <div className="col-md-6" ref={eventRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {eventInView && <DashboardEventsCard data={events} />}
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {eventInView ? <DashboardEventsCard data={events} /> : null}
                   </Suspense>
                 </div>
 
                 <div className="col-md-6" ref={adminActivityRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {adminActivityInView && (
-                      <DashboardAdminActivityCard
-                        data={stats?.admin_activity}
-                      />
-                    )}
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {adminActivityInView ? (
+                      <DashboardAdminActivityCard data={data?.admin_activity} />
+                    ) : null}
                   </Suspense>
                 </div>
+              </div>
 
-                <div className="col-md-12" ref={securityLogRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {securityLogInView && <SecurityLogCard />}
+              <div className="row py-5">
+                <div className="col-md" ref={securityLogRef}>
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {securityLogInView ? <SecurityLogCard /> : null}
                   </Suspense>
                 </div>
+              </div>
 
-                <div className="col-md-12" ref={recentActivityRef}>
-                  <Suspense fallback={<CardLoader />}>
-                    {recentActivityInView && <RecentActivityCard />}
+              <div className="row py-5">
+                <div className="col-md" ref={recentAdminActivityRef}>
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
+                    {recentAdminActivityInView ? <RecentActivityCard /> : null}
                   </Suspense>
                 </div>
               </div>
