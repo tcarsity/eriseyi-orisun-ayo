@@ -211,7 +211,7 @@ const Dashboard = () => {
           <div className="row">
             <div className="col-md-12 mt-5 mb-3">
               <div className="d-flex justify-content-between">
-                <h2 className="h4 mb-0 pb-0">Admin Dashboard</h2>
+                <h2 className="h4 mb-0 pb-0">Super Admin Dashboard</h2>
                 <div className="form-check form-switch">
                   <input
                     className="form-check-input"
@@ -233,8 +233,8 @@ const Dashboard = () => {
             <div className="col-lg-9 board">
               {/* Top stats */}
               <div className="row">
-                <div className="col-md-4">
-                  <div className="card shadow border-0 p-3">
+                <div className="col-md-6">
+                  <div className="card shadow border-0">
                     <div className="card-body p-3">
                       <h2>{data?.members?.count ?? 0}</h2>
                       <strong>Total Members</strong>
