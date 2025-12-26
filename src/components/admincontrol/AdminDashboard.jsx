@@ -28,19 +28,11 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const {
-    events,
-    isLoading: eventLoading,
-    error: eventError,
-  } = useEvents({
+  const { events } = useEvents({
     enabled: dashboardReady,
   });
 
-  const {
-    data,
-    isLoading: statsLoading,
-    error: statsError,
-  } = useDashboardStats({
+  const { data } = useDashboardStats({
     enabled: dashboardReady,
   });
 
@@ -91,7 +83,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("/dashboard-stats");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -100,7 +92,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("recent-public-members");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -109,7 +101,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("/events");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -118,7 +110,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin/activities/performance");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
       } catch (err) {
@@ -229,8 +221,6 @@ const AdminDashboard = () => {
                           newMembers={data?.newMembers?.count}
                           trend={data?.newMembers?.trend}
                           growth={data?.newMembers?.growth}
-                          isLoading={statsLoading}
-                          error={statsError}
                         />
                       ) : null}
                     </Suspense>
@@ -239,11 +229,7 @@ const AdminDashboard = () => {
                   <div className="col-md-6" ref={eventRef}>
                     <Suspense fallback={<div style={{ height: 200 }}></div>}>
                       {eventInView ? (
-                        <DashboardEventsCard
-                          data={events}
-                          isLoading={eventLoading}
-                          error={eventError}
-                        />
+                        <DashboardEventsCard data={events} />
                       ) : null}
                     </Suspense>
                   </div>

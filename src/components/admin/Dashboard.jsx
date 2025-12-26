@@ -97,7 +97,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/dashboard-stats");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -106,7 +106,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin/activities");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -115,7 +115,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/recent-public-members");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -124,7 +124,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/security-logs");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -133,7 +133,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/events");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
 
@@ -142,7 +142,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin-status");
             updateProgress();
-            return res.data;
+            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
           },
         });
       } catch (err) {
@@ -209,7 +209,7 @@ const Dashboard = () => {
           )}
 
           <div className="d-flex justify-content-between mb-4">
-            <h2>Admin Dashboard</h2>
+            <h2>Super Admin Dashboard</h2>
 
             {/* DARK MODE — KEPT */}
             <div className="form-check form-switch">
