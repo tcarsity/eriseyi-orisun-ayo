@@ -235,19 +235,19 @@ const Dashboard = () => {
               <div className="row mb-4">
                 <div className="col-md-4">
                   <div className="card shadow border-0 p-3">
-                    <h2>{stats?.members?.count ?? 0}</h2>
+                    <h2>{data?.members?.count ?? 0}</h2>
                     <strong>Total Members</strong>
                   </div>
                 </div>
                 <div className="col-md-4">
                   <div className="card shadow border-0 p-3">
-                    <h2>{stats?.admins?.count ?? 0}</h2>
+                    <h2>{data?.admins?.count ?? 0}</h2>
                     <strong>Total Admins</strong>
                   </div>
                 </div>
                 <div className="col-md-4">
                   <div className="card shadow border-0 p-3">
-                    <h2>{stats?.testimonials?.count ?? 0}</h2>
+                    <h2>{data?.testimonials?.count ?? 0}</h2>
                     <strong>Testimonials</strong>
                   </div>
                 </div>
@@ -313,9 +313,9 @@ const Dashboard = () => {
               </div>
 
               <div className="row py-5">
-                <div className="col-md" ref={recentAdminActivityRef}>
+                <div className="col-md" ref={recentActivityRef}>
                   <Suspense fallback={<div style={{ height: 200 }}></div>}>
-                    {recentAdminActivityInView ? <RecentActivityCard /> : null}
+                    {recentActivityInView ? <RecentActivityCard /> : null}
                   </Suspense>
                 </div>
               </div>
