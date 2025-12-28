@@ -7,14 +7,15 @@ import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 
 const Testimonial = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["publicTestimonials"],
     queryFn: async () => {
       const res = await api.get("/public-testimonials");
       return res.data.data;
     },
-    refetchInterval: 5000,
-    refetchOnWindowFocus: true,
+    staleTime: 2 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -32,25 +33,19 @@ const Testimonial = () => {
             </p>
           </div>
 
-          {isLoading && (
-            <h5 className="text-center text-muted fw-bold">
-              Loading testimonial...
-            </h5>
-          )}
-
           {isError && (
             <h5 className="text-center text-danger fw-bold">
               Failed to load testimonial.
             </h5>
           )}
 
-          {!isLoading && !isError && (!data || data.length === 0) && (
+          {!isError && (!data || data.length === 0) && (
             <h5 className="text-center text-muted fw-bold">
               No Testimonial available yet.
             </h5>
           )}
 
-          {!isLoading && !isError && data?.length > 0 && (
+          {!isError && data?.length > 0 && (
             <Swiper
               modules={[Pagination]}
               spaceBetween={50}

@@ -4,14 +4,15 @@ import React from "react";
 import api from "../../api/axios";
 
 const EventsSection = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["publicEvents"],
     queryFn: async () => {
       const res = await api.get("/public-events");
       return res.data.data;
     },
-    refetchInterval: 5000,
-    refetchOnWindowFocus: true,
+    staleTime: 2 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -29,25 +30,19 @@ const EventsSection = () => {
             </p>
           </div>
 
-          {isLoading && (
-            <h5 className="text-center text-muted fw-bold">
-              Loading events...
-            </h5>
-          )}
-
           {isError && (
             <h5 className="text-center text-danger fw-bold">
               Failed to load events.
             </h5>
           )}
 
-          {!isLoading && !isError && (!data || data.length === 0) && (
+          {!isError && (!data || data.length === 0) && (
             <h5 className="text-center text-muted fw-bold">
               No Event available yet.
             </h5>
           )}
 
-          {!isLoading && !isError && data?.length > 0 && (
+          {!isError && data?.length > 0 && (
             <div className="row g-4 mt-4 events-grid">
               {data.map((event) => (
                 <div className="col-md-6 col-lg-3" key={event.id}>
