@@ -7,13 +7,13 @@ import api from "../../api/axios";
 import { useQuery } from "@tanstack/react-query";
 
 const Testimonial = () => {
-  const { data, isError } = useQuery({
+  const { data = [], isError } = useQuery({
     queryKey: ["publicTestimonials"],
     queryFn: async () => {
       const res = await api.get("/public-testimonials");
       return res.data.data;
     },
-    staleTime: 2 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
     refetchInterval: false,
     refetchOnWindowFocus: false,
   });

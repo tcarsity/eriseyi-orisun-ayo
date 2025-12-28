@@ -10,7 +10,7 @@ const EventsSection = () => {
       const res = await api.get("/public-events");
       return res.data.data;
     },
-    staleTime: 2 * 60 * 1000,
+    staleTime: 5 * 60 * 1000,
     refetchInterval: false,
     refetchOnWindowFocus: false,
   });

@@ -32,7 +32,7 @@ const Home = () => {
           queryFn: async () => {
             const res = await api.get("/public-testimonials");
             updateProgress();
-            return res.data;
+            return res.data.data;
           },
         });
 
@@ -41,7 +41,7 @@ const Home = () => {
           queryFn: async () => {
             const res = await api.get("/public-events");
             updateProgress();
-            return res.data;
+            return res.data.data;
           },
         });
       } catch (err) {
