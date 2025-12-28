@@ -19,17 +19,17 @@ const SecurityLogCard = () => {
   const [selectedLogs, setSelectedLogs] = useState([]);
 
   const deleteLogs = useDeleteSecurityLogs();
-  const { data, isError } = useSecurityLogs(page);
+  const { data, isLoading, isError } = useSecurityLogs(page);
   const logs = data?.data || [];
   const safeLogs = Array.isArray(logs) ? logs : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (!isError && safeLogs.length === 0 && page > 1) {
+    if (!isLoading && safeLogs.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
       setSelectedLogs([]);
     }
-  }, [safeLogs, isError, page]);
+  }, [safeLogs, isLoading, page]);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= meta?.last_page) {
@@ -99,7 +99,14 @@ const SecurityLogCard = () => {
       </div>
 
       <div className="card-body p-0">
-        {isError ? (
+        {isLoading ? (
+          <div className="text-center py-5 text-muted">
+            <div className="spinner-border text-primary mb-2" role="status">
+              <span className="visually-hidden">Loading....</span>
+            </div>
+            <div>Loading security logs...</div>
+          </div>
+        ) : isError ? (
           <div className="text-center py-5 text-danger">
             Failed to load security logs.
           </div>
