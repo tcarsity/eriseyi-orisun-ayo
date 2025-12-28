@@ -25,7 +25,6 @@ const MembersStatsCard = ({
   newMembers,
   trend = [],
   growth = 0,
-  isLoading,
   error,
 }) => {
   const chartRef = useRef();
@@ -132,16 +131,6 @@ const MembersStatsCard = ({
 
   return (
     <div className="card shadow border-0 p-3 d-flex flex-column justify-content-between h-100 ">
-      {isLoading && (
-        <div className="text-center p-4">
-          <div
-            className="spinner-border text-primary"
-            role="status"
-            style={{ width: "2rem", height: "2rem" }}
-          ></div>
-        </div>
-      )}
-
       {error && (
         <div className="text-center text-danger p-4">
           Failed to load member status

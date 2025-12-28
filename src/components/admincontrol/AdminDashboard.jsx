@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { events } = useEvents({
+  const { events, error: eventError } = useEvents({
     enabled: dashboardReady,
   });
 
@@ -229,7 +229,7 @@ const AdminDashboard = () => {
                   <div className="col-md-6" ref={eventRef}>
                     <Suspense fallback={<div style={{ height: 200 }}></div>}>
                       {eventInView ? (
-                        <DashboardEventsCard data={events} />
+                        <DashboardEventsCard data={events} error={eventError} />
                       ) : null}
                     </Suspense>
                   </div>

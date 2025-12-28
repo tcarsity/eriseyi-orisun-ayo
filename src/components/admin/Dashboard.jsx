@@ -40,9 +40,11 @@ const Dashboard = () => {
   /* =======================
      READ FROM CACHE ONLY
   ======================== */
-  const { data } = useDashboardStats({ enabled: dashboardReady });
+  const { data, error: memberError } = useDashboardStats({
+    enabled: dashboardReady,
+  });
 
-  const { events } = useEvents({ enabled: dashboardReady });
+  const { events, error: eventError } = useEvents({ enabled: dashboardReady });
 
   const { data: newMembers = [] } = useNewMembers({
     enabled: dashboardReady,
@@ -291,6 +293,7 @@ const Dashboard = () => {
                         newMembers={data?.newMembers?.count}
                         trend={data?.newMembers?.trend}
                         growth={data?.newMembers?.growth}
+                        error={memberError}
                       />
                     ) : null}
                   </Suspense>
@@ -300,7 +303,9 @@ const Dashboard = () => {
               <div className="row g-3 py-5">
                 <div className="col-md-6" ref={eventRef}>
                   <Suspense fallback={<div style={{ height: 200 }}></div>}>
-                    {eventInView ? <DashboardEventsCard data={events} /> : null}
+                    {eventInView ? (
+                      <DashboardEventsCard data={events} error={eventError} />
+                    ) : null}
                   </Suspense>
                 </div>
 

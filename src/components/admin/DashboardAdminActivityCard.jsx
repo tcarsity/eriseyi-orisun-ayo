@@ -3,21 +3,7 @@ import React from "react";
 import { FaCalendarAlt, FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 
-const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
-  if (isLoading) {
-    return (
-      <div className="card shadow-sm border-0 p-4 text-center">
-        <div
-          className="spinner-border text-primary"
-          role="status"
-          style={{ width: "2rem", height: "2rem" }}
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
+const DashboardAdminActivityCard = ({ data, error }) => {
   if (error) {
     return (
       <div className="card shadow border-0 p-3 text-center text-danger">

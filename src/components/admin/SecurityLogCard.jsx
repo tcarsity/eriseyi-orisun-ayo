@@ -99,14 +99,7 @@ const SecurityLogCard = () => {
       </div>
 
       <div className="card-body p-0">
-        {isLoading ? (
-          <div className="text-center py-5 text-muted">
-            <div className="spinner-border text-primary mb-2" role="status">
-              <span className="visually-hidden">Loading....</span>
-            </div>
-            <div>Loading security logs...</div>
-          </div>
-        ) : isError ? (
+        {isError ? (
           <div className="text-center py-5 text-danger">
             Failed to load security logs.
           </div>

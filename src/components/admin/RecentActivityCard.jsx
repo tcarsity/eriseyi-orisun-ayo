@@ -88,16 +88,9 @@ const RecentActivityCard = () => {
           )}
         </div>
 
-        {isLoading ? (
-          <div className="d-flex flex-column align-items-center justify-content-center text-muted">
-            <div
-              className="spinner-border text-primary mb-3"
-              role="status"
-            ></div>
-          </div>
-        ) : isError ? (
+        {isError ? (
           <p className="text-danger text-center py-5">
-            Failed tol load activities.
+            Failed to load activities.
           </p>
         ) : safeActivities.length === 0 ? (
           <p className="text-muted mb-0">No activity yet</p>

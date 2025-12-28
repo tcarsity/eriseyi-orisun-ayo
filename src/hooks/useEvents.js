@@ -12,7 +12,6 @@ export const useEvents = () => {
   });
   return {
     events: query.data ?? [],
-    isLoading: query.isLoading,
     error: query.error,
   };
 };
