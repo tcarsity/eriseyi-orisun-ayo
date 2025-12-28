@@ -19,17 +19,17 @@ const SecurityLogCard = () => {
   const [selectedLogs, setSelectedLogs] = useState([]);
 
   const deleteLogs = useDeleteSecurityLogs();
-  const { data, isLoading, isError } = useSecurityLogs(page);
+  const { data, isError } = useSecurityLogs(page);
   const logs = data?.data || [];
   const safeLogs = Array.isArray(logs) ? logs : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (!isLoading && safeLogs.length === 0 && page > 1) {
+    if (!isError && safeLogs.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
       setSelectedLogs([]);
     }
-  }, [safeLogs, isLoading, page]);
+  }, [safeLogs, isError, page]);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= meta?.last_page) {
