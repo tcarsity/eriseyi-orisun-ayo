@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
 import { useDeleteSecurityLogs } from "../../hooks/useDeleteSecurityLogs";
 
 dayjs.extend(relativeTime);
@@ -19,10 +20,9 @@ const SecurityLogCard = () => {
 
   const deleteLogs = useDeleteSecurityLogs();
   const { data, isError } = useSecurityLogs(page);
-
-  const logs = data?.data;
+  const logs = data?.data || [];
   const safeLogs = Array.isArray(logs) ? logs : [];
-  const meta = data?.meta ?? null;
+  const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
     if (safeLogs.length === 0 && page > 1) {
@@ -33,7 +33,7 @@ const SecurityLogCard = () => {
 
   const handlePageChange = (pageNumber) => {
     if (!meta) return;
-    if (pageNumber >= 1 && pageNumber <= meta.last_page) {
+    if (pageNumber >= 1 && pageNumber <= meta?.last_page) {
       setPage(pageNumber);
       setSelectedLogs([]);
     }
@@ -45,7 +45,7 @@ const SecurityLogCard = () => {
     );
   };
 
-  const handleSelectAll = () => {
+  const handleAllSelectAll = () => {
     if (selectedLogs.length === safeLogs.length) {
       setSelectedLogs([]);
     } else {
@@ -54,11 +54,12 @@ const SecurityLogCard = () => {
   };
 
   const handleBulkDelete = async () => {
-    if (!selectedLogs.length) return alert("No logs selected");
+    if (selectedLogs.length === 0) return alert("No logs selected");
     if (!window.confirm(`Delete ${selectedLogs.length} selected logs?`)) return;
 
     try {
       await deleteLogs.mutateAsync(selectedLogs);
+
       setSelectedLogs([]);
     } catch {
       alert("Failed to delete logs.");
@@ -75,27 +76,28 @@ const SecurityLogCard = () => {
 
   return (
     <div className="card shadow border-0 mb-4 h-100">
-      <div className="card-header bg-white d-flex justify-content-between align-items-center">
+      <div className="card-header bg-white d-flex justify-content-between gap-3 align-items-center">
         <h5 className="mb-0">Security Logs</h5>
-
-        {selectedLogs.length > 0 && (
-          <div className="d-flex gap-2">
-            <button
-              className="btn btn-sm btn-outline-danger"
-              onClick={handleBulkDelete}
-            >
-              <FaTrash className="me-1" />
-              Delete ({selectedLogs.length})
-            </button>
-
-            <button
-              className="btn btn-sm btn-outline-secondary"
-              onClick={() => setSelectedLogs([])}
-            >
-              Clear
-            </button>
-          </div>
-        )}
+        <div className="d-flex align-items-center ">
+          {selectedLogs.length > 0 && (
+            <>
+              <button
+                className="btn btn-sm btn-outline-danger d-flex align-items-center"
+                onClick={handleBulkDelete}
+              >
+                <FaTrash className="me-1" />
+                Delete ({selectedLogs.length})
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm ms-2"
+                onClick={() => setSelectedLogs([])}
+              >
+                Clear
+              </button>
+            </>
+          )}
+          <small className="text-muted ms-2">Recent log activity</small>
+        </div>
       </div>
 
       <div className="card-body p-0">
@@ -110,28 +112,31 @@ const SecurityLogCard = () => {
         ) : (
           <>
             <ul className="list-group list-group-flush">
-              <li className="list-group-item bg-light fw-bold d-flex justify-content-between">
-                <div>
+              {/* select all checkbox*/}
+              <li className="list-group-item bg-light fw-bold d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
                   <input
                     type="checkbox"
-                    className="form-check-input me-2"
+                    className="form-check-input me-3"
                     checked={
                       selectedLogs.length === safeLogs.length &&
                       safeLogs.length > 0
                     }
-                    onChange={handleSelectAll}
+                    onChange={handleAllSelectAll}
                   />
-                  Select All
+                  <span>Select All</span>
                 </div>
                 <span>Total: {safeLogs.length}</span>
               </li>
-
               {safeLogs.map((log) => (
                 <li
                   key={log.id}
                   className={`list-group-item d-flex justify-content-between align-items-start ${
-                    selectedLogs.includes(log.id) ? "bg-light" : ""
+                    selectedLogs.includes(log.id)
+                      ? "bg-light border-primary"
+                      : ""
                   }`}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="d-flex align-items-center flex-grow-1">
                     <input
@@ -141,19 +146,18 @@ const SecurityLogCard = () => {
                       onChange={() => toggleSelect(log.id)}
                     />
 
-                    <span className="me-3 fs-4">
+                    <span className="me-3 fs-3">
                       {iconMap[log.action] || <FaLock />}
                     </span>
-
                     <div>
                       <strong>{log.action}</strong>
                       <div className="small text-muted">
-                        {log.user_name || "Unknown"} ·{" "}
+                        {log.user_name || "Unknown"}
+                        &nbsp;
                         {dayjs(log.created_at).fromNow()}
                       </div>
                     </div>
                   </div>
-
                   <span className="text-muted small">
                     {log.ip_address || "N/A"}
                   </span>
@@ -161,45 +165,64 @@ const SecurityLogCard = () => {
               ))}
             </ul>
 
+            {/* Pagination controls */}
             {meta && meta.last_page > 1 && (
-              <div className="p-3 border-top bg-light">
-                <ul className="pagination justify-content-center mb-0">
-                  <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
-                    <button
-                      className="page-link"
-                      onClick={() => handlePageChange(page - 1)}
-                    >
-                      Prev
-                    </button>
-                  </li>
+              <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
+                <nav aria-label="Page navigation">
+                  <ul className="pagination justify-content-center mb-0">
+                    <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(page - 1)}
+                      >
+                        Prev
+                      </button>
+                    </li>
 
-                  {[...Array(meta.last_page)].map((_, i) => (
+                    {(() => {
+                      const windowSize = 3;
+                      const startPage =
+                        Math.floor((page - 1) / windowSize) * windowSize + 1;
+                      const endPage = Math.min(
+                        startPage + windowSize - 1,
+                        meta.last_page
+                      );
+
+                      const pages = [];
+                      for (let i = startPage; i <= endPage; i++) {
+                        pages.push(
+                          <li
+                            key={i}
+                            className={`page-item ${
+                              page === i ? "active" : ""
+                            }`}
+                          >
+                            <button
+                              className="page-link"
+                              onClick={() => handlePageChange(i)}
+                            >
+                              {i}
+                            </button>
+                          </li>
+                        );
+                      }
+                      return pages;
+                    })()}
+
                     <li
-                      key={i + 1}
-                      className={`page-item ${page === i + 1 ? "active" : ""}`}
+                      className={`page-item ${
+                        page === meta.last_page ? "disabled" : ""
+                      }`}
                     >
                       <button
                         className="page-link"
-                        onClick={() => handlePageChange(i + 1)}
+                        onClick={() => handlePageChange(page + 1)}
                       >
-                        {i + 1}
+                        Next
                       </button>
                     </li>
-                  ))}
-
-                  <li
-                    className={`page-item ${
-                      page === meta.last_page ? "disabled" : ""
-                    }`}
-                  >
-                    <button
-                      className="page-link"
-                      onClick={() => handlePageChange(page + 1)}
-                    >
-                      Next
-                    </button>
-                  </li>
-                </ul>
+                  </ul>
+                </nav>
               </div>
             )}
           </>

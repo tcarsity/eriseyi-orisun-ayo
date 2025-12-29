@@ -25,6 +25,7 @@ const RecentActivityCard = () => {
   const deletedActivities = useDeleteActivities();
 
   const handlePageChange = (pageNumber) => {
+    if (!meta) return;
     if (pageNumber >= 1 && pageNumber <= meta?.last_page) {
       setPage(pageNumber);
     }
@@ -142,7 +143,7 @@ const RecentActivityCard = () => {
           </ul>
         )}
 
-        {meta && (
+        {meta && meta.last_page > 1 && (
           <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
             <nav aria-label="Page navigation">
               <ul className="pagination justify-content-center mb-0">
