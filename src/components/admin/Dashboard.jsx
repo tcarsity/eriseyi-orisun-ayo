@@ -166,13 +166,6 @@ const Dashboard = () => {
 
   if (!user) return null;
 
-  const CardLoader = () => (
-    <div className="card shadow-sm border-0 p-4 text-center text-muted">
-      <div className="spinner-border text-success mb-2" />
-      Loading...
-    </div>
-  );
-
   /* =======================
      RENDER
   ======================== */
@@ -267,7 +260,7 @@ const Dashboard = () => {
               {/* Cards */}
               <div className="row g-3 py-5 ">
                 <div className="col-md-6 col-lg-6" ref={adminRef}>
-                  <Suspense fallback={<CardLoader />}>
+                  <Suspense fallback={<div style={{ height: 200 }}></div>}>
                     {adminInView ? (
                       <AdminStatsCard
                         active={data?.admins?.active}
