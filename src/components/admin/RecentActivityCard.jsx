@@ -17,10 +17,11 @@ const RecentActivityCard = () => {
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (safeActivities.length === 0 && page > 1) {
+    if (data && safeActivities.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
+      setSelectedActivity([]);
     }
-  }, [safeActivities, page]);
+  }, [data, safeActivities.length, page]);
 
   const deletedActivities = useDeleteActivities();
 
