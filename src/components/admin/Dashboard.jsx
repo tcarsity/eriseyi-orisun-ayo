@@ -97,18 +97,18 @@ const Dashboard = () => {
         await queryClient.prefetchQuery({
           queryKey: ["dashboardStats"],
           queryFn: async () => {
-            const res = await api.get("/dashboard-stats");
+            const { data } = await api.get("/dashboard-stats");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return data;
           },
         });
 
         await queryClient.prefetchQuery({
-          queryKey: ["adminActivities"],
+          queryKey: ["adminActivities", 1],
           queryFn: async () => {
-            const res = await api.get("/admin/activities");
+            const { data } = await api.get("/admin/activities?page=1");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return data;
           },
         });
 
@@ -117,25 +117,25 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/recent-public-members");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return res.data.data || [];
           },
         });
 
         await queryClient.prefetchQuery({
-          queryKey: ["securityLogs"],
+          queryKey: ["securityLogs", 1],
           queryFn: async () => {
-            const res = await api.get("/security-logs");
+            const res = await api.get("/security-logs?page=1");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return res.data;
           },
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
           queryFn: async () => {
-            const res = await api.get("/events");
+            const { data } = await api.get("/events");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return data.data;
           },
         });
 
@@ -144,7 +144,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin-status");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return res.data.data || [];
           },
         });
       } catch (err) {

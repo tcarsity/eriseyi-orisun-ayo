@@ -10,7 +10,6 @@ export const useAdminActivities = (page) => {
     },
     keepPreviousData: true,
     refetchInterval: 30000,
-    refetchOnWindowFocus: true,
-    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: false,
   });
 };

@@ -81,27 +81,27 @@ const AdminDashboard = () => {
         await queryClient.prefetchQuery({
           queryKey: ["dashboardStats"],
           queryFn: async () => {
-            const res = await api.get("/dashboard-stats");
+            const { data } = await api.get("/dashboard-stats");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return data;
           },
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["recent-members"],
           queryFn: async () => {
-            const res = await api.get("recent-public-members");
+            const res = await api.get("/recent-public-members");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return res.data.data || [];
           },
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
           queryFn: async () => {
-            const res = await api.get("/events");
+            const { data } = await api.get("/events");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return data.data;
           },
         });
 
@@ -110,7 +110,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin/activities/performance");
             updateProgress();
-            return Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+            return res.data.data || [];
           },
         });
       } catch (err) {

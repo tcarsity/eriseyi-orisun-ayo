@@ -8,6 +8,6 @@ export const useAdminPerformance = () => {
       const { data } = await api.get("/admin/activities/performance");
       return data?.data || [];
     },
-    refetchInterval: 60000,
+    refetchInterval: false,
   });
 };

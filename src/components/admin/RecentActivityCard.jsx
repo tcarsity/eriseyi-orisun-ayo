@@ -11,16 +11,16 @@ dayjs.extend(relativeTime);
 const RecentActivityCard = () => {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState([]);
-  const { data, isLoading, isError } = useAdminActivities(page);
+  const { data, isError } = useAdminActivities(page);
   const activities = data?.data || [];
   const safeActivities = Array.isArray(activities) ? activities : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
 
   useEffect(() => {
-    if (!isLoading && safeActivities.length === 0 && page > 1) {
+    if (safeActivities.length === 0 && page > 1) {
       setPage((prev) => prev - 1);
     }
-  }, [safeActivities, isLoading, page]);
+  }, [safeActivities, page]);
 
   const deletedActivities = useDeleteActivities();
 
@@ -88,14 +88,7 @@ const RecentActivityCard = () => {
           )}
         </div>
 
-        {isLoading ? (
-          <div className="text-center py-5 text-muted">
-            <div className="spinner-border text-primary mb-2" role="status">
-              <span className="visually-hidden">Loading....</span>
-            </div>
-            <div>Loading Recent Activities...</div>
-          </div>
-        ) : isError ? (
+        {isError ? (
           <p className="text-danger text-center py-5">
             Failed to load activities.
           </p>
@@ -149,7 +142,7 @@ const RecentActivityCard = () => {
           </ul>
         )}
 
-        {!isLoading && meta && (
+        {meta && (
           <div className="d-flex justify-content-between align-items-center p-3 border-top bg-light">
             <nav aria-label="Page navigation">
               <ul className="pagination justify-content-center mb-0">

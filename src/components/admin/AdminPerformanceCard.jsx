@@ -6,7 +6,7 @@ import { MdRecentActors } from "react-icons/md";
 dayjs.extend(relativeTime);
 
 const AdminPerformanceCard = () => {
-  const { data: activities = [], isLoading, isError } = useAdminPerformance();
+  const { data: activities = [], isError } = useAdminPerformance();
   return (
     <div className="card border-0 shadow p-3 h-100">
       <h4 className="fw-bold mb-3">
@@ -14,11 +14,7 @@ const AdminPerformanceCard = () => {
         activity
       </h4>
 
-      {isLoading ? (
-        <div className="d-flex flex-column align-items-center justify-content-center text-muted">
-          <div className="spinner-border text-primary mb-3" role="status"></div>
-        </div>
-      ) : isError ? (
+      {isError ? (
         <p className="text-danger text-center py-5">
           Failed tol load activities.
         </p>

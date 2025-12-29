@@ -13,7 +13,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Africa/Lagos");
 
 const ActiveAdminsCard = () => {
-  const { data, isLoading, isError } = useAdminStatus();
+  const { data, isError } = useAdminStatus();
 
   const admins = Array.isArray(data)
     ? data
@@ -24,14 +24,7 @@ const ActiveAdminsCard = () => {
   return (
     <div className="card shadow border-0 p-3">
       <h6 className="fw-bold text-muted mb-3">Admin Activity Status</h6>
-      {isLoading ? (
-        <div className="text-center py-5 text-muted">
-          <div className="spinner-border text-primary mb-2" role="status">
-            <span className="visually-hidden">Loading....</span>
-          </div>
-          <div>Loading activity status...</div>
-        </div>
-      ) : isError ? (
+      {isError ? (
         <div className="text-center py-5 text-danger">
           Failed to load activity status.
         </div>
