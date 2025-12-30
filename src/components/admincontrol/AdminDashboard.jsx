@@ -48,16 +48,22 @@ const AdminDashboard = () => {
             updateProgress();
             return data;
           },
+          enabled,
+          staleTime: 5 * 60 * 1000,
         });
 
-        await queryClient.prefetchQuery({
-          queryKey: ["recent-members"],
-          queryFn: async () => {
-            const res = await api.get("/recent-public-members");
-            updateProgress();
-            return res.data?.data ?? [];
-          },
-        });
+        if (token) {
+          await queryClient.prefetchQuery({
+            queryKey: ["recent-members"],
+            queryFn: async () => {
+              const res = await api.get("/recent-public-members");
+              updateProgress();
+              return res.data?.data ?? [];
+            },
+            enabled,
+            staleTime: 5 * 60 * 1000,
+          });
+        }
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
@@ -66,6 +72,8 @@ const AdminDashboard = () => {
             updateProgress();
             return data.data;
           },
+          enabled,
+          staleTime: 5 * 60 * 1000,
         });
 
         await queryClient.prefetchQuery({
@@ -75,6 +83,8 @@ const AdminDashboard = () => {
             updateProgress();
             return res.data.data || [];
           },
+          enabled,
+          staleTime: 5 * 60 * 1000,
         });
       } catch (err) {
         console.error("Dashboard init error:", err);
