@@ -41,17 +41,10 @@ const Dashboard = () => {
     enabled: dashboardReady && !!token,
   });
 
-  const { data: events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
   const { data: newMembers = [] } = useNewMembers({
     enabled: dashboardReady && !!token,
   });
 
-  /* =======================
-     DERIVED VALUES (SAFE)
-  ======================== */
   const today = dayjs().format("DD-MM-YYYY");
 
   const newMembersToday = useMemo(() => {
@@ -60,6 +53,14 @@ const Dashboard = () => {
       (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
     );
   }, [newMembers, today]);
+
+  const { data: events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
+  /* =======================
+     DERIVED VALUES (SAFE)
+  ======================== */
 
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
 
@@ -99,20 +100,11 @@ const Dashboard = () => {
         });
 
         await queryClient.prefetchQuery({
-          queryKey: ["adminActivities", 1],
+          queryKey: ["adminStatus"],
           queryFn: async () => {
-            const { data } = await api.get("/admin/activities?page=1");
+            const res = await api.get("/admin-status");
             updateProgress();
-            return data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["securityLogs", 1],
-          queryFn: async () => {
-            const res = await api.get("/security-logs?page=1");
-            updateProgress();
-            return res.data;
+            return res.data.data || [];
           },
         });
 
@@ -126,11 +118,20 @@ const Dashboard = () => {
         });
 
         await queryClient.prefetchQuery({
-          queryKey: ["adminStatus"],
+          queryKey: ["securityLogs", 1],
           queryFn: async () => {
-            const res = await api.get("/admin-status");
+            const res = await api.get("/security-logs?page=1");
             updateProgress();
-            return res.data.data || [];
+            return res.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminActivities", 1],
+          queryFn: async () => {
+            const { data } = await api.get("/admin/activities?page=1");
+            updateProgress();
+            return data;
           },
         });
       } catch (err) {

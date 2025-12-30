@@ -28,10 +28,6 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { data: events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
   const { data } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
@@ -52,6 +48,10 @@ const AdminDashboard = () => {
   }, [newMembers, today]);
 
   const newMembersCount = newMembersToday.length;
+
+  const { data: events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
 
   const rolePrefix = useMemo(
     () => (user?.role === "superadmin" ? "superadmin" : "admin"),
