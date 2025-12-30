@@ -9,7 +9,5 @@ export const useAdminActivities = (page) => {
       return data;
     },
     keepPreviousData: true,
-    refetchInterval: 30000,
-    refetchOnWindowFocus: false,
   });
 };

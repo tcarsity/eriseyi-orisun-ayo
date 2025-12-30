@@ -19,7 +19,7 @@ const SecurityLogCard = () => {
   const [selectedLogs, setSelectedLogs] = useState([]);
 
   const deleteLogs = useDeleteSecurityLogs();
-  const { data, isError, isFetching } = useSecurityLogs(page);
+  const { data, isError } = useSecurityLogs(page);
   const logs = data?.data || [];
   const safeLogs = Array.isArray(logs) ? logs : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
@@ -105,7 +105,7 @@ const SecurityLogCard = () => {
           <div className="text-center py-5 text-danger">
             Failed to load security logs.
           </div>
-        ) : safeLogs.length === 0 && !isFetching ? (
+        ) : !data ? null : safeLogs.length === 0 ? (
           <div className="text-center py-5 text-muted">
             No security logs available.
           </div>
