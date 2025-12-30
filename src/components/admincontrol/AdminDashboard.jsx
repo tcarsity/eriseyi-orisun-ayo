@@ -29,15 +29,15 @@ const AdminDashboard = () => {
   const [progress, setProgress] = useState(0);
 
   const { events } = useEvents({
-    enabled: dashboardReady,
+    enabled: dashboardReady && !!token,
   });
 
   const { data } = useDashboardStats({
-    enabled: dashboardReady,
+    enabled: dashboardReady && !!token,
   });
 
   const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady,
+    enabled: dashboardReady && !!token,
   });
 
   const today = dayjs().format("DD-MM-YYYY");
@@ -87,16 +87,14 @@ const AdminDashboard = () => {
           },
         });
 
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-          });
-        }
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("/recent-public-members");
+            updateProgress();
+            return res.data?.data ?? [];
+          },
+        });
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
@@ -124,6 +122,8 @@ const AdminDashboard = () => {
 
     prepareDashboard();
   }, [user, token, queryClient]);
+
+  if (!token || !user) return null;
 
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;

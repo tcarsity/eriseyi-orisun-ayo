@@ -41,13 +41,15 @@ const Dashboard = () => {
      READ FROM CACHE ONLY
   ======================== */
   const { data } = useDashboardStats({
-    enabled: dashboardReady,
+    enabled: dashboardReady && !!token,
   });
 
-  const { events } = useEvents({ enabled: dashboardReady });
+  const { events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
 
   const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady,
+    enabled: dashboardReady && !!token,
   });
 
   /* =======================
@@ -112,16 +114,14 @@ const Dashboard = () => {
           },
         });
 
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-          });
-        }
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("/recent-public-members");
+            updateProgress();
+            return res.data?.data ?? [];
+          },
+        });
 
         await queryClient.prefetchQuery({
           queryKey: ["securityLogs", 1],
@@ -159,14 +159,14 @@ const Dashboard = () => {
     prepareDashboard();
   }, [user, token, queryClient]);
 
+  if (!token || !user) return null;
+
   /* =======================
      SAFE EARLY RETURNS
   ======================== */
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
-
-  if (!user) return null;
 
   /* =======================
      RENDER
