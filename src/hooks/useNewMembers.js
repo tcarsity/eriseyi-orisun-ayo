@@ -13,7 +13,6 @@ export const useNewMembers = () => {
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
     enabled: !!token,
-    staleTime: 1000 * 60,
-    refetchInterval: 1000 * 60 * 2,
+    retry: false,
   });
 };

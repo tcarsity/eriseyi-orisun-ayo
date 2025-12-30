@@ -112,14 +112,16 @@ const Dashboard = () => {
           },
         });
 
-        await queryClient.prefetchQuery({
-          queryKey: ["recent-members"],
-          queryFn: async () => {
-            const res = await api.get("/recent-public-members");
-            updateProgress();
-            return res.data.data || [];
-          },
-        });
+        if (token) {
+          await queryClient.prefetchQuery({
+            queryKey: ["recent-members"],
+            queryFn: async () => {
+              const res = await api.get("/recent-public-members");
+              updateProgress();
+              return res.data?.data ?? [];
+            },
+          });
+        }
 
         await queryClient.prefetchQuery({
           queryKey: ["securityLogs", 1],
