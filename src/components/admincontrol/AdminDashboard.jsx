@@ -13,6 +13,7 @@ import { useHeartbeat } from "../../hooks/useHeartbeat";
 import DashboardPreloader from "../DashboardPreloader";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
+import { useAdminPerformance } from "../../hooks/useAdminPerfomance";
 
 const AdminPerformanceCard = lazy(() =>
   import("../admin/AdminPerformanceCard")
@@ -28,11 +29,15 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     enabled: dashboardReady && !!token,
   });
 
   const { data } = useDashboardStats({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: adminPerform = [] } = useAdminPerformance({
     enabled: dashboardReady && !!token,
   });
 
@@ -230,7 +235,9 @@ const AdminDashboard = () => {
                 <div className="row py-5">
                   <div className="col-md-6" ref={performanceRef}>
                     <Suspense fallback={<div style={{ height: 200 }}></div>}>
-                      {performanceInView ? <AdminPerformanceCard /> : null}
+                      {performanceInView ? (
+                        <AdminPerformanceCard data={adminPerform} />
+                      ) : null}
                     </Suspense>
                   </div>
                 </div>
