@@ -11,7 +11,7 @@ dayjs.extend(relativeTime);
 const RecentActivityCard = () => {
   const [page, setPage] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState([]);
-  const { data, isError } = useAdminActivities(page);
+  const { data, isError, isFetching } = useAdminActivities(page);
   const activities = data?.data || [];
   const safeActivities = Array.isArray(activities) ? activities : [];
   const meta = typeof data?.meta === "object" ? data.meta : null;
@@ -90,11 +90,15 @@ const RecentActivityCard = () => {
           )}
         </div>
 
-        {isError ? (
+        {isFetching ? (
+          <div className="text-center py-5 text-muted">
+            Loading activities...
+          </div>
+        ) : isError ? (
           <p className="text-danger text-center py-5">
             Failed to load activities.
           </p>
-        ) : !data ? null : safeActivities.length === 0 ? (
+        ) : safeActivities.length === 0 && !isFetching ? (
           <p className="text-muted mb-0">No activity yet</p>
         ) : (
           <ul className="list-group list-group-flush">
