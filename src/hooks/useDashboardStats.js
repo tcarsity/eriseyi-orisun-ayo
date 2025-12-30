@@ -6,7 +6,6 @@ export const useDashboardStats = ({ enabled = true } = {}) => {
     queryKey: ["dashboardStats"],
     queryFn: async () => {
       const { data } = await api.get("/dashboard-stats");
-      updateProgress();
       return data;
     },
     enabled,

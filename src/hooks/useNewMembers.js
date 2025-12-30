@@ -3,8 +3,8 @@ import api from "../api/axios";
 import { useAuth } from "../components/context/AuthContext";
 
 const fetchMembers = async () => {
-  const { data } = await api.get("recent-public-members");
-  return data.data || [];
+  const res = await api.get("recent-public-members");
+  return res.data?.data ?? [];
 };
 
 export const useNewMembers = ({ enabled = true } = {}) => {
