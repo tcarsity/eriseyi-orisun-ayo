@@ -1,19 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import api from "../api/axios";
 
 export const useEvents = () => {
-  const query = useQuery({
+  return useQuery({
     queryKey: ["events"],
-    queryFn: async () => {
-      const { data } = await api.get("/events");
-      return data.data;
-    },
+    queryFn,
+    enabled,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
   });
-  return {
-    events: query.data ?? [],
-    error: query.error,
-  };
 };
 
 export default useEvents;

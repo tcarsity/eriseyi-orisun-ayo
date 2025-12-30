@@ -4,10 +4,8 @@ import api from "../api/axios";
 export const useAdminStatus = () => {
   return useQuery({
     queryKey: ["adminStatus"],
-    queryFn: async () => {
-      const { data } = await api.get("/admin-status");
-      return data.data || [];
-    },
+    queryFn,
+    enabled,
     refetchInterval: 5000,
     refetchOnWindowFocus: true,
   });

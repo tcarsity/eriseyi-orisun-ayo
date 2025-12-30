@@ -29,7 +29,7 @@ const AdminDashboard = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!user || !token) return;
+    if (!token) return;
 
     const TOTAL_TASKS = 4; // adjust if you add/remove APIs
     let completed = 0;
@@ -48,22 +48,7 @@ const AdminDashboard = () => {
             updateProgress();
             return data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
-
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-            enabled,
-            staleTime: 5 * 60 * 1000,
-          });
-        }
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
@@ -72,8 +57,6 @@ const AdminDashboard = () => {
             updateProgress();
             return data.data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
 
         await queryClient.prefetchQuery({
@@ -83,8 +66,6 @@ const AdminDashboard = () => {
             updateProgress();
             return res.data.data || [];
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
       } catch (err) {
         console.error("Dashboard init error:", err);

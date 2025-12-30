@@ -38,7 +38,7 @@ const Dashboard = () => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (!user || !token) return;
+    if (!token) return;
 
     const TOTAL_TASKS = 6;
     let completed = 0;
@@ -57,8 +57,6 @@ const Dashboard = () => {
             updateProgress();
             return data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
 
         await queryClient.prefetchQuery({
@@ -68,22 +66,7 @@ const Dashboard = () => {
             updateProgress();
             return data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
-
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-            enabled,
-            staleTime: 5 * 60 * 1000,
-          });
-        }
 
         await queryClient.prefetchQuery({
           queryKey: ["securityLogs", 1],
@@ -92,8 +75,6 @@ const Dashboard = () => {
             updateProgress();
             return res.data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
 
         await queryClient.prefetchQuery({
@@ -103,8 +84,6 @@ const Dashboard = () => {
             updateProgress();
             return data.data;
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
 
         await queryClient.prefetchQuery({
@@ -114,8 +93,6 @@ const Dashboard = () => {
             updateProgress();
             return res.data.data || [];
           },
-          enabled,
-          staleTime: 5 * 60 * 1000,
         });
       } catch (err) {
         console.error("Dashboard preload failed:", err);
@@ -143,7 +120,7 @@ const Dashboard = () => {
     enabled: dashboardReady && !!token,
   });
 
-  const { events } = useEvents({
+  const { data: events } = useEvents({
     enabled: dashboardReady && !!token,
   });
 
