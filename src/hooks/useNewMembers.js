@@ -14,7 +14,7 @@ export const useNewMembers = ({ enabled = true } = {}) => {
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
     staleTime: 1000 * 60,
-    enabled,
+    enabled: enabled && !!token,
     refetchInterval: false,
     refetchOnWindowFocus: false,
     retry: false,
