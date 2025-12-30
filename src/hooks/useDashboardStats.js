@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
 
-export const useDashboardStats = ({ enabled }) => {
+export const useDashboardStats = ({ enabled = true } = {}) => {
   return useQuery({
     queryKey: ["dashboardStats"],
     queryFn,

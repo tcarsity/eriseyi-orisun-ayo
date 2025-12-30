@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useAdminPerformance = ({ enabled }) => {
+export const useAdminPerformance = ({ enabled = true } = {}) => {
   return useQuery({
     queryKey: ["adminPerformance"],
     queryFn,
