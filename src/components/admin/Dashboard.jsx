@@ -37,52 +37,6 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  /* =======================
-     READ FROM CACHE ONLY
-  ======================== */
-  const { data } = useDashboardStats({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
-  });
-
-  /* =======================
-     DERIVED VALUES (SAFE)
-  ======================== */
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    if (!Array.isArray(newMembers)) return [];
-    return newMembers.filter(
-      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
-    );
-  }, [newMembers, today]);
-
-  const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
-
-  /* =======================
-     IN VIEW
-  ======================== */
-  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
-
-  const [adminRef, adminInView] = useInView(inViewConfig);
-  const [adminStatusRef, adminStatusInView] = useInView(inViewConfig);
-  const [memberRef, memberInView] = useInView(inViewConfig);
-  const [eventRef, eventInView] = useInView(inViewConfig);
-  const [adminActivityRef, adminActivityInView] = useInView(inViewConfig);
-  const [securityLogRef, securityLogInView] = useInView(inViewConfig);
-  const [recentActivityRef, recentActivityInView] = useInView(inViewConfig);
-
-  /* =======================
-     DASHBOARD PRELOADER
-     (RUNS ONCE)
-  ======================== */
   useEffect(() => {
     if (!user || !token) return;
 
@@ -114,16 +68,14 @@ const Dashboard = () => {
           },
         });
 
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-          });
-        }
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("/recent-public-members");
+            updateProgress();
+            return res.data?.data ?? [];
+          },
+        });
 
         await queryClient.prefetchQuery({
           queryKey: ["securityLogs", 1],
@@ -169,6 +121,48 @@ const Dashboard = () => {
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
+
+  /* =======================
+     READ FROM CACHE ONLY
+  ======================== */
+  const { data } = useDashboardStats({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady && !!token,
+  });
+
+  /* =======================
+     DERIVED VALUES (SAFE)
+  ======================== */
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+    return newMembers.filter(
+      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
+    );
+  }, [newMembers, today]);
+
+  const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
+
+  /* =======================
+     IN VIEW
+  ======================== */
+  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
+
+  const [adminRef, adminInView] = useInView(inViewConfig);
+  const [adminStatusRef, adminStatusInView] = useInView(inViewConfig);
+  const [memberRef, memberInView] = useInView(inViewConfig);
+  const [eventRef, eventInView] = useInView(inViewConfig);
+  const [adminActivityRef, adminActivityInView] = useInView(inViewConfig);
+  const [securityLogRef, securityLogInView] = useInView(inViewConfig);
+  const [recentActivityRef, recentActivityInView] = useInView(inViewConfig);
 
   /* =======================
      RENDER

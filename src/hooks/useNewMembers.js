@@ -4,7 +4,7 @@ import { useAuth } from "../components/context/AuthContext";
 
 const fetchMembers = async () => {
   const { data } = await api.get("recent-public-members");
-  return data.data || [];
+  return data?.data ?? [];
 };
 
 export const useNewMembers = () => {

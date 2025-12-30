@@ -28,6 +28,70 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
+  useEffect(() => {
+    if (!user || !token) return;
+
+    const TOTAL_TASKS = 4; // adjust if you add/remove APIs
+    let completed = 0;
+
+    const updateProgress = () => {
+      completed += 1;
+      setProgress(Math.round((completed / TOTAL_TASKS) * 100));
+    };
+
+    const prepareDashboard = async () => {
+      try {
+        await queryClient.prefetchQuery({
+          queryKey: ["dashboardStats"],
+          queryFn: async () => {
+            const { data } = await api.get("/dashboard-stats");
+            updateProgress();
+            return data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["recent-members"],
+          queryFn: async () => {
+            const res = await api.get("/recent-public-members");
+            updateProgress();
+            return res.data?.data ?? [];
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["events"],
+          queryFn: async () => {
+            const { data } = await api.get("/events");
+            updateProgress();
+            return data.data;
+          },
+        });
+
+        await queryClient.prefetchQuery({
+          queryKey: ["adminPerformance"],
+          queryFn: async () => {
+            const res = await api.get("/admin/activities/performance");
+            updateProgress();
+            return res.data.data || [];
+          },
+        });
+      } catch (err) {
+        console.error("Dashboard init error:", err);
+      } finally {
+        setDashboardReady(true);
+      }
+    };
+
+    prepareDashboard();
+  }, [user, token, queryClient]);
+
+  if (!token || !user) return null;
+
+  if (!dashboardReady) {
+    return <DashboardPreloader progress={progress} />;
+  }
+
   const { events } = useEvents({
     enabled: dashboardReady && !!token,
   });
@@ -64,72 +128,6 @@ const AdminDashboard = () => {
   const [eventRef, eventInView] = useInView(inViewConfig);
 
   const [performanceRef, performanceInView] = useInView(inViewConfig);
-
-  useEffect(() => {
-    if (!user || !token) return;
-
-    const TOTAL_TASKS = 4; // adjust if you add/remove APIs
-    let completed = 0;
-
-    const updateProgress = () => {
-      completed += 1;
-      setProgress(Math.round((completed / TOTAL_TASKS) * 100));
-    };
-
-    const prepareDashboard = async () => {
-      try {
-        await queryClient.prefetchQuery({
-          queryKey: ["dashboardStats"],
-          queryFn: async () => {
-            const { data } = await api.get("/dashboard-stats");
-            updateProgress();
-            return data;
-          },
-        });
-
-        if (token) {
-          await queryClient.prefetchQuery({
-            queryKey: ["recent-members"],
-            queryFn: async () => {
-              const res = await api.get("/recent-public-members");
-              updateProgress();
-              return res.data?.data ?? [];
-            },
-          });
-        }
-
-        await queryClient.prefetchQuery({
-          queryKey: ["events"],
-          queryFn: async () => {
-            const { data } = await api.get("/events");
-            updateProgress();
-            return data.data;
-          },
-        });
-
-        await queryClient.prefetchQuery({
-          queryKey: ["adminPerformance"],
-          queryFn: async () => {
-            const res = await api.get("/admin/activities/performance");
-            updateProgress();
-            return res.data.data || [];
-          },
-        });
-      } catch (err) {
-        console.error("Dashboard init error:", err);
-      } finally {
-        setDashboardReady(true);
-      }
-    };
-
-    prepareDashboard();
-  }, [user, token, queryClient]);
-
-  if (!token || !user) return null;
-
-  if (!dashboardReady) {
-    return <DashboardPreloader progress={progress} />;
-  }
 
   return (
     <>
