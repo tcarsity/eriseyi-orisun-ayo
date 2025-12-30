@@ -37,6 +37,45 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const { data } = useDashboardStats({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady && !!token,
+  });
+
+  /* =======================
+     DERIVED VALUES (SAFE)
+  ======================== */
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+    return newMembers.filter(
+      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
+    );
+  }, [newMembers, today]);
+
+  const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
+
+  /* =======================
+     IN VIEW
+  ======================== */
+  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
+
+  const [adminRef, adminInView] = useInView(inViewConfig);
+  const [adminStatusRef, adminStatusInView] = useInView(inViewConfig);
+  const [memberRef, memberInView] = useInView(inViewConfig);
+  const [eventRef, eventInView] = useInView(inViewConfig);
+  const [adminActivityRef, adminActivityInView] = useInView(inViewConfig);
+  const [securityLogRef, securityLogInView] = useInView(inViewConfig);
+  const [recentActivityRef, recentActivityInView] = useInView(inViewConfig);
+
   useEffect(() => {
     if (!token) return;
 
@@ -104,8 +143,6 @@ const Dashboard = () => {
     prepareDashboard();
   }, [user, token, queryClient]);
 
-  if (!token || !user) return null;
-
   /* =======================
      SAFE EARLY RETURNS
   ======================== */
@@ -113,47 +150,10 @@ const Dashboard = () => {
     return <DashboardPreloader progress={progress} />;
   }
 
+  if (!token || !user) return null;
   /* =======================
      READ FROM CACHE ONLY
   ======================== */
-  const { data } = useDashboardStats({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
-  });
-
-  /* =======================
-     DERIVED VALUES (SAFE)
-  ======================== */
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    if (!Array.isArray(newMembers)) return [];
-    return newMembers.filter(
-      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
-    );
-  }, [newMembers, today]);
-
-  const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
-
-  /* =======================
-     IN VIEW
-  ======================== */
-  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
-
-  const [adminRef, adminInView] = useInView(inViewConfig);
-  const [adminStatusRef, adminStatusInView] = useInView(inViewConfig);
-  const [memberRef, memberInView] = useInView(inViewConfig);
-  const [eventRef, eventInView] = useInView(inViewConfig);
-  const [adminActivityRef, adminActivityInView] = useInView(inViewConfig);
-  const [securityLogRef, securityLogInView] = useInView(inViewConfig);
-  const [recentActivityRef, recentActivityInView] = useInView(inViewConfig);
 
   /* =======================
      RENDER

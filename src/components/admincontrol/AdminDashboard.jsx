@@ -28,6 +28,43 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
+  const { events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data } = useDashboardStats({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady && !!token,
+  });
+
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+
+    return newMembers.filter((m) => {
+      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
+      return joinedDate === today;
+    });
+  }, [newMembers, today]);
+
+  const newMembersCount = newMembersToday.length;
+
+  const rolePrefix = useMemo(
+    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
+    [user?.role]
+  );
+
+  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
+  const [memberRef, memberInView] = useInView(inViewConfig);
+
+  const [eventRef, eventInView] = useInView(inViewConfig);
+
+  const [performanceRef, performanceInView] = useInView(inViewConfig);
+
   useEffect(() => {
     if (!token) return;
 
@@ -77,49 +114,11 @@ const AdminDashboard = () => {
     prepareDashboard();
   }, [user, token, queryClient]);
 
-  if (!token || !user) return null;
-
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
 
-  const { events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data } = useDashboardStats({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
-  });
-
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    if (!Array.isArray(newMembers)) return [];
-
-    return newMembers.filter((m) => {
-      const joinedDate = dayjs(m.created_at).format("DD-MM-YYYY");
-      return joinedDate === today;
-    });
-  }, [newMembers, today]);
-
-  const newMembersCount = newMembersToday.length;
-
-  const rolePrefix = useMemo(
-    () => (user?.role === "superadmin" ? "superadmin" : "admin"),
-    [user?.role]
-  );
-
-  const inViewConfig = { triggerOnce: true, threshold: 0.2 };
-  const [memberRef, memberInView] = useInView(inViewConfig);
-
-  const [eventRef, eventInView] = useInView(inViewConfig);
-
-  const [performanceRef, performanceInView] = useInView(inViewConfig);
-
+  if (!token || !user) return null;
   return (
     <>
       <Layout>
