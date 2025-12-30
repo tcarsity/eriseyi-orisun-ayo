@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-export const useEvents = () => {
+export const useEvents = ({ enabled }) => {
   return useQuery({
     queryKey: ["events"],
     queryFn,

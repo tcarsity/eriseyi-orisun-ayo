@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
 
-export const useAdminStatus = () => {
+export const useAdminStatus = ({ enabled }) => {
   return useQuery({
     queryKey: ["adminStatus"],
     queryFn,
