@@ -16,7 +16,7 @@ const AdminPerformanceCard = () => {
 
       {isError ? (
         <p className="text-danger text-center py-5">
-          Failed tol load activities.
+          Failed to load activities.
         </p>
       ) : activities.length === 0 ? (
         <p className="text-muted mb-0">No activity recorded yet</p>

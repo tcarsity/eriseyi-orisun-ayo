@@ -41,6 +41,10 @@ const Dashboard = () => {
     enabled: dashboardReady && !!token,
   });
 
+  const { data: events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
   const { data: newMembers = [] } = useNewMembers({
     enabled: dashboardReady && !!token,
   });
@@ -53,10 +57,6 @@ const Dashboard = () => {
       (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
     );
   }, [newMembers, today]);
-
-  const { data: events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
 
   /* =======================
      DERIVED VALUES (SAFE)
