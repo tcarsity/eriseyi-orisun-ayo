@@ -14,8 +14,6 @@ import DashboardPreloader from "../DashboardPreloader";
 import { useDashboardStats } from "../../hooks/useDashboardStats";
 import useEvents from "../../hooks/useEvents";
 import { useNewMembers } from "../../hooks/useNewMembers";
-import { useSecurityLogs } from "../../hooks/useSecurityLogs";
-import { useAdminActivities } from "../../hooks/useAdminActivities";
 
 // lazy cards
 const ActiveAdminsCard = lazy(() => import("./ActiveAdminsCard"));
@@ -48,14 +46,6 @@ const Dashboard = () => {
   });
 
   const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: securityLog } = useSecurityLogs({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: activities } = useAdminActivities({
     enabled: dashboardReady && !!token,
   });
 
@@ -310,9 +300,7 @@ const Dashboard = () => {
               <div className="row py-5">
                 <div className="col-md" ref={securityLogRef}>
                   <Suspense fallback={<div style={{ height: 200 }}></div>}>
-                    {securityLogInView ? (
-                      <SecurityLogCard data={securityLog} />
-                    ) : null}
+                    {securityLogInView ? <SecurityLogCard /> : null}
                   </Suspense>
                 </div>
               </div>
@@ -320,9 +308,7 @@ const Dashboard = () => {
               <div className="row py-5">
                 <div className="col-md" ref={recentActivityRef}>
                   <Suspense fallback={<div style={{ height: 200 }}></div>}>
-                    {recentActivityInView ? (
-                      <RecentActivityCard data={activities} />
-                    ) : null}
+                    {recentActivityInView ? <RecentActivityCard /> : null}
                   </Suspense>
                 </div>
               </div>
