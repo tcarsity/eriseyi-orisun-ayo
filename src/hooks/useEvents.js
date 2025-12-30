@@ -4,7 +4,10 @@ import React from "react";
 export const useEvents = ({ enabled = true } = {}) => {
   return useQuery({
     queryKey: ["events"],
-    queryFn,
+    queryFn: async () => {
+      const { data } = await api.get("/events");
+      return data.data;
+    },
     enabled,
     refetchInterval: false,
     refetchOnWindowFocus: false,

@@ -4,7 +4,11 @@ import api from "../api/axios";
 export const useDashboardStats = ({ enabled = true } = {}) => {
   return useQuery({
     queryKey: ["dashboardStats"],
-    queryFn,
+    queryFn: async () => {
+      const { data } = await api.get("/dashboard-stats");
+      updateProgress();
+      return data;
+    },
     enabled,
     refetchInterval: false,
     refetchOnWindowFocus: false,
