@@ -82,7 +82,7 @@ const Show = () => {
                 <div className="row">
                   <div className="col-md-12">
                     {isLoading ? (
-                      <div className="d-flex justify-content-center align-items-center py-5">
+                      <div className="d-flex justify-content-center my-3">
                         <div
                           className="spinner-border text-primary"
                           role="status"
