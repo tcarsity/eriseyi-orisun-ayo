@@ -10,15 +10,18 @@ const api = axios.create({
 
 // attach to token automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
   const publicRoutes = ["/recent-public-members"];
 
-  const isPublicRoute = publicRoutes.some((route) =>
-    config.url?.startsWith(route)
-  );
+  const isPublic = publicRoutes.some((route) => config.url?.startsWith(route));
 
-  if (!isPublicRoute && token) {
+  if (isPublic) {
+    delete config.headers.Authorization;
+    return config;
+  }
+
+  const token = localStorage.getItem("token");
+
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
