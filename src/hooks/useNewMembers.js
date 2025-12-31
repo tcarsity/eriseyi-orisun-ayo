@@ -13,6 +13,7 @@ export const useNewMembers = () => {
   return useQuery({
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
+    enabled: !!token,
     staleTime: 1000 * 60,
     refetchInterval: false,
     refetchOnWindowFocus: false,
