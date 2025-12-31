@@ -38,7 +38,7 @@ const Show = () => {
     queryKey: ["events"],
     queryFn: async () => {
       const res = await api.get("/events");
-      return Array.isArray(res.data) ? res.data : res.data.data;
+      return res.data;
     },
   });
 
