@@ -7,14 +7,13 @@ const fetchMembers = async () => {
   return res.data?.data ?? [];
 };
 
-export const useNewMembers = ({ enabled = true } = {}) => {
+export const useNewMembers = () => {
   const { token } = useAuth();
 
   return useQuery({
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
     staleTime: 1000 * 60,
-    enabled: enabled && !!token,
     refetchInterval: false,
     refetchOnWindowFocus: false,
     retry: false,
