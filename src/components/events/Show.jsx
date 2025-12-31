@@ -42,7 +42,7 @@ const Show = () => {
     },
   });
 
-  const events = Array.isArray(data) ? data : data?.data ?? [];
+  const events = data?.data ?? [];
 
   return (
     <>
