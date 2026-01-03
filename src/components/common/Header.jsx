@@ -258,7 +258,7 @@ const Header = ({ showAllLinks }) => {
                       <div className="d-flex align-items-center gap-3 navbar-right">
                         <div className="social-icons d-flex align-items-center gap-2">
                           <a
-                            href="#"
+                            href="https://www.facebook.com/share/1BySrrPov/?mibextid=wwXlfr"
                             target="_blank"
                             rel="noreferrer"
                             aria-label="facebook"
@@ -276,7 +276,7 @@ const Header = ({ showAllLinks }) => {
                           </a>
 
                           <a
-                            href="#"
+                            href="https://www.tiktok.com/eriseyi___"
                             target="_blank"
                             rel="noreferrer"
                             aria-label="tiktok"
