@@ -62,19 +62,15 @@ const Footer = () => {
               <h3 className="mb-3">Contact Us</h3>
               <ul>
                 <li>
-                  <p>
-                    Call us:{""}
-                    <a href="tel:+2349123954039">+234 912 395 4039</a>
-                    <a href="tel:+2348064571986">+234 806 457 1986</a>
-                  </p>
+                  Call us: <a href="tel:+2349123954039">+234 912 395 4039</a>
+                  <br />
+                  <a href="tel:+2348064571986">+234 806 457 1986</a>
                 </li>
 
                 <li>
-                  <p>
-                    <a href="malito:eriseyicschurch@gmail.com">
-                      eriseyicschurch@gmail.com
-                    </a>
-                  </p>
+                  <a href="mailto:eriseyicschurch@gmail.com">
+                    eriseyicschurch@gmail.com
+                  </a>
                 </li>
 
                 <p>
