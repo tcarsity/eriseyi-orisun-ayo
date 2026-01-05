@@ -209,10 +209,10 @@ const AdminDashboard = () => {
                     <Suspense fallback={<div style={{ height: 200 }}></div>}>
                       {memberInView ? (
                         <MembersStatsCard
-                          totalMembers={data?.members?.count}
-                          newMembers={data?.newMembers?.count}
-                          trend={data?.newMembers?.trend}
-                          growth={data?.newMembers?.growth}
+                          totalMembers={stats?.members?.count}
+                          newMembers={stats?.newMembers?.count}
+                          trend={stats?.newMembers?.trend}
+                          growth={stats?.newMembers?.growth}
                         />
                       ) : null}
                     </Suspense>
