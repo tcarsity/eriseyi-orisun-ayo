@@ -5,7 +5,7 @@ import api from "../../api/axios";
 
 const EventsSection = () => {
   const { data = [], isError } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["publicEvents"],
     queryFn: async () => {
       const res = await api.get("/public-events");
       return res.data.data;

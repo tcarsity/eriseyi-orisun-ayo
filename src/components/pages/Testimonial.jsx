@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const Testimonial = () => {
   const { data = [], isError } = useQuery({
-    queryKey: ["testimonials"],
+    queryKey: ["publicTestimonials"],
     queryFn: async () => {
       const res = await api.get("/public-testimonials");
       return res.data.data;
