@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import api from "../api/axios";
 
 export const useEvents = ({ enabled = true } = {}) => {
   return useQuery({

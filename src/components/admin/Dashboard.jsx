@@ -37,7 +37,7 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { data } = useDashboardStats({
+  const { data: stats } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -80,7 +80,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!token) return;
 
-    const TOTAL_TASKS = 6;
+    const TOTAL_TASKS = 5;
     let completed = 0;
 
     const updateProgress = () => {
@@ -221,7 +221,7 @@ const Dashboard = () => {
                 <div className="col-md-4">
                   <div className="card shadow border-0">
                     <div className="card-body p-3">
-                      <h2>{data?.members?.count ?? 0}</h2>
+                      <h2>{stats?.members?.count ?? 0}</h2>
                       <strong>Total Members</strong>
                     </div>
                     <div className="card-footer">&nbsp;</div>
@@ -230,7 +230,7 @@ const Dashboard = () => {
                 <div className="col-md-4 admins">
                   <div className="card shadow border-0">
                     <div className="card-body p-3">
-                      <h2>{data?.admins?.count ?? 0}</h2>
+                      <h2>{stats?.admins?.count ?? 0}</h2>
                       <strong>Total Admins</strong>
                     </div>
                     <div className="card-footer">&nbsp;</div>
@@ -239,7 +239,7 @@ const Dashboard = () => {
                 <div className="col-md-4 test">
                   <div className="card shadow border-0">
                     <div className="card-body p-3">
-                      <h2>{data?.testimonials?.count ?? 0}</h2>
+                      <h2>{stats?.testimonials?.count ?? 0}</h2>
                       <strong>Testimonials</strong>
                     </div>
                     <div className="card-footer">&nbsp;</div>

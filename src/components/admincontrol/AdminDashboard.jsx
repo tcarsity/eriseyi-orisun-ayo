@@ -68,7 +68,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (!token) return;
 
-    const TOTAL_TASKS = 4; // adjust if you add/remove APIs
+    const TOTAL_TASKS = 3; // adjust if you add/remove APIs
     let completed = 0;
 
     const updateProgress = () => {

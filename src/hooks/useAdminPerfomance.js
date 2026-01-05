@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import api from "../api/axios";
 
 export const useAdminPerformance = ({ enabled = true } = {}) => {
   return useQuery({
