@@ -42,7 +42,7 @@ const Create = () => {
     },
     onSuccess: () => {
       toast.success("Testimonial added successfully");
-      queryClient.invalidateQueries(["testimonials"]);
+      queryClient.invalidateQueries({ queryKey: ["testimonials"] });
       reset();
     },
     onError: (error) => {

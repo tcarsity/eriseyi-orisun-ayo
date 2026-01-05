@@ -40,7 +40,7 @@ const Create = () => {
     },
     onSuccess: () => {
       toast.success("Event added successfully");
-      queryClient.invalidateQueries(["events"]);
+      queryClient.invalidateQueries({ queryKey: ["events"] });
       reset();
     },
     onError: (error) => {
