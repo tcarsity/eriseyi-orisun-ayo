@@ -101,7 +101,7 @@ const AdminDashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin/activities/performance");
             updateProgress();
-            return res.data.data || [];
+            return res.data?.data ?? [];
           },
         });
       } catch (err) {
