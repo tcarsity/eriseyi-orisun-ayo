@@ -5,14 +5,13 @@ import api from "../../api/axios";
 
 const EventsSection = () => {
   const { data = [], isError } = useQuery({
-    queryKey: ["publicEvents"],
+    queryKey: ["events"],
     queryFn: async () => {
       const res = await api.get("/public-events");
       return res.data.data;
     },
-    staleTime: 5 * 60 * 1000,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   return (

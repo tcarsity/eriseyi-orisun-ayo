@@ -82,7 +82,7 @@ const Footer = () => {
             </div>
             <hr />
             <div className="text-center mt-4 copy">
-              Copyright 2025 C &amp; S Orisun Ayo Agbara Kan-Naa. All Rights
+              Copyright 2026 C &amp; S Orisun Ayo Agbara Kan-Naa. All Rights
               Reserved.
             </div>
           </div>
