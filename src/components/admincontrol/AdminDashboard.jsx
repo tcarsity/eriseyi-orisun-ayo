@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { data } = useDashboardStats({
+  const { data: stats } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
                   <div className="col-md-6">
                     <div className="card shadow border-0">
                       <div className="card-body p-3">
-                        <h2>{data?.members?.count ?? 0}</h2>
+                        <h2>{stats?.members?.count ?? 0}</h2>
                         <strong>Total Members</strong>
                       </div>
                       <div className="card-footer">&nbsp;</div>
@@ -196,7 +196,7 @@ const AdminDashboard = () => {
                   <div className="col-md-6 test">
                     <div className="card shadow border-0">
                       <div className="card-body p-3">
-                        <h2>{data?.testimonials?.count ?? 0}</h2>
+                        <h2>{stats?.testimonials?.count ?? 0}</h2>
                         <strong>Testimonials</strong>
                       </div>
                       <div className="card-footer">&nbsp;</div>
