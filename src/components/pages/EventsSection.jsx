@@ -1,9 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import api from "../../api/axios";
+import { supabase } from "../../lib/supabase";
 
 const EventsSection = () => {
+  const queryClient = useQueryClient();
+
   const { data = [], isError } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
@@ -11,6 +14,27 @@ const EventsSection = () => {
       return res.data.data;
     },
   });
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("public-events-live")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "events",
+        },
+        () => {
+          queryClient.invalidateQueries(["events"]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   return (
     <>

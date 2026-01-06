@@ -4,9 +4,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import api from "../../api/axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "../../lib/supabase";
 
 const Testimonial = () => {
+  const queryClient = useQueryClient();
+
   const { data = [], isError } = useQuery({
     queryKey: ["testimonials"],
     queryFn: async () => {
@@ -14,6 +17,27 @@ const Testimonial = () => {
       return res.data.data;
     },
   });
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("public-testimonials-live")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "testimonials",
+        },
+        () => {
+          queryClient.invalidateQueries(["testimonials"]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   return (
     <>
