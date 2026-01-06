@@ -292,7 +292,9 @@ const Dashboard = () => {
                 <div className="col-md-6" ref={adminActivityRef}>
                   <Suspense fallback={<div style={{ height: 200 }}></div>}>
                     {adminActivityInView ? (
-                      <DashboardAdminActivityCard data={data?.admin_activity} />
+                      <DashboardAdminActivityCard
+                        data={stats?.admin_activity}
+                      />
                     ) : null}
                   </Suspense>
                 </div>
