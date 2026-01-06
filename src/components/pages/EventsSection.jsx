@@ -1,6 +1,6 @@
+import React, { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
 import api from "../../api/axios";
 import { supabase } from "../../lib/supabase";
 
