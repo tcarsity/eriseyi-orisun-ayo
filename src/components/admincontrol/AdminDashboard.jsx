@@ -68,6 +68,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (!token) return;
 
+    let cancelled = false;
+
     const TOTAL_TASKS = 3; // adjust if you add/remove APIs
     let completed = 0;
 
@@ -82,37 +84,44 @@ const AdminDashboard = () => {
           queryKey: ["dashboardStats"],
           queryFn: async () => {
             const { data } = await api.get("/dashboard-stats");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data;
           },
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
           queryFn: async () => {
             const { data } = await api.get("/events");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data.data;
           },
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["adminPerformance"],
           queryFn: async () => {
             const res = await api.get("/admin/activities/performance");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return res.data?.data ?? [];
           },
+          staleTime: 60000,
         });
       } catch (err) {
         console.error("Dashboard init error:", err);
       } finally {
-        setDashboardReady(true);
+        if (!cancelled) setDashboardReady(true);
       }
     };
 
     prepareDashboard();
-  }, [user, token, queryClient]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
