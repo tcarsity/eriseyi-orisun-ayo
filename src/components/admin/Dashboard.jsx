@@ -96,17 +96,17 @@ const Dashboard = () => {
           queryKey: ["dashboardStats"],
           queryFn: async () => {
             const { data } = await api.get("/dashboard-stats");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data;
           },
-          staleTime: 60000,
+          staleTime: 0,
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["adminStatus"],
           queryFn: async () => {
             const res = await api.get("/admin-status");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return res.data?.data ?? [];
           },
           staleTime: 60000,
@@ -116,7 +116,7 @@ const Dashboard = () => {
           queryKey: ["events"],
           queryFn: async () => {
             const { data } = await api.get("/events");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data.data;
           },
           staleTime: 60000,
