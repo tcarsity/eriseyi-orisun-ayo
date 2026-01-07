@@ -1,13 +1,23 @@
 import { useEffect } from "react";
 import api from "../api/axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useHeartbeat = () => {
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     let alive = true;
 
-    const sendHeartbeat = () => {
+    const sendHeartbeat = async () => {
       if (!alive) return;
-      api.post("/heartbeat").catch(() => {});
+
+      try {
+        await api.post("/heartbeat");
+
+        queryClient.invalidateQueries({
+          queryKey: ["dashboardStats"],
+        });
+      } catch (_) {}
     };
 
     sendHeartbeat(); // send immediately on mount
@@ -18,5 +28,5 @@ export const useHeartbeat = () => {
       alive = false;
       clearInterval(interval);
     };
-  }, []);
+  }, [queryClient]);
 };
