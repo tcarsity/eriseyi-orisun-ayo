@@ -37,6 +37,27 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const { data: stats } = useDashboardStats({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: events } = useEvents({
+    enabled: dashboardReady && !!token,
+  });
+
+  const { data: newMembers = [] } = useNewMembers({
+    enabled: dashboardReady && !!token,
+  });
+
+  const today = dayjs().format("DD-MM-YYYY");
+
+  const newMembersToday = useMemo(() => {
+    if (!Array.isArray(newMembers)) return [];
+    return newMembers.filter(
+      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
+    );
+  }, [newMembers, today]);
+
   /* =======================
      DERIVED VALUES (SAFE)
   ======================== */
@@ -143,27 +164,6 @@ const Dashboard = () => {
   /* =======================
      READ FROM CACHE ONLY
   ======================== */
-
-  const { data: stats } = useDashboardStats({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: events } = useEvents({
-    enabled: dashboardReady && !!token,
-  });
-
-  const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
-  });
-
-  const today = dayjs().format("DD-MM-YYYY");
-
-  const newMembersToday = useMemo(() => {
-    if (!Array.isArray(newMembers)) return [];
-    return newMembers.filter(
-      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
-    );
-  }, [newMembers, today]);
 
   /* =======================
      RENDER
