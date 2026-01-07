@@ -3,14 +3,20 @@ import api from "../api/axios";
 
 export const useHeartbeat = () => {
   useEffect(() => {
+    let alive = true;
+
     const sendHeartbeat = () => {
+      if (!alive) return;
       api.post("/heartbeat").catch(() => {});
     };
 
     sendHeartbeat(); // send immediately on mount
 
-    const interval = setInterval(sendHeartbeat, 45000); // every 45s
+    const interval = setInterval(sendHeartbeat, 60000); // every 45s
 
-    return () => clearInterval(interval);
+    return () => {
+      alive = false;
+      clearInterval(interval);
+    };
   }, []);
 };

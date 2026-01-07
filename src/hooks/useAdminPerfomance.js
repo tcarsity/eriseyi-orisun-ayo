@@ -10,6 +10,7 @@ export const useAdminPerformance = ({ enabled = true } = {}) => {
     },
     enabled,
     retry: false,
+    refetchOnMount: false,
     refetchInterval: false,
     refetchOnWindowFocus: false,
   });

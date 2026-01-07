@@ -10,7 +10,8 @@ export const useEvents = ({ enabled = true } = {}) => {
       return data.data;
     },
     enabled,
-    refetchInterval: false,
+    staleTime: 60000,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 };

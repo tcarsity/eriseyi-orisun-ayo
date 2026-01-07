@@ -80,6 +80,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (!token) return;
 
+    let cancelled = false;
+
     const TOTAL_TASKS = 5;
     let completed = 0;
 
@@ -94,27 +96,30 @@ const Dashboard = () => {
           queryKey: ["dashboardStats"],
           queryFn: async () => {
             const { data } = await api.get("/dashboard-stats");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data;
           },
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["adminStatus"],
           queryFn: async () => {
             const res = await api.get("/admin-status");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return res.data.data || [];
           },
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
           queryKey: ["events"],
           queryFn: async () => {
             const { data } = await api.get("/events");
-            updateProgress();
+            if (!cancelled) updateProgress();
             return data.data;
           },
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
@@ -137,12 +142,16 @@ const Dashboard = () => {
       } catch (err) {
         console.error("Dashboard preload failed:", err);
       } finally {
-        setDashboardReady(true);
+        if (!cancelled) setDashboardReady(true);
       }
     };
 
     prepareDashboard();
-  }, [user, token, queryClient]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   /* =======================
      SAFE EARLY RETURNS

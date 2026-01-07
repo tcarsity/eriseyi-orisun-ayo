@@ -9,7 +9,8 @@ export const useDashboardStats = ({ enabled = true } = {}) => {
       return data;
     },
     enabled,
-    refetchInterval: false,
+    staleTime: 60000,
+    refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 };
