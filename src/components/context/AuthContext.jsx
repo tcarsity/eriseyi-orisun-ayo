@@ -47,6 +47,7 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.error("Logout sync failed:", err);
     } finally {
+      queryClient.cancelQueries();
       queryClient.clear();
 
       if (user?.id) {
