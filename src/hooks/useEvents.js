@@ -9,6 +9,8 @@ export const useEvents = () => {
       const { data } = await api.get("/events");
       return data.data;
     },
+    staleTime: 60000,
+    refetchInterval: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
