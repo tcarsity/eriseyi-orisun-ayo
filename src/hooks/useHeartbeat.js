@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import api from "../api/axios";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "../components/context/AuthContext";
 
 export const useHeartbeat = () => {
   const queryClient = useQueryClient();
-  const token = useAuth();
 
   useEffect(() => {
-    if (!token) return;
     let alive = true;
 
     const sendHeartbeat = async () => {
@@ -31,5 +28,5 @@ export const useHeartbeat = () => {
       alive = false;
       clearInterval(interval);
     };
-  }, [queryClient, token]);
+  }, [queryClient]);
 };

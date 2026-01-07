@@ -11,6 +11,7 @@ export const useEvents = () => {
     },
     staleTime: 60000,
     refetchInterval: false,
+    retry: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
