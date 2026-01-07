@@ -3,7 +3,7 @@ import api from "../api/axios";
 import { useAuth } from "../components/context/AuthContext";
 
 const fetchMembers = async () => {
-  const res = await api.get("recent-public-members");
+  const res = await api.get("admin/recent-members");
   return res.data?.data ?? [];
 };
 

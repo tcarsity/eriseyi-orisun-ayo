@@ -47,6 +47,8 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.error("Logout sync failed:", err);
     } finally {
+      queryClient.clear();
+
       if (user?.id) {
         localStorage.removeItem(`lastLogin-${user.id}`);
       }
@@ -56,7 +58,7 @@ export function AuthProvider({ children }) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     }
-  }, []);
+  }, [queryClient, user]);
 
   const handleLogout = useCallback(() => {
     clearTimer?.();
