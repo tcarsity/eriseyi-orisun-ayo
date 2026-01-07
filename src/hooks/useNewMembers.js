@@ -6,11 +6,11 @@ const fetchMembers = async () => {
   return res.data?.data ?? [];
 };
 
-export const useNewMembers = ({ enabled = true } = {}) => {
+export const useNewMembers = () => {
   return useQuery({
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
-    enabled,
+
     staleTime: 60000,
     refetchOnWindowFocus: false,
     retry: false,
