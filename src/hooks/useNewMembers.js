@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/axios";
+import { useAuth } from "../components/context/AuthContext";
 
 const fetchMembers = async () => {
   const res = await api.get("recent-public-members");
@@ -7,11 +8,14 @@ const fetchMembers = async () => {
 };
 
 export const useNewMembers = () => {
+  const { token } = useAuth();
+
   return useQuery({
     queryKey: ["recent-members"],
     queryFn: fetchMembers,
-
-    staleTime: 60000,
+    enabled: !!token,
+    staleTime: 1000 * 60,
+    refetchInterval: false,
     refetchOnWindowFocus: false,
     retry: false,
   });

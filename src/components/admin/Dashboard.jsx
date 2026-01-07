@@ -135,7 +135,7 @@ const Dashboard = () => {
   /* =======================
      SAFE EARLY RETURNS
   ======================== */
-  if (!dashboardReady || !token) {
+  if (!dashboardReady) {
     return <DashboardPreloader progress={progress} />;
   }
 
@@ -153,7 +153,7 @@ const Dashboard = () => {
   });
 
   const { data: newMembers = [] } = useNewMembers({
-    enabled: true,
+    enabled: dashboardReady && !!token,
   });
 
   const today = dayjs().format("DD-MM-YYYY");
