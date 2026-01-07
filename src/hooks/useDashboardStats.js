@@ -9,7 +9,9 @@ export const useDashboardStats = () => {
       return data;
     },
     staleTime: 0,
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    refetchOnMount: false,
+    retry: false,
     refetchOnWindowFocus: false,
   });
 };
