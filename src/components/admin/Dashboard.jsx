@@ -46,7 +46,7 @@ const Dashboard = () => {
   });
 
   const { data: newMembers = [] } = useNewMembers({
-    enabled: dashboardReady && !!token,
+    enabled: dashboardReady,
   });
 
   const today = dayjs().format("DD-MM-YYYY");
