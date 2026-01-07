@@ -107,7 +107,7 @@ const Dashboard = () => {
           queryFn: async () => {
             const res = await api.get("/admin-status");
             if (!cancelled) updateProgress();
-            return res.data.data || [];
+            return res.data?.data ?? [];
           },
           staleTime: 60000,
         });

@@ -6,7 +6,7 @@ export const useAdminStatus = ({ enabled = true } = {}) => {
     queryKey: ["adminStatus"],
     queryFn: async () => {
       const res = await api.get("/admin-status");
-      return res.data.data || [];
+      return res.data?.data ?? [];
     },
     enabled,
     refetchInterval: 5000,
