@@ -96,10 +96,9 @@ const Dashboard = () => {
           queryKey: ["dashboardStats"],
           queryFn: async () => {
             const { data } = await api.get("/dashboard-stats");
-            if (!cancelled) updateProgress();
+            updateProgress();
             return data;
           },
-          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
