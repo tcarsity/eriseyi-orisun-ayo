@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Layout from "../common/Layout";
 import { useForm } from "react-hook-form";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -8,11 +8,13 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useCallback } from "react";
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -179,23 +181,39 @@ const Login = () => {
 
                       <div className="mt-4">
                         <label className="form-label">Password</label>
+
                         <div className="mb-3 input-group">
                           <span className="input-group-text">
                             <RiLockPasswordFill />
                           </span>
+
                           <input
                             {...register("password", {
                               required: "The password field is required",
                             })}
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             className={`form-control form-control-sm ${
                               errors.password && "is-invalid"
                             }`}
                             placeholder="Enter your password"
                           />
 
+                          <span
+                            className="input-group-text"
+                            role="button"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {showPassword ? (
+                              <AiFillEyeInvisible />
+                            ) : (
+                              <AiFillEye />
+                            )}
+                          </span>
+
                           {errors.password && (
-                            <p className="invalid-feedback">
+                            <p className="invalid-feedback d-block">
                               {errors.password?.message}
                             </p>
                           )}
