@@ -9,7 +9,7 @@ export const useDashboardStats = () => {
       return data;
     },
     staleTime: 0,
-    refetchInterval: true,
+    refetchInterval: 30000,
     refetchOnMount: false,
     retry: false,
     refetchOnWindowFocus: false,
