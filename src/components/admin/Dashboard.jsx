@@ -99,7 +99,7 @@ const Dashboard = () => {
             if (!cancelled) updateProgress();
             return data;
           },
-          staleTime: 0,
+          staleTime: 60000,
         });
 
         await queryClient.prefetchQuery({
