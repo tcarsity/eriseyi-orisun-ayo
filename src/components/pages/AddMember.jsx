@@ -96,7 +96,7 @@ const AddMember = () => {
                         )}
                       </div>
 
-                      <label className="form-label">Phone</label>
+                      <label className="form-label">Phone No.</label>
                       <div className="mb-3 input-group">
                         <span className="input-group-text">
                           <FaPhone /> &nbsp; +234
@@ -123,20 +123,20 @@ const AddMember = () => {
                         )}
                       </div>
 
-                      <label className="form-label">Address</label>
+                      <label className="form-label">Home Address</label>
                       <div className="mb-3 input-group">
                         <span className="input-group-text">
                           <FaLocationDot />
                         </span>
                         <input
                           {...register("address", {
-                            required: "The address field is required",
+                            required: "The home address field is required",
                           })}
                           type="text"
                           className={`form-control form-control-sm ${
                             errors.address && "is-invalid"
                           }`}
-                          placeholder="Enter your address"
+                          placeholder="Enter your home address"
                         />
 
                         {errors.address && (
