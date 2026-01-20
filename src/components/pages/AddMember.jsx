@@ -80,13 +80,13 @@ const AddMember = () => {
                         </span>
                         <input
                           {...register("name", {
-                            required: "The name field is required",
+                            required: "The full name field is required",
                           })}
                           type="text"
                           className={`form-control form-control-sm ${
                             errors.name && "is-invalid"
                           }`}
-                          placeholder="Enter your name"
+                          placeholder="Enter your full name"
                         />
 
                         {errors.name && (
