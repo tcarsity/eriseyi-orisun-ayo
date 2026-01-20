@@ -73,7 +73,7 @@ const AddMember = () => {
                 <div className="card shadow border-0 ">
                   <div className="card-body p-4">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                      <label className="form-label">Name</label>
+                      <label className="form-label">Full Name</label>
                       <div className="mb-3 input-group">
                         <span className="input-group-text">
                           <FaUser />
