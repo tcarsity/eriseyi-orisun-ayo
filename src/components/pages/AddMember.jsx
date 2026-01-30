@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import Layout from "../common/Layout";
 import { useForm } from "react-hook-form";
 import api from "../../api/axios";
@@ -28,11 +28,26 @@ const AddMember = () => {
 
   const days = useMemo(() => {
     if (!seletedMonth) return [];
-    const monthIndex = months.indexOf(seletedMonth);
-    const currentYear = new Date().getFullYear();
-    const daysInMonth = new Date(currentYear, monthIndex + 1, 0).getDate();
+
+    const monthIndex = months.indexOf(seletedMonth) + 1;
+
+    // Always allow Feb 29
+    if (monthIndex === 2) {
+      return Array.from({ length: 29 }, (_, i) => i + 1);
+    }
+
+    const daysInMonth = new Date(2024, monthIndex, 0).getDate(); // 2024 = leap-safe
     return Array.from({ length: daysInMonth }, (_, i) => i + 1);
   }, [seletedMonth, months]);
+
+  useEffect(() => {
+    const selectedDay = watch("birth_date");
+
+    if (selectedDay && days.length && selectedDay > days.length) {
+      // reset only the birth_date field
+      reset({ birth_date: "" }, { keepValues: true });
+    }
+  }, [days, watch, reset]);
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
