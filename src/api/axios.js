@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10000,
+  timeout: 15000,
   headers: {
     Accept: "application/json",
   },
@@ -18,5 +18,20 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Network error / timeout / no internet
+    if (!error.response) {
+      return Promise.reject({
+        message: "Network error. Please check your internet connection.",
+        isNetworkError: true,
+      });
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default api;
