@@ -61,6 +61,11 @@ const AddMember = () => {
       toast.success("Member added successfully");
     },
     onError: (error) => {
+      if (error.isNetworkError) {
+        toast.error(error.message);
+        return;
+      }
+
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         Object.keys(errors).forEach((field) => {
