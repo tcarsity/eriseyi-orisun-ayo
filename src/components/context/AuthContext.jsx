@@ -24,6 +24,10 @@ export function AuthProvider({ children }) {
   const [showWarning, setShowWarning] = useState(false);
   const [countdown, setCountDown] = useState(60);
 
+  const touchSession = () => {
+    localStorage.setItem("lastActivity", Date.now().toString());
+  };
+
   // New: Auth state flag
   const isAuthenticated = !!token;
 
@@ -58,6 +62,7 @@ export function AuthProvider({ children }) {
       setToken(null);
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+      localStorage.removeItem("lastActivity");
     }
   }, [queryClient, user]);
 
@@ -87,6 +92,7 @@ export function AuthProvider({ children }) {
 
   const handleStayLoggedIn = useCallback(() => {
     setShowWarning(false);
+    touchSession();
     resetTimer();
   }, [resetTimer]);
 
@@ -95,18 +101,31 @@ export function AuthProvider({ children }) {
     try {
       const savedUser = localStorage.getItem("user");
       const savedToken = localStorage.getItem("token");
+      const lastActivity = localStorage.getItem("lastActivity");
 
-      if (savedUser && savedToken) {
-        setUser(JSON.parse(savedUser));
-        setToken(savedToken);
+      const SESSION_TIMEOUT = 15 * 60 * 1000;
+
+      if (!savedUser || !savedToken || !lastActivity) {
+        logout();
+        return;
       }
+
+      const inactiveTime = Date.now() - Number(lastActivity);
+
+      if (inactiveTime > SESSION_TIMEOUT) {
+        logout();
+        return;
+      }
+
+      setUser(JSON.parse(savedUser));
+      setToken(savedToken);
     } catch (error) {
-      console.error("Failed to parse user from localStorage:", error);
-      localStorage.removeItem("user");
+      console.error("Session restore failed:", error);
+      logout();
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [logout]);
 
   //NEW - Axios interceptor for token + Auto Logout on 401
 
@@ -137,8 +156,10 @@ export function AuthProvider({ children }) {
       setUser(userData);
       setToken(token);
       setShowWarning(false);
+
       localStorage.setItem("user", JSON.stringify(userData));
       localStorage.setItem("token", token);
+      localStorage.setItem("lastActivity", Date.now().toString());
 
       resetTimer();
     },

@@ -14,6 +14,7 @@ api.interceptors.request.use((config) => {
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+    localStorage.setItem("lastActivity", Date.now().toString());
   }
 
   return config;
