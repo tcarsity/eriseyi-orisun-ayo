@@ -106,27 +106,31 @@ export function AuthProvider({ children }) {
       const SESSION_TIMEOUT = 15 * 60 * 1000;
 
       if (!savedUser || !savedToken) {
-        logout();
+        setLoading(false);
         return;
       }
 
       if (lastActivity) {
         const inactiveTime = Date.now() - Number(lastActivity);
         if (inactiveTime > SESSION_TIMEOUT) {
-          logout();
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          localStorage.removeItem("lastActivity");
+          setLoading(false);
           return;
         }
       }
 
+      // Restore Session
       setUser(JSON.parse(savedUser));
       setToken(savedToken);
     } catch (error) {
       console.error("Session restore failed:", error);
-      logout();
+      localStorage.clear();
     } finally {
       setLoading(false);
     }
-  }, [logout]);
+  }, []);
 
   //NEW - Axios interceptor for token + Auto Logout on 401
 
