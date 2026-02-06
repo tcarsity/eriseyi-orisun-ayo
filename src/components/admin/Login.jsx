@@ -82,9 +82,9 @@ const Login = () => {
       toast.success(data.message || "Login successful");
 
       if (data.data.role === "superadmin") {
-        navigate("/superadmin-dashboard");
+        navigate("/superadmin-dashboard", { replace: true });
       } else if (data.data.role === "admin") {
-        navigate("/admin-dashboard");
+        navigate("/admin-dashboard", { replace: true });
       } else {
         navigate("/unauthorized");
       }

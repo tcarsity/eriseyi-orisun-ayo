@@ -105,16 +105,17 @@ export function AuthProvider({ children }) {
 
       const SESSION_TIMEOUT = 15 * 60 * 1000;
 
-      if (!savedUser || !savedToken || !lastActivity) {
+      if (!savedUser || !savedToken) {
         logout();
         return;
       }
 
-      const inactiveTime = Date.now() - Number(lastActivity);
-
-      if (inactiveTime > SESSION_TIMEOUT) {
-        logout();
-        return;
+      if (lastActivity) {
+        const inactiveTime = Date.now() - Number(lastActivity);
+        if (inactiveTime > SESSION_TIMEOUT) {
+          logout();
+          return;
+        }
       }
 
       setUser(JSON.parse(savedUser));
