@@ -34,6 +34,11 @@ const Create = () => {
       toast.success("Admin added successfully");
     },
     onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
+
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         Object.keys(errors).forEach((field) => {

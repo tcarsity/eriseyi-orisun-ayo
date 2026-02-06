@@ -61,7 +61,7 @@ const AddMember = () => {
       toast.success("Member added successfully");
     },
     onError: (error) => {
-      if (error.isNetworkError) {
+      if (error.isNetworkError || error.isTimeout) {
         toast.error(error.message);
         return;
       }

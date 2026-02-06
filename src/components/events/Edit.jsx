@@ -67,7 +67,11 @@ const Edit = () => {
       toast.success("event updated successfully");
       navigate(`/${rolePrefix}-events`);
     },
-    onError: () => {
+    onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
       toast.error("Failed to update event");
     },
   });

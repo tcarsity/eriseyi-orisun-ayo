@@ -75,7 +75,13 @@ const Edit = () => {
       toast.success("Member updated successfully");
       navigate(`/${rolePrefix}-members`);
     },
-    onError: () => toast.error("Failed to update member"),
+    onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("Failed to update member");
+    },
   });
 
   const onSubmit = useCallback(

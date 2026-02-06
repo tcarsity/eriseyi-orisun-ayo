@@ -24,10 +24,17 @@ api.interceptors.response.use(
   (error) => {
     // Network error / timeout / no internet
     if (!error.response) {
-      return Promise.reject({
-        message: "Network error. Please check your internet connection.",
-        isNetworkError: true,
-      });
+      (error.isNetworkError = true),
+        (error.message =
+          "Network error. Please check your internet connection.");
+      return Promise.reject(error);
+    }
+
+    // Timeout (slow network)
+    if (error.code === "ECONNABORTED") {
+      error.isTimeout = true;
+      error.message = "Request timed out. Network seems slow.";
+      return Promise.reject(error);
     }
 
     return Promise.reject(error);

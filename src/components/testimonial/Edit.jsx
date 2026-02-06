@@ -70,7 +70,12 @@ const Edit = () => {
       toast.success("Testimonial updated successfully");
       navigate(`/${rolePrefix}-testimonials`);
     },
-    onError: () => {
+    onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
+
       toast.error("Failed to update testimonial");
     },
   });

@@ -52,7 +52,13 @@ const Edit = () => {
       toast.success("Admin updated successfully");
       navigate(`/superadmin-admins`);
     },
-    onError: () => toast.error("Failed to update admin"),
+    onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
+      toast.error("Failed to update admin");
+    },
   });
 
   const onSubmit = useCallback(

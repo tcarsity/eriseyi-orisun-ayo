@@ -90,6 +90,10 @@ const Login = () => {
       }
     },
     onError: (error) => {
+      if (error.isNetworkError || error.isTimeout) {
+        toast.error(error.message);
+        return;
+      }
       // if backend locked 429 set UI lock
       const status = error.response?.status;
       if (status === 429) {
