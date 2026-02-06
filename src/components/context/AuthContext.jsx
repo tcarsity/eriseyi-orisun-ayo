@@ -132,6 +132,22 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  useEffect(() => {
+    const events = ["click", "mousemove", "keydown", "scroll", "touchstart"];
+
+    const handleActivity = () => {
+      localStorage.setItem("lastActivity", Date.now().toString());
+    };
+
+    events.forEach((event) => window.addEventListener(event, handleActivity));
+
+    return () => {
+      events.forEach((event) =>
+        window.removeEventListener(event, handleActivity)
+      );
+    };
+  }, []);
+
   //NEW - Axios interceptor for token + Auto Logout on 401
 
   useEffect(() => {
