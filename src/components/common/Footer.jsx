@@ -62,9 +62,11 @@ const Footer = () => {
               <h3 className="mb-3">Contact Us</h3>
               <ul>
                 <li>
-                  Call us: <a href="tel:+2349123954039">+234 912 395 4039</a>
+                  Call us: <a href="tel:+2348026016588">+234 802 601 6588</a>
                   <br />
                   <a href="tel:+2348064571986">+234 806 457 1986</a>
+                  <br />
+                  <a href="tel:+2348023456750">+234 802 345 6750</a>
                 </li>
 
                 <li>
@@ -74,9 +76,9 @@ const Footer = () => {
                 </li>
 
                 <p>
-                  P.O Box 12344 <br />
-                  14, address address str <br />
-                  Lagos, Nigeria.
+                  1, Alade Olarewaju Street, <br /> Meiran Last Bus-Stop, by
+                  Transformer <br />
+                  Meiran, Lagos, Nigeria.
                 </p>
               </ul>
             </div>
