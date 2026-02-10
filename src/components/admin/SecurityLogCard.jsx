@@ -41,7 +41,7 @@ const SecurityLogCard = () => {
 
   const toggleSelect = (id) => {
     setSelectedLogs((prev) =>
-      prev.includes(id) ? prev.filter((logId) => logId !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((logId) => logId !== id) : [...prev, id],
     );
   };
 
@@ -160,8 +160,13 @@ const SecurityLogCard = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-muted small">
-                    {log.ip_address || "N/A"}
+                  <span className="small">
+                    {log.is_proxy && (
+                      <span className="badge bg-secondary me-1">Proxy</span>
+                    )}
+                    <span className="text-muted">
+                      {log.ip_address || "N/A"}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -187,7 +192,7 @@ const SecurityLogCard = () => {
                         Math.floor((page - 1) / windowSize) * windowSize + 1;
                       const endPage = Math.min(
                         startPage + windowSize - 1,
-                        meta.last_page
+                        meta.last_page,
                       );
 
                       const pages = [];
@@ -205,7 +210,7 @@ const SecurityLogCard = () => {
                             >
                               {i}
                             </button>
-                          </li>
+                          </li>,
                         );
                       }
                       return pages;
