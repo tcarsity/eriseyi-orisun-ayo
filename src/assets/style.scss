@@ -823,7 +823,8 @@ footer {
   overflow: hidden;
   .hero {
     position: relative;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)),
+    background:
+      linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)),
       url("./images/rosary.webp") center/cover no-repeat;
     min-height: 100vh;
     display: flex;
@@ -1054,7 +1055,9 @@ footer {
       background-size: 300% 300%;
       animation: moveElectric 3s linear infinite;
 
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
       mask-composite: exclude;
       -webkit-mask-composite: destination-out;
     }
@@ -1102,7 +1105,9 @@ a:visited a:active,
   font-size: clamp(0.9rem, 1.4vw, 1rem);
   font-weight: 500;
   text-decoration: none;
-  transition: $text-color 0.2s ease, transform 0.2s ease;
+  transition:
+    $text-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 a:hover,
@@ -1164,5 +1169,26 @@ body.dark-theme {
   .bg-light h2,
   .bg-light p {
     color: $primary-black !important;
+  }
+}
+
+.events-editorial {
+  .featured-event {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .upcoming-events {
+    max-width: 700px;
+    margin: 0 auto;
+
+    .list-group-item {
+      cursor: pointer;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #f8f9fa;
+      }
+    }
   }
 }

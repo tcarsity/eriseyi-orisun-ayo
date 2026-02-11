@@ -27,7 +27,7 @@ const EventsSection = () => {
         },
         () => {
           queryClient.invalidateQueries(["events"]);
-        }
+        },
       )
       .subscribe();
 
@@ -64,38 +64,68 @@ const EventsSection = () => {
           )}
 
           {!isError && data?.length > 0 && (
-            <div className="row g-4 mt-4 events-grid">
-              {data.map((event) => (
-                <div className="col-md-6 col-lg-3" key={event.id}>
-                  <motion.div
-                    className="card border-0 shadow h-100 event-card"
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.03 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <img
-                      src={event.image || "/assets/placeholder.jpg"}
-                      alt={event.title}
-                      className="card-img-top"
-                      style={{ height: "200px", objectFit: "cover" }}
-                    />
+            <div className="events-editorial mt-5">
+              {/* Featured Event */}
+              {featuredEvent && (
+                <motion.div
+                  className="featured-event card border-0 shadow mb-5"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="row g-0 align-items-center">
+                    <div className="col-md-6">
+                      <img
+                        src={featuredEvent.image || "/assets/placeholder.jpg"}
+                        alt={featuredEvent.title}
+                        className="img-fluid h-100 w-100"
+                        style={{ objectFit: "cover", minHeight: "300px" }}
+                      />
+                    </div>
 
-                    <div className="card-body">
-                      <h5 className="fw-bold">{event.title}</h5>
+                    <div className="col-md-6 p-4">
+                      <span className="badge bg-primary mb-2">
+                        Featured Event
+                      </span>
+                      <h3 className="fw-bold">{featuredEvent.title}</h3>
                       <p className="text-muted mb-2">
-                        {new Date(event.event_date).toLocaleDateString()}
+                        {new Date(
+                          featuredEvent.event_date,
+                        ).toLocaleDateString()}
+                        {featuredEvent.event_time &&
+                          ` • ${featuredEvent.event_time}`}
                       </p>
-                      {event.event_time && (
-                        <p className="text-muted mb-2">🕛 {event.event_time}</p>
-                      )}
-                      <p className="text-secondary small">
-                        {event.description?.slice(0, 80)}...
+                      <p className="text-secondary">
+                        {featuredEvent.description?.slice(0, 140)}...
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Upcoming Events */}
+              {upcomingEvents.length > 0 && (
+                <div className="upcoming-events">
+                  <h4 className="fw-bold mb-3">More Upcoming Events</h4>
+                  <ul className="list-group list-group-flush">
+                    {upcomingEvents.map((event) => (
+                      <li
+                        key={event.id}
+                        className="list-group-item d-flex justify-content-between align-items-center py-3"
+                      >
+                        <div>
+                          <strong>{event.title}</strong>
+                          <div className="small text-muted">
+                            {new Date(event.event_date).toLocaleDateString()}
+                            {event.event_time && ` • ${event.event_time}`}
+                          </div>
+                        </div>
+                        <span className="text-primary">→</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
