@@ -15,6 +15,9 @@ const EventsSection = () => {
     },
   });
 
+  const featuredEvent = data?.length > 0 ? data[0] : null;
+  const upcomingEvents = data?.length > 1 ? data.slice(1) : [];
+
   useEffect(() => {
     const channel = supabase
       .channel("public-events-live")
