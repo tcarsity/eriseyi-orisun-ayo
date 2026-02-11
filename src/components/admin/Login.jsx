@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useCallback } from "react";
+import LoadingButton from "../LoadingButton";
 
 const Login = () => {
   const { login } = useAuth();
@@ -224,18 +225,15 @@ const Login = () => {
                         </div>
                       </div>
 
-                      <button
-                        disabled={mutation.isPending || lockUntil}
+                      <LoadingButton
                         type="submit"
-                        className="btn btn-primary w-100 mt-4"
+                        isLoading={mutation.isPending}
+                        disabled={lockUntil}
+                        loadingText="Logging in..."
+                        className="btn-primary w-100 mt-4"
                       >
-                        <span className="spinner-border spinner-border-sm me-2"></span>
-                        {lockUntil
-                          ? `Locked (${remainingTime}s)`
-                          : mutation.isPending
-                            ? "Logging in..."
-                            : "Login"}
-                      </button>
+                        {lockUntil ? `Locked (${remainingTime}s)` : "Login"}
+                      </LoadingButton>
 
                       <div className="d-flex justify-content-end mt-2 forgot">
                         <Link to="/forgot-password" className="pass">
