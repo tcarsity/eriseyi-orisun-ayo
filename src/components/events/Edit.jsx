@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useCallback, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import SideBar from "../admincontrol/SideBar";
 import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { resizeImage } from "../../utils/resizeImage";
+import JoditEditor from "jodit-react";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -16,9 +17,37 @@ const Edit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const editor = useRef(null);
+
+  const config = {
+    readonly: false,
+    height: 350,
+    toolbarSticky: false,
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "|",
+      "ul",
+      "ol",
+      "|",
+      "font",
+      "fontsize",
+      "|",
+      "align",
+      "|",
+      "link",
+      "image",
+      "|",
+      "undo",
+      "redo",
+    ],
+  };
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: async () => {
@@ -90,7 +119,7 @@ const Edit = () => {
       }
       mutation.mutate(fd);
     },
-    [mutation]
+    [mutation],
   );
 
   return (
@@ -187,21 +216,29 @@ const Edit = () => {
                             </div>
 
                             <label className="form-label">Description</label>
-                            <div className="mb-3 input-group">
-                              <textarea
-                                {...register("description", {
+                            <div className="mb-3">
+                              <Controller
+                                name="description"
+                                control={control}
+                                rules={{
                                   required: "The description field is required",
-                                })}
-                                className={`form-control ${
-                                  errors.description && "is-invalid"
-                                }`}
-                                placeholder="Description"
-                                rows={4}
-                              ></textarea>
+                                }}
+                                render={({ field }) => (
+                                  <JoditEditor
+                                    ref={editor}
+                                    value={field.value || ""}
+                                    config={config}
+                                    onBlur={field.onBlur}
+                                    onChange={(newContent) =>
+                                      field.onChange(newContent)
+                                    }
+                                  />
+                                )}
+                              />
 
                               {errors.description && (
-                                <p className="invalid-feedback">
-                                  {errors.description?.message}
+                                <p className="text-danger small mt-1">
+                                  {errors.description.message}
                                 </p>
                               )}
                             </div>

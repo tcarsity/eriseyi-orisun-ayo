@@ -115,14 +115,21 @@ const EventsSection = () => {
                             hour12: true,
                           })}
                       </p>
-                      <p className="text-secondary small">
-                        {expandedEventId === featuredEvent?.id
-                          ? featuredEvent?.description
-                          : featuredEvent?.description?.slice(0, 120)}
+                      <div className="text-secondary small position-relative">
+                        <div
+                          className={
+                            expandedEventId === featuredEvent?.id
+                              ? ""
+                              : "collapsed-html"
+                          }
+                          dangerouslySetInnerHTML={{
+                            __html: featuredEvent?.description,
+                          }}
+                        />
 
-                        {featuredEvent?.description?.length > 120 && (
+                        {featuredEvent?.description && (
                           <span
-                            className="text-primary fw-semibold ms-1"
+                            className="text-primary fw-semibold d-inline-block mt-2"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
                               setExpandedEventId(
@@ -133,11 +140,11 @@ const EventsSection = () => {
                             }
                           >
                             {expandedEventId === featuredEvent?.id
-                              ? " See less"
-                              : "... See more"}
+                              ? "See less"
+                              : "See more"}
                           </span>
                         )}
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
