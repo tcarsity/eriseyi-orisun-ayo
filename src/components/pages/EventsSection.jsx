@@ -93,7 +93,7 @@ const EventsSection = () => {
                       </span>
                       <h3 className="fw-bold">{featuredEvent.title}</h3>
                       <p className="text-muted mb-2">
-                        {new Date(event.event_date).toLocaleDateString(
+                        {new Date(featuredEvent?.event_date).toLocaleDateString(
                           "en-GB",
                           {
                             day: "2-digit",
@@ -104,9 +104,9 @@ const EventsSection = () => {
                           },
                         )}{" "}
                         •{" "}
-                        {event.event_time &&
+                        {featuredEvent?.event_time &&
                           new Date(
-                            `1970-01-01T${event.event_time}`,
+                            `1970-01-01T${featuredEvent?.event_time}`,
                           ).toLocaleTimeString("en-US", {
                             hour: "numeric",
 
@@ -116,21 +116,23 @@ const EventsSection = () => {
                           })}
                       </p>
                       <p className="text-secondary small">
-                        {expandedEventId === event.id
-                          ? event.description
-                          : event.description?.slice(0, 120)}
+                        {expandedEventId === featuredEvent?.id
+                          ? featuredEvent?.description
+                          : featuredEvent?.description?.slice(0, 120)}
 
-                        {event.description?.length > 120 && (
+                        {featuredEvent?.description?.length > 120 && (
                           <span
                             className="text-primary fw-semibold ms-1"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
                               setExpandedEventId(
-                                expandedEventId === event.id ? null : event.id,
+                                expandedEventId === featuredEvent?.id
+                                  ? null
+                                  : featuredEvent?.id,
                               )
                             }
                           >
-                            {expandedEventId === event.id
+                            {expandedEventId === featuredEvent?.id
                               ? " See less"
                               : "... See more"}
                           </span>
