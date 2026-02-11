@@ -9,6 +9,7 @@ import Layout from "../common/Layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
+import LoadingButton from "../LoadingButton";
 
 const EditProfile = () => {
   const queryClient = useQueryClient();
@@ -50,7 +51,7 @@ const EditProfile = () => {
     },
     onError: (err) => {
       toast.error(
-        err.response?.data?.message || "Something went wrong updating profile"
+        err.response?.data?.message || "Something went wrong updating profile",
       );
     },
   });
@@ -59,7 +60,7 @@ const EditProfile = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
 
   return (
@@ -150,13 +151,14 @@ const EditProfile = () => {
                           )}
                         </div>
 
-                        <button
-                          disabled={mutation.isPending}
+                        <LoadingButton
                           type="submit"
-                          className="btn btn-primary w-100 mt-4"
+                          isLoading={mutation.isPending}
+                          loadingText="Saving..."
+                          className="btn-primary w-100 mt-4"
                         >
-                          {mutation.isPending ? "Saving..." : "Update"}
-                        </button>
+                          Update Profile
+                        </LoadingButton>
                       </form>
                     </div>
                   </div>

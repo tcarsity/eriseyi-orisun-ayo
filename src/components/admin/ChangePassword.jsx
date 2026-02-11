@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import api from "../../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { RiLockPasswordFill } from "react-icons/ri";
+import LoadingButton from "../LoadingButton";
 
 const ChangePassword = () => {
   const { user } = useAuth();
@@ -46,7 +47,7 @@ const ChangePassword = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
   return (
     <>
@@ -170,15 +171,14 @@ const ChangePassword = () => {
                             </div>
                           </div>
 
-                          <button
+                          <LoadingButton
                             type="submit"
-                            className="btn btn-primary w-100 mt-3 btn-sm"
-                            disabled={mutation.isLoading}
+                            isLoading={mutation.isPending}
+                            loadingText="Updating...."
+                            className="btn-primary w-100 mt-4"
                           >
-                            {mutation.isLoading
-                              ? "Updating...."
-                              : "Update Password"}
-                          </button>
+                            Update Password
+                          </LoadingButton>
                         </form>
                       </div>
                     </div>
