@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import api from "../../api/axios";
 import { supabase } from "../../lib/supabase";
 
 const EventsSection = () => {
+  const [expandedEventId, setExpandedEventId] = useState(null);
   const queryClient = useQueryClient();
 
   const { data = [], isError } = useQuery({
@@ -92,14 +93,48 @@ const EventsSection = () => {
                       </span>
                       <h3 className="fw-bold">{featuredEvent.title}</h3>
                       <p className="text-muted mb-2">
-                        {new Date(
-                          featuredEvent.event_date,
-                        ).toLocaleDateString()}
-                        {featuredEvent.event_time &&
-                          ` • ${featuredEvent.event_time}`}
+                        {new Date(event.event_date).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+
+                            month: "2-digit",
+
+                            year: "numeric",
+                          },
+                        )}{" "}
+                        •{" "}
+                        {event.event_time &&
+                          new Date(
+                            `1970-01-01T${event.event_time}`,
+                          ).toLocaleTimeString("en-US", {
+                            hour: "numeric",
+
+                            minute: "2-digit",
+
+                            hour12: true,
+                          })}
                       </p>
-                      <p className="text-secondary">
-                        {featuredEvent.description?.slice(0, 140)}...
+                      <p className="text-secondary small">
+                        {expandedEventId === event.id
+                          ? event.description
+                          : event.description?.slice(0, 120)}
+
+                        {event.description?.length > 120 && (
+                          <span
+                            className="text-primary fw-semibold ms-1"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              setExpandedEventId(
+                                expandedEventId === event.id ? null : event.id,
+                              )
+                            }
+                          >
+                            {expandedEventId === event.id
+                              ? " See less"
+                              : "... See more"}
+                          </span>
+                        )}
                       </p>
                     </div>
                   </div>
@@ -118,10 +153,29 @@ const EventsSection = () => {
                       >
                         <div>
                           <strong>{event.title}</strong>
-                          <div className="small text-muted">
-                            {new Date(event.event_date).toLocaleDateString()}
-                            {event.event_time && ` • ${event.event_time}`}
-                          </div>
+                          <p className="text-muted mb-2">
+                            {new Date(event.event_date).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+
+                                month: "2-digit",
+
+                                year: "numeric",
+                              },
+                            )}{" "}
+                            •{" "}
+                            {event.event_time &&
+                              new Date(
+                                `1970-01-01T${event.event_time}`,
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+
+                                minute: "2-digit",
+
+                                hour12: true,
+                              })}
+                          </p>
                         </div>
                         <span className="text-primary">→</span>
                       </li>
