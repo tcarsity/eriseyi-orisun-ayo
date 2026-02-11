@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { resizeImage } from "../../utils/resizeImage";
 import JoditEditor from "jodit-react";
 import { Controller } from "react-hook-form";
+import LoadingButton from "../LoadingButton";
 
 const Create = () => {
   const [preview, setPreview] = useState(null);
@@ -286,13 +287,14 @@ const Create = () => {
                             </div>
                           )}
 
-                          <button
+                          <LoadingButton
                             type="submit"
                             className="btn btn-primary w-100 mt-3"
-                            disabled={mutation.isPending}
+                            isLoading={mutation.isPending}
+                            loadingText="Adding Event..."
                           >
-                            {mutation.isPending ? "Saving..." : "Add Event"}
-                          </button>
+                            Create Event
+                          </LoadingButton>
                         </form>
                       </div>
                     </div>

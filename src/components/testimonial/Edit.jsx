@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import Layout from "../common/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { FaEnvelope, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import api from "../../api/axios";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
 import { resizeImage } from "../../utils/resizeImage";
+import LoadingButton from "../LoadingButton";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -92,7 +93,7 @@ const Edit = () => {
       }
       updateMutation.mutate(fd);
     },
-    [updateMutation]
+    [updateMutation],
   );
 
   return (
@@ -229,14 +230,14 @@ const Edit = () => {
                               </div>
                             )}
 
-                            <button
+                            <LoadingButton
                               type="submit"
-                              className="btn btn-primary w-100 mt-4"
+                              isLoading={mutation.isPending}
+                              loadingText="Updating..."
+                              className="btn-primary w-100 mt-3"
                             >
-                              {updateMutation.isPending
-                                ? "Updating..."
-                                : "Update"}
-                            </button>
+                              Update
+                            </LoadingButton>
                           </form>
                         </div>
                       </div>

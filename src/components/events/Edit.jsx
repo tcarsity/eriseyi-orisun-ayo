@@ -9,6 +9,7 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { resizeImage } from "../../utils/resizeImage";
 import JoditEditor from "jodit-react";
+import LoadingButton from "../LoadingButton";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -314,15 +315,14 @@ const Edit = () => {
                               </div>
                             )}
 
-                            <button
+                            <LoadingButton
                               type="submit"
-                              className="btn btn-primary w-100 mt-3"
-                              disabled={mutation.isPending}
+                              isLoading={mutation.isPending}
+                              loadingText="Updating..."
+                              className="btn-primary w-100 mt-3"
                             >
-                              {mutation.isPending
-                                ? "Updating..."
-                                : "Update Event"}
-                            </button>
+                              Update Event
+                            </LoadingButton>
                           </form>
                         </div>
                       </div>

@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import api from "../../api/axios";
 import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
+import LoadingButton from "../LoadingButton";
 
 const Edit = () => {
   const { id } = useParams();
@@ -65,7 +66,7 @@ const Edit = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
 
   if (error) return <p>Error loading admin</p>;
@@ -167,12 +168,14 @@ const Edit = () => {
                               )}
                             </div>
 
-                            <button
-                              disabled={mutation.isPending}
-                              className="btn btn-primary w-100 mt-3"
+                            <LoadingButton
+                              type="submit"
+                              isLoading={mutation.isPending}
+                              loadingText="Updating..."
+                              className="btn-primary w-100 mt-3"
                             >
-                              {mutation.isPending ? "Updating..." : "Update"}
-                            </button>
+                              Update
+                            </LoadingButton>
                           </form>
                         </div>
                       </div>

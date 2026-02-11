@@ -9,6 +9,7 @@ import { FaPhone, FaUser } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
+import LoadingButton from "../LoadingButton";
 
 const Edit = () => {
   const { id } = useParams();
@@ -42,7 +43,7 @@ const Edit = () => {
 
   const months = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) =>
-      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i))
+      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i)),
     );
   }, []);
 
@@ -88,7 +89,7 @@ const Edit = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
 
   return (
@@ -278,12 +279,14 @@ const Edit = () => {
                               )}
                             </div>
 
-                            <button
-                              className="btn btn-primary w-100 mt-3"
-                              disabled={mutation.isPending}
+                            <LoadingButton
+                              type="submit"
+                              isLoading={mutation.isPending}
+                              loadingText="Updating..."
+                              className="btn-primary w-100 mt-3"
                             >
-                              {mutation.isPending ? "Updating...." : "Update"}
-                            </button>
+                              Update
+                            </LoadingButton>
                           </form>
                         </div>
                       </div>

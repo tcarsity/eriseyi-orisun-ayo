@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
 import { resizeImage } from "../../utils/resizeImage";
+import LoadingButton from "../LoadingButton";
 
 const Create = () => {
   const [preview, setPreview] = useState(null);
@@ -74,7 +75,7 @@ const Create = () => {
       }
       mutation.mutate(formData);
     },
-    [mutation]
+    [mutation],
   );
   return (
     <>
@@ -208,15 +209,14 @@ const Create = () => {
                             </div>
                           )}
 
-                          <button
+                          <LoadingButton
                             type="submit"
-                            className="btn btn-primary w-100 mt-3"
-                            disabled={mutation.isPending}
+                            isLoading={mutation.isPending}
+                            loadingText="Saving..."
+                            className="btn-primary w-100 mt-3"
                           >
-                            {mutation.isPending
-                              ? "Saving..."
-                              : "Add Testimonial"}
-                          </button>
+                            Create Testimonial
+                          </LoadingButton>
                         </form>
                       </div>
                     </div>

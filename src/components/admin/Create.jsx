@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import api from "../../api/axios";
 import SideBar from "../admincontrol/SideBar";
 import { useAuth } from "../context/AuthContext";
+import LoadingButton from "../LoadingButton";
 
 const Create = () => {
   const queryClient = useQueryClient();
@@ -53,7 +54,7 @@ const Create = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
   return (
     <>
@@ -165,12 +166,14 @@ const Create = () => {
                             )}
                           </div>
 
-                          <button
-                            disabled={mutation.isPending}
-                            className="btn btn-primary w-100 mt-3"
+                          <LoadingButton
+                            type="submit"
+                            isLoading={mutation.isPending}
+                            loadingText="Saving..."
+                            className="btn-primary w-100 mt-3"
                           >
-                            {mutation.isPending ? "Saving" : "Create"}
-                          </button>
+                            Create Admin
+                          </LoadingButton>
                         </form>
                       </div>
                     </div>

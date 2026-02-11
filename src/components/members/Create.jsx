@@ -10,6 +10,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
+import LoadingButton from "../LoadingButton";
 
 const Create = () => {
   const queryClient = useQueryClient();
@@ -30,7 +31,7 @@ const Create = () => {
 
   const months = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) =>
-      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i))
+      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i)),
     );
   }, []);
 
@@ -74,7 +75,7 @@ const Create = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
   return (
     <>
@@ -260,12 +261,14 @@ const Create = () => {
                             )}
                           </div>
 
-                          <button
-                            disabled={mutation.isPending}
-                            className="btn btn-primary w-100 mt-3"
+                          <LoadingButton
+                            type="submit"
+                            isLoading={mutation.isPending}
+                            loadingText="Saving..."
+                            className="btn-primary w-100 mt-3"
                           >
-                            {mutation.isPending ? "Saving..." : "Create"}
-                          </button>
+                            Create Member
+                          </LoadingButton>
                         </form>
                       </div>
                     </div>

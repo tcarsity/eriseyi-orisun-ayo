@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
+import LoadingButton from "../LoadingButton";
 
 const AddMember = () => {
   const queryClient = useQueryClient();
@@ -22,7 +23,7 @@ const AddMember = () => {
 
   const months = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) =>
-      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i))
+      new Intl.DateTimeFormat("en", { month: "long" }).format(new Date(0, i)),
     );
   }, []);
 
@@ -81,7 +82,7 @@ const AddMember = () => {
     (data) => {
       mutation.mutate(data);
     },
-    [mutation]
+    [mutation],
   );
   return (
     <>
@@ -236,12 +237,14 @@ const AddMember = () => {
                         )}
                       </div>
 
-                      <button
-                        disabled={mutation.isPending}
-                        className="btn btn-primary w-100 mt-3"
+                      <LoadingButton
+                        type="submit"
+                        isLoading={mutation.isPending}
+                        loadingText="Saving..."
+                        className="btn-primary w-100 mt-3"
                       >
-                        {mutation.isPending ? "Saving..." : "Submit"}
-                      </button>
+                        Submit
+                      </LoadingButton>
                     </form>
                   </div>
                 </div>
