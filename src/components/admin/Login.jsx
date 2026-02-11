@@ -24,11 +24,11 @@ const Login = () => {
 
   // lockout states
   const [attempts, setAttempts] = React.useState(
-    Number(localStorage.getItem("login_attempts")) || 0
+    Number(localStorage.getItem("login_attempts")) || 0,
   );
 
   const [lockUntil, setLockUntil] = React.useState(
-    Number(localStorage.getItem("login_lock_until")) || null
+    Number(localStorage.getItem("login_lock_until")) || null,
   );
 
   const [remainingTime, setRemainingTime] = React.useState(null);
@@ -108,7 +108,7 @@ const Login = () => {
 
         toast.error(
           error.response?.data?.message ||
-            "Too many attempts. Please try again later."
+            "Too many attempts. Please try again later.",
         );
 
         return;
@@ -130,7 +130,7 @@ const Login = () => {
       }
 
       toast.error(
-        error.response?.data?.message || "Login failed. Please try again."
+        error.response?.data?.message || "Login failed. Please try again.",
       );
     },
   });
@@ -143,7 +143,7 @@ const Login = () => {
       }
       mutation.mutate(formData);
     },
-    [mutation, lockUntil]
+    [mutation, lockUntil],
   );
   return (
     <>
@@ -229,11 +229,12 @@ const Login = () => {
                         type="submit"
                         className="btn btn-primary w-100 mt-4"
                       >
+                        <span className="spinner-border spinner-border-sm me-2"></span>
                         {lockUntil
                           ? `Locked (${remainingTime}s)`
                           : mutation.isPending
-                          ? "Logging in..."
-                          : "Login"}
+                            ? "Logging in..."
+                            : "Login"}
                       </button>
 
                       <div className="d-flex justify-content-end mt-2 forgot">
