@@ -25,7 +25,7 @@ const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
     );
   }
   return (
-    <div className="card shadow border-0 p-3">
+    <div className="card shadow border-0 p-3 h-100">
       <h6 className="text-muted mb-3">
         <RiAdminFill className="me-2 text-primary" />
         Admin Activity

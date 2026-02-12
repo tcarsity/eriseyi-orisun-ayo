@@ -27,7 +27,7 @@ const ActiveAdminsCard = () => {
   }
 
   return (
-    <div className="card shadow border-0 p-3">
+    <div className="card shadow border-0 p-3 h-100">
       <h6 className="fw-bold text-muted mb-3">Admin Activity Status</h6>
       {isError ? (
         <div className="text-center py-5 text-danger">

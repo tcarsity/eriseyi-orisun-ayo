@@ -24,7 +24,7 @@ const DashboardEventsCard = ({ data, error, isLoading }) => {
     );
   }
   return (
-    <div className="card shadow-sm border-0 p-3">
+    <div className="card shadow-sm border-0 p-3 h-100">
       <h6 className="text-muted mb-3">
         <FaCalendarAlt className="me-2 text-primary" />
         Upcoming Events

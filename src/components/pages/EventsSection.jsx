@@ -81,7 +81,7 @@ const EventsSection = () => {
               {/* Featured Event */}
               {featuredEvent && (
                 <motion.div
-                  className="featured-event card border-0 shadow mb-5"
+                  className="featured-event card border-0 shadow mb-5 h-100"
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}

@@ -12,7 +12,7 @@ const AdminStatsCard = ({ active = 0, inactive = 0, isLoading }) => {
   const activePercent = total > 0 ? (active / total) * 100 : 0;
 
   return (
-    <div className="card shadow border-0 p-4 text-center ">
+    <div className="card shadow border-0 p-4 text-center h-100">
       <h5 className="mb-3 fw-bold">Admin Activity</h5>
       <div style={{ width: 120, height: 120, margin: "0 auto" }}>
         <CircularProgressbar

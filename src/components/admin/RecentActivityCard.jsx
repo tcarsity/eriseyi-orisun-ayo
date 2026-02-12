@@ -70,7 +70,7 @@ const RecentActivityCard = () => {
 
   return (
     <>
-      <div className="card shadow border-0 mb-4">
+      <div className="card shadow border-0 mb-4 h-100">
         <h4 className="fw-bold mb-0 ms-2">
           <MdRecentActors size={40} className="text-primary" /> Recent Admin
           Activity
