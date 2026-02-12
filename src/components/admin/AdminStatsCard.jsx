@@ -1,8 +1,13 @@
 import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
-const AdminStatsCard = ({ active, inactive }) => {
+const AdminStatsCard = ({ active = 0, inactive = 0, isLoading }) => {
+  if (isLoading) {
+    return <DashboardSkeleton variant="stats" className="p-4 text-center" />;
+  }
+
   const total = active + inactive;
   const activePercent = total > 0 ? (active / total) * 100 : 0;
 
@@ -19,8 +24,8 @@ const AdminStatsCard = ({ active, inactive }) => {
               activePercent >= 75
                 ? "#28a745"
                 : activePercent >= 50
-                ? "#ffc107"
-                : "#dc3545",
+                  ? "#ffc107"
+                  : "#dc3545",
             trailColor: "#e5e7eb",
           })}
         />

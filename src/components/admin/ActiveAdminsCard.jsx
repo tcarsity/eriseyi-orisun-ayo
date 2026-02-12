@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -13,13 +14,17 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Africa/Lagos");
 
 const ActiveAdminsCard = () => {
-  const { data, isError } = useAdminStatus();
+  const { data, isError, isLoading } = useAdminStatus();
 
   const admins = Array.isArray(data)
     ? data
     : Array.isArray(data?.data)
-    ? data.data
-    : [];
+      ? data.data
+      : [];
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="list" rows={4} />;
+  }
 
   return (
     <div className="card shadow border-0 p-3">
