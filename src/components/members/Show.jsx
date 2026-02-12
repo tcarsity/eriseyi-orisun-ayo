@@ -2,16 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
 import Layout from "../common/Layout";
-
 import { Link, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-
 import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
 import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import DashboardSkeleton from "../ui/DashboardSkeleton";
+import TableRowSkeleton from "../ui/TableRowSkeleton";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,7 +39,7 @@ const Show = () => {
     },
   });
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["members", page, search],
     queryFn: async () => {
       const endpoint = search ? "/members/search" : "/members";
@@ -89,10 +87,6 @@ const Show = () => {
       }
     }
   }, [data, isLoading, members.length, safeCurrentPage, handlePageChange]);
-
-  if (isLoading) {
-    return <DashboardSkeleton variant="table" rows={10} columns={9} />;
-  }
 
   return (
     <>
@@ -150,7 +144,9 @@ const Show = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {members.length > 0 ? (
+                            {isLoading || isFetching ? (
+                              <TableRowSkeleton rows={10} columns={9} />
+                            ) : members.length > 0 ? (
                               members.map((member, index) => (
                                 <tr key={member.id}>
                                   <td>
@@ -158,12 +154,14 @@ const Show = () => {
                                       index +
                                       1}
                                   </td>
+
                                   <td>{member.name}</td>
                                   <td>{member.phone}</td>
                                   <td>{member.address}</td>
                                   <td>{member.gender}</td>
                                   <td>{member.birth_month}</td>
                                   <td>{member.birth_date}</td>
+
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
@@ -173,6 +171,7 @@ const Show = () => {
                                       Edit
                                     </Link>
                                   </td>
+
                                   <td>
                                     <button
                                       className="btn btn-danger btn-icon"
@@ -184,11 +183,13 @@ const Show = () => {
                                           )
                                         ) {
                                           setDeletingId(member.id);
+
                                           deleteMutation.mutate(member.id);
                                         }
                                       }}
                                     >
                                       <MdDelete className="me-2" />
+
                                       {deletingId === member.id
                                         ? "Deleting..."
                                         : "Delete"}

@@ -8,7 +8,7 @@ import SideBar from "../admincontrol/SideBar";
 import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import DashboardSkeleton from "../ui/DashboardSkeleton";
+import TableRowSkeleton from "../ui/TableRowSkeleton";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,7 +33,7 @@ const Show = () => {
     },
   });
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["users", page, search],
     queryFn: async () => {
       const endpoint = search ? "/superadmin/search-admins" : "/users";
@@ -80,10 +80,6 @@ const Show = () => {
       }
     }
   }, [data, isLoading, users.length, safeCurrentPage, handlePageChange]);
-
-  if (isLoading) {
-    return <DashboardSkeleton variant="table" rows={5} columns={7} />;
-  }
 
   return (
     <>
@@ -139,7 +135,9 @@ const Show = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {users.length > 0 ? (
+                            {isLoading || isFetching ? (
+                              <TableRowSkeleton rows={5} columns={7} />
+                            ) : users.length > 0 ? (
                               users.map((user, index) => (
                                 <tr key={user.id}>
                                   <td>

@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import DashboardSkeleton from "../ui/DashboardSkeleton";
+import TableRowSkeleton from "../ui/TableRowSkeleton";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -35,7 +35,7 @@ const Show = () => {
     },
   });
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["testimonials"],
     queryFn: async () => {
       const res = await api.get("/testimonials");
@@ -45,9 +45,6 @@ const Show = () => {
 
   const testimonials = data?.data ?? [];
 
-  if (isLoading) {
-    return <DashboardSkeleton variant="table" rows={4} columns={8} />;
-  }
   return (
     <>
       <Layout>
@@ -83,7 +80,7 @@ const Show = () => {
               </div>
 
               <div className="col-lg-9 board">
-                <div className="row ">
+                <div className="row">
                   <div className="col-md-12">
                     {error ? (
                       <p>failed to load testimonial</p>
@@ -103,7 +100,9 @@ const Show = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {testimonials.length > 0 ? (
+                            {isLoading || isFetching ? (
+                              <TableRowSkeleton rows={4} columns={8} />
+                            ) : testimonials.length > 0 ? (
                               testimonials.map((testimonial, index) => (
                                 <tr key={testimonial.id}>
                                   <td>{index + 1}</td>

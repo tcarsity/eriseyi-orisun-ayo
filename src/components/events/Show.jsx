@@ -8,7 +8,7 @@ import Layout from "../common/Layout";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import DashboardSkeleton from "../ui/DashboardSkeleton";
+import TableRowSkeleton from "../ui/TableRowSkeleton";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -35,7 +35,7 @@ const Show = () => {
     },
   });
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
       const res = await api.get("/events");
@@ -45,9 +45,6 @@ const Show = () => {
 
   const events = data?.data ?? [];
 
-  if (isLoading) {
-    return <DashboardSkeleton variant="table" rows={6} columns={11} />;
-  }
   return (
     <>
       <Layout>
@@ -106,7 +103,9 @@ const Show = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {events.length > 0 ? (
+                            {isLoading || isFetching ? (
+                              <TableRowSkeleton rows={6} columns={11} />
+                            ) : events.length > 0 ? (
                               events.map((event, index) => (
                                 <tr key={event.id}>
                                   <td>{index + 1}</td>
