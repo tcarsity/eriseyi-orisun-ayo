@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import SideBar from "../admincontrol/SideBar";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -28,7 +29,7 @@ const Show = () => {
     },
     onError: (error) => {
       toast.error(
-        error.response?.data?.message || "Failed to delete testimonial"
+        error.response?.data?.message || "Failed to delete testimonial",
       );
       setDeletingId(null);
     },
@@ -43,6 +44,10 @@ const Show = () => {
   });
 
   const testimonials = data?.data ?? [];
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="table" rows={4} columns={8} />;
+  }
   return (
     <>
       <Layout>
@@ -80,16 +85,7 @@ const Show = () => {
               <div className="col-lg-9 board">
                 <div className="row ">
                   <div className="col-md-12">
-                    {isLoading ? (
-                      <div className="d-flex justify-content-center align-items-center">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
-                          <span className="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    ) : error ? (
+                    {error ? (
                       <p>failed to load testimonial</p>
                     ) : (
                       <div className="table-responsive">
@@ -147,7 +143,7 @@ const Show = () => {
                                       onClick={() => {
                                         if (
                                           window.confirm(
-                                            "Are you sure you want to delete this testimonial?"
+                                            "Are you sure you want to delete this testimonial?",
                                           )
                                         ) {
                                           setDeletingId(testimonial.id);

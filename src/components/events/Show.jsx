@@ -8,6 +8,7 @@ import Layout from "../common/Layout";
 import toast from "react-hot-toast";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -44,6 +45,9 @@ const Show = () => {
 
   const events = data?.data ?? [];
 
+  if (isLoading) {
+    return <DashboardSkeleton variant="table" rows={6} columns={11} />;
+  }
   return (
     <>
       <Layout>
@@ -81,16 +85,7 @@ const Show = () => {
               <div className="col-lg-9 board">
                 <div className="row">
                   <div className="col-md-12">
-                    {isLoading ? (
-                      <div className="d-flex justify-content-center my-3">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
-                          <span className="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    ) : error ? (
+                    {error ? (
                       <p>failed to load events</p>
                     ) : (
                       <div className="table-responsive">
@@ -120,7 +115,7 @@ const Show = () => {
                                   <td>{event.location}</td>
                                   <td>
                                     {new Date(
-                                      event.event_date
+                                      event.event_date,
                                     ).toLocaleDateString()}
                                   </td>
                                   <td>{event.event_time}</td>
@@ -162,7 +157,7 @@ const Show = () => {
                                       onClick={() => {
                                         if (
                                           window.confirm(
-                                            "Are you sure you want to delete this event?"
+                                            "Are you sure you want to delete this event?",
                                           )
                                         ) {
                                           setDeletingId(event.id);

@@ -8,6 +8,7 @@ import SideBar from "../admincontrol/SideBar";
 import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,7 +54,7 @@ const Show = () => {
         return params;
       });
     },
-    [search]
+    [search],
   );
 
   const users = data?.data ?? [];
@@ -79,6 +80,10 @@ const Show = () => {
       }
     }
   }, [data, isLoading, users.length, safeCurrentPage, handlePageChange]);
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="table" rows={5} columns={7} />;
+  }
 
   return (
     <>
@@ -118,16 +123,7 @@ const Show = () => {
               <div className="col-lg-9 board">
                 <div className="row ">
                   <div className="col-md-12">
-                    {isLoading ? (
-                      <div className="d-flex justify-content-center my-3">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
-                          <span className="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    ) : error ? (
+                    {error ? (
                       <p>failed to load admins</p>
                     ) : (
                       <div className="table-responsive">
@@ -170,7 +166,7 @@ const Show = () => {
                                       onClick={() => {
                                         if (
                                           window.confirm(
-                                            "Are you sure you want to delete this admin?"
+                                            "Are you sure you want to delete this admin?",
                                           )
                                         ) {
                                           setDeletingId(user.id);
@@ -239,7 +235,7 @@ const Show = () => {
                               </button>
                             </li>
                           );
-                        }
+                        },
                       )}
 
                       {endPage < safeLastPage && (
