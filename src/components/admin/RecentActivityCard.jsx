@@ -65,7 +65,7 @@ const RecentActivityCard = () => {
   };
 
   if (isFetching) {
-    return <DashboardSkeleton variant="table" rows={10} />;
+    return <DashboardSkeleton variant="list" rows={10} />;
   }
 
   return (

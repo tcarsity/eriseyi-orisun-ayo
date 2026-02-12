@@ -76,7 +76,7 @@ const SecurityLogCard = () => {
   };
 
   if (isFetching) {
-    return <DashboardSkeleton variant="table" rows={5} />;
+    return <DashboardSkeleton variant="list" rows={5} />;
   }
 
   return (

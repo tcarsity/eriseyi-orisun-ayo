@@ -132,7 +132,7 @@ const MembersStatsCard = ({
   }, []);
 
   if (isLoading) {
-    return <DashboardSkeleton variant="stats" rows={3} />;
+    return <DashboardSkeleton variant="stats" />;
   }
 
   return (

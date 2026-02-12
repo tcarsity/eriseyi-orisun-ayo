@@ -5,7 +5,7 @@ const DashboardSkeleton = ({
   variant = "list",
   rows = 3,
   showHeader = true,
-  className = "",
+  className = "h-100",
 }) => {
   return (
     <div className={`card shadow border-0 p-3 ${className}`}>
