@@ -6,11 +6,16 @@ import { Pagination } from "swiper/modules";
 import api from "../../api/axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const Testimonial = () => {
   const queryClient = useQueryClient();
 
-  const { data = [], isError } = useQuery({
+  const {
+    data = [],
+    isError,
+    isLoading,
+  } = useQuery({
     queryKey: ["testimonials"],
     queryFn: async () => {
       const res = await api.get("/public-testimonials");
@@ -30,7 +35,7 @@ const Testimonial = () => {
         },
         () => {
           queryClient.invalidateQueries(["testimonials"]);
-        }
+        },
       )
       .subscribe();
 
@@ -38,6 +43,10 @@ const Testimonial = () => {
       supabase.removeChannel(channel);
     };
   }, [queryClient]);
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="list" />;
+  }
 
   return (
     <>

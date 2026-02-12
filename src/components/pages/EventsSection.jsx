@@ -3,12 +3,17 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import api from "../../api/axios";
 import { supabase } from "../../lib/supabase";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const EventsSection = () => {
   const [expandedEventId, setExpandedEventId] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data = [], isError } = useQuery({
+  const {
+    data = [],
+    isError,
+    isLoading,
+  } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
       const res = await api.get("/public-events");
@@ -39,6 +44,10 @@ const EventsSection = () => {
       supabase.removeChannel(channel);
     };
   }, [queryClient]);
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="list" />;
+  }
 
   return (
     <>
