@@ -10,6 +10,7 @@ import {
   Filler,
 } from "chart.js";
 import { FaUsers } from "react-icons/fa";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 ChartJS.register(
   LineElement,
@@ -17,7 +18,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   Tooltip,
-  Filler
+  Filler,
 );
 
 const MembersStatsCard = ({
@@ -26,6 +27,7 @@ const MembersStatsCard = ({
   trend = [],
   growth = 0,
   error,
+  isLoading,
 }) => {
   const chartRef = useRef();
   const [isVisible, setIsVisible] = useState(false);
@@ -36,7 +38,7 @@ const MembersStatsCard = ({
   }, []);
 
   const labels = trend.map((item) =>
-    new Date(item.date).toLocaleDateString("en-US", { weekday: "short" })
+    new Date(item.date).toLocaleDateString("en-US", { weekday: "short" }),
   );
 
   const counts = trend.map((item) => item.count);
@@ -85,7 +87,7 @@ const MembersStatsCard = ({
         },
       ],
     }),
-    [labels, counts, isGrowthPositive]
+    [labels, counts, isGrowthPositive],
   );
 
   const chartOptions = {
@@ -128,6 +130,10 @@ const MembersStatsCard = ({
     window.addEventListener("orientationchange", handleResize);
     return () => window.removeEventListener("orientationchange", handleResize);
   }, []);
+
+  if (isLoading) {
+    return <DashboardSkeleton variant="stats" rows={3} />;
+  }
 
   return (
     <div className="card shadow border-0 p-3 d-flex flex-column justify-content-between h-100 ">

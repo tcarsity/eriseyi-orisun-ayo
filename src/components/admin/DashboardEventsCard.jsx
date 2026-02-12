@@ -1,8 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaCalendarAlt } from "react-icons/fa";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
-const DashboardEventsCard = ({ data, error }) => {
+const DashboardEventsCard = ({ data, error, isLoading }) => {
+  if (isLoading) {
+    return <DashboardSkeleton variant="list" rows={4} />;
+  }
+
   if (error) {
     return (
       <div className="card shadow border-0 p-3 text-center text-danger">

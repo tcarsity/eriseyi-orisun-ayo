@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import { useDeleteSecurityLogs } from "../../hooks/useDeleteSecurityLogs";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 dayjs.extend(relativeTime);
 
@@ -74,6 +75,10 @@ const SecurityLogCard = () => {
     "Failed login attempt": <FaLock className="text-danger" />,
   };
 
+  if (isFetching) {
+    return <DashboardSkeleton variant="table" rows={5} />;
+  }
+
   return (
     <div className="card shadow border-0 mb-4 h-100">
       <div className="card-header bg-white d-flex justify-content-between gap-3 align-items-center">
@@ -101,9 +106,7 @@ const SecurityLogCard = () => {
       </div>
 
       <div className="card-body p-0">
-        {isFetching ? (
-          <div className="text-center py-5 text-muted">Loading logs...</div>
-        ) : isError ? (
+        {isError ? (
           <div className="text-center py-5 text-danger">
             Failed to load security logs.
           </div>

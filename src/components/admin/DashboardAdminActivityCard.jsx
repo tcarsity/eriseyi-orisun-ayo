@@ -2,20 +2,11 @@ import { motion } from "framer-motion";
 import React from "react";
 import { FaCalendarAlt, FaUsers } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 const DashboardAdminActivityCard = ({ data, isLoading, error }) => {
   if (isLoading) {
-    return (
-      <div className="card shadow-sm border-0 p-4 text-center">
-        <div
-          className="spinner-border text-primary"
-          role="status"
-          style={{ width: "2rem", height: "2rem" }}
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton variant="list" rows={5} />;
   }
 
   if (error) {

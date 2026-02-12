@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { MdRecentActors } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { useDeleteActivities } from "../../hooks/useDeleteActivities";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 dayjs.extend(relativeTime);
 
@@ -36,7 +37,7 @@ const RecentActivityCard = () => {
     setSelectedActivity((prev) =>
       prev.includes(id)
         ? prev.filter((ActivityId) => ActivityId !== id)
-        : [...prev, id]
+        : [...prev, id],
     );
   };
 
@@ -62,6 +63,10 @@ const RecentActivityCard = () => {
       alert("Failed to delete activities.");
     }
   };
+
+  if (isFetching) {
+    return <DashboardSkeleton variant="table" rows={10} />;
+  }
 
   return (
     <>
@@ -90,11 +95,7 @@ const RecentActivityCard = () => {
           )}
         </div>
 
-        {isFetching ? (
-          <div className="text-center py-5 text-muted">
-            Loading activities...
-          </div>
-        ) : isError ? (
+        {isError ? (
           <p className="text-danger text-center py-5">
             Failed to load activities.
           </p>
@@ -167,7 +168,7 @@ const RecentActivityCard = () => {
                     Math.floor((page - 1) / windowSize) * windowSize + 1;
                   const endPage = Math.min(
                     startPage + windowSize - 1,
-                    meta.last_page
+                    meta.last_page,
                   );
 
                   const pages = [];
@@ -183,7 +184,7 @@ const RecentActivityCard = () => {
                         >
                           {i}
                         </button>
-                      </li>
+                      </li>,
                     );
                   }
                   return pages;
