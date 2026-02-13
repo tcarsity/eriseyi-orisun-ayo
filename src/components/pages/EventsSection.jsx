@@ -12,6 +12,7 @@ const EventsSection = () => {
   const {
     data = [],
     isError,
+    isFetching,
     isLoading,
   } = useQuery({
     queryKey: ["events"],
@@ -45,9 +46,9 @@ const EventsSection = () => {
     };
   }, [queryClient]);
 
-  if (isLoading) {
-    return <DashboardSkeleton variant="list" />;
-  }
+  // if (isLoading) {
+  //   return <DashboardSkeleton variant="list" />;
+  // }
 
   return (
     <>
@@ -76,132 +77,136 @@ const EventsSection = () => {
             </h5>
           )}
 
-          {!isError && data?.length > 0 && (
-            <div className="events-editorial mt-5">
-              {/* Featured Event */}
-              {featuredEvent && (
-                <motion.div
-                  className="featured-event card border-0 shadow mb-5 h-100"
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <div className="row g-0 align-items-center">
-                    <div className="col-md-6">
-                      <img
-                        src={featuredEvent.image || "/assets/placeholder.jpg"}
-                        alt={featuredEvent.title}
-                        className="img-fluid h-100 w-100"
-                        style={{ objectFit: "cover", minHeight: "300px" }}
-                      />
-                    </div>
+          {isLoading || isFetching ? (
+            <DashboardSkeleton variant="list" />
+          ) : (
+            !isError &&
+            data?.length > 0 && (
+              <div className="events-editorial mt-5">
+                {/* Featured Event */}
+                {featuredEvent && (
+                  <motion.div
+                    className="featured-event card border-0 shadow mb-5 h-100"
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <div className="row g-0 align-items-center">
+                      <div className="col-md-6">
+                        <img
+                          src={featuredEvent.image || "/assets/placeholder.jpg"}
+                          alt={featuredEvent.title}
+                          className="img-fluid h-100 w-100"
+                          style={{ objectFit: "cover", minHeight: "300px" }}
+                        />
+                      </div>
 
-                    <div className="col-md-6 p-4">
-                      <span className="badge bg-primary mb-2">
-                        Featured Event
-                      </span>
-                      <h3 className="fw-bold">{featuredEvent.title}</h3>
-                      <p className="text-muted mb-2">
-                        {new Date(featuredEvent?.event_date).toLocaleDateString(
-                          "en-GB",
-                          {
+                      <div className="col-md-6 p-4">
+                        <span className="badge bg-primary mb-2">
+                          Featured Event
+                        </span>
+                        <h3 className="fw-bold">{featuredEvent.title}</h3>
+                        <p className="text-muted mb-2">
+                          {new Date(
+                            featuredEvent?.event_date,
+                          ).toLocaleDateString("en-GB", {
                             day: "2-digit",
 
                             month: "2-digit",
 
                             year: "numeric",
-                          },
-                        )}{" "}
-                        •{" "}
-                        {featuredEvent?.event_time &&
-                          new Date(
-                            `1970-01-01T${featuredEvent?.event_time}`,
-                          ).toLocaleTimeString("en-US", {
-                            hour: "numeric",
+                          })}{" "}
+                          •{" "}
+                          {featuredEvent?.event_time &&
+                            new Date(
+                              `1970-01-01T${featuredEvent?.event_time}`,
+                            ).toLocaleTimeString("en-US", {
+                              hour: "numeric",
 
-                            minute: "2-digit",
+                              minute: "2-digit",
 
-                            hour12: true,
-                          })}
-                      </p>
-                      <div className="text-secondary small position-relative">
-                        <div
-                          className={
-                            expandedEventId === featuredEvent?.id
-                              ? ""
-                              : "collapsed-html"
-                          }
-                          dangerouslySetInnerHTML={{
-                            __html: featuredEvent?.description,
-                          }}
-                        />
-
-                        {featuredEvent?.description && (
-                          <span
-                            className="text-primary fw-semibold d-inline-block mt-2"
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              setExpandedEventId(
-                                expandedEventId === featuredEvent?.id
-                                  ? null
-                                  : featuredEvent?.id,
-                              )
+                              hour12: true,
+                            })}
+                        </p>
+                        <div className="text-secondary small position-relative">
+                          <div
+                            className={
+                              expandedEventId === featuredEvent?.id
+                                ? ""
+                                : "collapsed-html"
                             }
-                          >
-                            {expandedEventId === featuredEvent?.id
-                              ? "See less"
-                              : "See more"}
-                          </span>
-                        )}
+                            dangerouslySetInnerHTML={{
+                              __html: featuredEvent?.description,
+                            }}
+                          />
+
+                          {featuredEvent?.description && (
+                            <span
+                              className="text-primary fw-semibold d-inline-block mt-2"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                setExpandedEventId(
+                                  expandedEventId === featuredEvent?.id
+                                    ? null
+                                    : featuredEvent?.id,
+                                )
+                              }
+                            >
+                              {expandedEventId === featuredEvent?.id
+                                ? "See less"
+                                : "See more"}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
+                  </motion.div>
+                )}
+
+                {/* Upcoming Events */}
+                {upcomingEvents.length > 0 && (
+                  <div className="upcoming-events">
+                    <h4 className="fw-bold mb-3">More Upcoming Events</h4>
+                    <ul className="list-group list-group-flush">
+                      {upcomingEvents.map((event) => (
+                        <li
+                          key={event.id}
+                          className="list-group-item d-flex justify-content-between align-items-center py-3"
+                        >
+                          <div>
+                            <strong>{event.title}</strong>
+                            <p className="text-muted mb-2">
+                              {new Date(event.event_date).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+
+                                  month: "2-digit",
+
+                                  year: "numeric",
+                                },
+                              )}{" "}
+                              •{" "}
+                              {event.event_time &&
+                                new Date(
+                                  `1970-01-01T${event.event_time}`,
+                                ).toLocaleTimeString("en-US", {
+                                  hour: "numeric",
+
+                                  minute: "2-digit",
+
+                                  hour12: true,
+                                })}
+                            </p>
+                          </div>
+                          <span className="text-primary">→</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </motion.div>
-              )}
-
-              {/* Upcoming Events */}
-              {upcomingEvents.length > 0 && (
-                <div className="upcoming-events">
-                  <h4 className="fw-bold mb-3">More Upcoming Events</h4>
-                  <ul className="list-group list-group-flush">
-                    {upcomingEvents.map((event) => (
-                      <li
-                        key={event.id}
-                        className="list-group-item d-flex justify-content-between align-items-center py-3"
-                      >
-                        <div>
-                          <strong>{event.title}</strong>
-                          <p className="text-muted mb-2">
-                            {new Date(event.event_date).toLocaleDateString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-
-                                month: "2-digit",
-
-                                year: "numeric",
-                              },
-                            )}{" "}
-                            •{" "}
-                            {event.event_time &&
-                              new Date(
-                                `1970-01-01T${event.event_time}`,
-                              ).toLocaleTimeString("en-US", {
-                                hour: "numeric",
-
-                                minute: "2-digit",
-
-                                hour12: true,
-                              })}
-                          </p>
-                        </div>
-                        <span className="text-primary">→</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )
           )}
         </div>
       </section>
