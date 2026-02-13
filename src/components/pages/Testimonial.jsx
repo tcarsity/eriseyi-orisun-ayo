@@ -72,33 +72,34 @@ const Testimonial = () => {
             </h5>
           )}
 
-          {!isError && data?.length > 0 && (
-            <Swiper
-              modules={[Pagination]}
-              spaceBetween={50}
-              slidesPerView={3}
-              pagination={{ clickable: true }}
-              breakpoints={{
-                200: {
-                  slidesPerView: 1,
-                  spaceBetween: 20,
-                },
+          {isLoading || isFetching ? (
+            <DashboardSkeleton variant="list" />
+          ) : (
+            !isError &&
+            data?.length > 0 && (
+              <Swiper
+                modules={[Pagination]}
+                spaceBetween={50}
+                slidesPerView={3}
+                pagination={{ clickable: true }}
+                breakpoints={{
+                  200: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                  },
 
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 30,
-                },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                  },
 
-                1024: {
-                  slidesPerView: 3,
-                  spaceBetween: 40,
-                },
-              }}
-            >
-              {isLoading || isFetching ? (
-                <DashboardSkeleton variant="list" />
-              ) : (
-                data.map((testimonial) => (
+                  1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 40,
+                  },
+                }}
+              >
+                {data.map((testimonial) => (
                   <SwiperSlide>
                     <div className={`card shadow border-0 h-100 `}>
                       <div className="card-body p-4">
@@ -174,9 +175,9 @@ const Testimonial = () => {
                       </div>
                     </div>
                   </SwiperSlide>
-                ))
-              )}
-            </Swiper>
+                ))}
+              </Swiper>
+            )
           )}
         </div>
       </section>
