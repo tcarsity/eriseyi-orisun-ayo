@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,30 +20,33 @@ const Edit = () => {
 
   const editor = useRef(null);
 
-  const config = {
-    readonly: false,
-    height: 350,
-    toolbarSticky: false,
-    buttons: [
-      "bold",
-      "italic",
-      "underline",
-      "|",
-      "ul",
-      "ol",
-      "|",
-      "font",
-      "fontsize",
-      "|",
-      "align",
-      "|",
-      "link",
-      "image",
-      "|",
-      "undo",
-      "redo",
-    ],
-  };
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      height: 350,
+      toolbarSticky: false,
+      buttons: [
+        "bold",
+        "italic",
+        "underline",
+        "|",
+        "ul",
+        "ol",
+        "|",
+        "font",
+        "fontsize",
+        "|",
+        "align",
+        "|",
+        "link",
+        "image",
+        "|",
+        "undo",
+        "redo",
+      ],
+    }),
+    [],
+  );
 
   const {
     register,
@@ -224,15 +227,12 @@ const Edit = () => {
                                 rules={{
                                   required: "The description field is required",
                                 }}
-                                render={({ field }) => (
+                                render={({ field: { value, onChange } }) => (
                                   <JoditEditor
                                     ref={editor}
-                                    value={field.value || ""}
+                                    value={value || ""}
                                     config={config}
-                                    onBlur={field.onBlur}
-                                    onChange={(newContent) =>
-                                      field.onChange(newContent)
-                                    }
+                                    onChange={onChange}
                                   />
                                 )}
                               />

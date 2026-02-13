@@ -22,30 +22,33 @@ const Create = () => {
 
   const editor = useRef(null);
 
-  const config = {
-    readonly: false,
-    height: 350,
-    toolbarSticky: false,
-    buttons: [
-      "bold",
-      "italic",
-      "underline",
-      "|",
-      "ul",
-      "ol",
-      "|",
-      "font",
-      "fontsize",
-      "|",
-      "align",
-      "|",
-      "link",
-      "image",
-      "|",
-      "undo",
-      "redo",
-    ],
-  };
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      height: 350,
+      toolbarSticky: false,
+      buttons: [
+        "bold",
+        "italic",
+        "underline",
+        "|",
+        "ul",
+        "ol",
+        "|",
+        "font",
+        "fontsize",
+        "|",
+        "align",
+        "|",
+        "link",
+        "image",
+        "|",
+        "undo",
+        "redo",
+      ],
+    }),
+    [],
+  );
 
   const {
     register,
@@ -196,15 +199,12 @@ const Create = () => {
                               rules={{
                                 required: "The description field is required",
                               }}
-                              render={({ field }) => (
+                              render={({ field: { value, onChange } }) => (
                                 <JoditEditor
                                   ref={editor}
-                                  value={field.value || ""}
+                                  value={value || ""}
                                   config={config}
-                                  onBlur={field.onBlur}
-                                  onChange={(newContent) =>
-                                    field.onChange(newContent)
-                                  }
+                                  onChange={onChange}
                                 />
                               )}
                             />
