@@ -14,13 +14,14 @@ import DashboardPreloader from "../DashboardPreloader";
 import { useDashboardStats } from "../../hooks/useDashboardStats";
 import useEvents from "../../hooks/useEvents";
 import { useNewMembers } from "../../hooks/useNewMembers";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
 // lazy cards
 const ActiveAdminsCard = lazy(() => import("./ActiveAdminsCard"));
 const RecentActivityCard = lazy(() => import("./RecentActivityCard"));
 const SecurityLogCard = lazy(() => import("./SecurityLogCard"));
-const DashboardAdminActivityCard = lazy(() =>
-  import("./DashboardAdminActivityCard")
+const DashboardAdminActivityCard = lazy(
+  () => import("./DashboardAdminActivityCard"),
 );
 const DashboardEventsCard = lazy(() => import("./DashboardEventsCard"));
 const AdminStatsCard = lazy(() => import("./AdminStatsCard"));
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { data: stats } = useDashboardStats({
+  const { data: stats, isFetching } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -54,7 +55,7 @@ const Dashboard = () => {
   const newMembersToday = useMemo(() => {
     if (!Array.isArray(newMembers)) return [];
     return newMembers.filter(
-      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today
+      (m) => dayjs(m.created_at).format("DD-MM-YYYY") === today,
     );
   }, [newMembers, today]);
 
@@ -227,35 +228,54 @@ const Dashboard = () => {
             <div className="col-lg-9 board">
               {/* Top stats */}
               <div className="row">
+                {/* Total Members */}
                 <div className="col-md-4">
-                  <div className="card shadow border-0">
-                    <div className="card-body p-3">
-                      <h2>{stats?.members?.count ?? 0}</h2>
-                      <strong>Total Members</strong>
+                  {!stats || isFetching ? (
+                    <DashboardSkeleton variant="stats" showHeader={false} />
+                  ) : (
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{stats.members?.count ?? 0}</h2>
+                        <strong>Total Members</strong>
+                      </div>
+
+                      <div className="card-footer">&nbsp;</div>
                     </div>
-                    <div className="card-footer">&nbsp;</div>
-                  </div>
+                  )}
                 </div>
+
+                {/* Total Admins */}
                 <div className="col-md-4 admins">
-                  <div className="card shadow border-0">
-                    <div className="card-body p-3">
-                      <h2>{stats?.admins?.count ?? 0}</h2>
-                      <strong>Total Admins</strong>
+                  {!stats || isFetching ? (
+                    <DashboardSkeleton variant="stats" showHeader={false} />
+                  ) : (
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{stats.admins?.count ?? 0}</h2>
+                        <strong>Total Admins</strong>
+                      </div>
+
+                      <div className="card-footer">&nbsp;</div>
                     </div>
-                    <div className="card-footer">&nbsp;</div>
-                  </div>
+                  )}
                 </div>
+
+                {/* Testimonials */}
                 <div className="col-md-4 test">
-                  <div className="card shadow border-0">
-                    <div className="card-body p-3">
-                      <h2>{stats?.testimonials?.count ?? 0}</h2>
-                      <strong>Testimonials</strong>
+                  {!stats || isFetching ? (
+                    <DashboardSkeleton variant="stats" showHeader={false} />
+                  ) : (
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{stats.testimonials?.count ?? 0}</h2>
+                        <strong>Testimonials</strong>
+                      </div>
+
+                      <div className="card-footer">&nbsp;</div>
                     </div>
-                    <div className="card-footer">&nbsp;</div>
-                  </div>
+                  )}
                 </div>
               </div>
-
               {/* Cards */}
               <div className="row g-3 py-5 ">
                 <div className="col-md-6 col-lg-6" ref={adminRef}>

@@ -13,9 +13,10 @@ import { useHeartbeat } from "../../hooks/useHeartbeat";
 import DashboardPreloader from "../DashboardPreloader";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
+import DashboardSkeleton from "../ui/DashboardSkeleton";
 
-const AdminPerformanceCard = lazy(() =>
-  import("../admin/AdminPerformanceCard")
+const AdminPerformanceCard = lazy(
+  () => import("../admin/AdminPerformanceCard"),
 );
 const DashboardEventsCard = lazy(() => import("../admin/DashboardEventsCard"));
 const MembersStatsCard = lazy(() => import("../admin/MembersStatsCard"));
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { data: stats } = useDashboardStats({
+  const { data: stats, isFetching } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
 
   const rolePrefix = useMemo(
     () => (user?.role === "superadmin" ? "superadmin" : "admin"),
-    [user?.role]
+    [user?.role],
   );
 
   const inViewConfig = { triggerOnce: true, threshold: 0.2 };
@@ -192,27 +193,40 @@ const AdminDashboard = () => {
               </div>
               <div className="col-lg-9 board">
                 <div className="row">
-                  <div className="col-md-6">
-                    <div className="card shadow border-0">
-                      <div className="card-body p-3">
-                        <h2>{stats?.members?.count ?? 0}</h2>
-                        <strong>Total Members</strong>
+                  {/* Total Members */}
+                  <div className="col-md-4">
+                    {!stats || isFetching ? (
+                      <DashboardSkeleton variant="stats" showHeader={false} />
+                    ) : (
+                      <div className="card shadow border-0">
+                        <div className="card-body p-3">
+                          <h2>{stats.members?.count ?? 0}</h2>
+                          <strong>Total Members</strong>
+                        </div>
+
+                        <div className="card-footer">&nbsp;</div>
                       </div>
-                      <div className="card-footer">&nbsp;</div>
-                    </div>
+                    )}
                   </div>
 
-                  <div className="col-md-6 test">
-                    <div className="card shadow border-0">
-                      <div className="card-body p-3">
-                        <h2>{stats?.testimonials?.count ?? 0}</h2>
-                        <strong>Testimonials</strong>
+                  {/* Testimonials */}
+                  <div className="col-md-4 test">
+                    {!stats || isFetching ? (
+                      <DashboardSkeleton variant="stats" showHeader={false} />
+                    ) : (
+                      <div className="card shadow border-0">
+                        <div className="card-body p-3">
+                          <h2>{stats.testimonials?.count ?? 0}</h2>
+                          <strong>Testimonials</strong>
+                        </div>
+
+                        <div className="card-footer">&nbsp;</div>
                       </div>
-                      <div className="card-footer">&nbsp;</div>
-                    </div>
+                    )}
                   </div>
                 </div>
 
+                {/* Cards */}
                 <div className="row g-3 py-5">
                   <div className="col-md-6 col-lg-6" ref={memberRef}>
                     <Suspense fallback={<div style={{ height: 200 }}></div>}>
