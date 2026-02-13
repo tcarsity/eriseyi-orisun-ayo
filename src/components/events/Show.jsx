@@ -141,7 +141,15 @@ const Show = () => {
                                     <br />
 
                                     <small className="text-muted">
-                                      {event.event_time}
+                                      {new Date(
+                                        `1970-01-01T${event.event_time}`,
+                                      ).toLocaleTimeString([], {
+                                        hour: "2-digit",
+
+                                        minute: "2-digit",
+
+                                        hour12: true,
+                                      })}
                                     </small>
                                   </td>
                                   <td>
