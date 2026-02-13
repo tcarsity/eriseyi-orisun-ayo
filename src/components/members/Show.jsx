@@ -129,7 +129,7 @@ const Show = () => {
                       <p>failed to load members</p>
                     ) : (
                       <div className="table-responsive">
-                        <table className="table table-striped table-hover">
+                        <table className="table table-striped table-hover table-sm align-middle">
                           <thead>
                             <tr>
                               <th>#</th>
@@ -165,16 +165,16 @@ const Show = () => {
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-member/edit/${member.id}`}
-                                      className="btn btn-light btn-icon"
+                                      className="btn btn-light btn-icon btn-sm"
                                     >
-                                      <FaEdit className="me-2" />
+                                      <FaEdit />
                                       Edit
                                     </Link>
                                   </td>
 
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-icon"
+                                      className="btn btn-danger btn-icon btn-sm"
                                       disabled={deletingId === member.id}
                                       onClick={() => {
                                         if (
@@ -188,7 +188,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
-                                      <MdDelete className="me-2" />
+                                      <MdDelete />
 
                                       {deletingId === member.id
                                         ? "Deleting..."

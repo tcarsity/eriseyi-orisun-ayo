@@ -14,6 +14,11 @@ const Show = () => {
   const [deletingId, setDeletingId] = useState(null);
   const queryClient = useQueryClient();
 
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
   const { user } = useAuth();
   if (!user) return null;
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
@@ -86,7 +91,7 @@ const Show = () => {
                       <p>failed to load events</p>
                     ) : (
                       <div className="table-responsive">
-                        <table className="table table-striped table-hover">
+                        <table className="table table-striped table-hover table-sm align-middle">
                           <thead>
                             <tr>
                               <th>#</th>
@@ -96,8 +101,12 @@ const Show = () => {
                               <th>Event Date</th>
                               <th>Event Time</th>
                               <th>Image</th>
-                              <th>Creator</th>
-                              <th>Created_at</th>
+                              <th className="d-none d-md-table-cell">
+                                Creator
+                              </th>
+                              <th className="d-none d-lg-table-cell">
+                                Created_at
+                              </th>
                               <th>Edit</th>
                               <th>Delete</th>
                             </tr>
@@ -110,7 +119,15 @@ const Show = () => {
                                 <tr key={event.id}>
                                   <td>{index + 1}</td>
                                   <td>{event.title}</td>
-                                  <td>{event.description}</td>
+                                  <td style={{ maxWidth: "200px" }}>
+                                    <span title={stripHtml(event.description)}>
+                                      {stripHtml(event.description).slice(
+                                        0,
+                                        60,
+                                      )}
+                                      ...
+                                    </span>
+                                  </td>
                                   <td>{event.location}</td>
                                   <td>
                                     {new Date(
@@ -134,24 +151,26 @@ const Show = () => {
                                       "No Image"
                                     )}
                                   </td>
-                                  <td>
+                                  <td className="d-none d-md-table-cell">
                                     <span className="badge bg-light text-dark">
                                       {event.creator?.name || "Superadmin"}
                                     </span>
                                   </td>
-                                  <td>{event.created_at}</td>
+                                  <td className="d-none d-lg-table-cell">
+                                    {event.created_at}
+                                  </td>
                                   <td>
                                     <Link
                                       to={`/${rolePrefix}-event/edit/${event.id}`}
-                                      className="btn btn-light btn-icon"
+                                      className="btn btn-light btn-icon btn-sm"
                                     >
-                                      <FaEdit className="me-2" />
+                                      <FaEdit />
                                       Edit
                                     </Link>
                                   </td>
                                   <td>
                                     <button
-                                      className="btn btn-danger btn-icon"
+                                      className="btn btn-danger btn-icon btn-sm"
                                       disabled={deletingId === event.id}
                                       onClick={() => {
                                         if (
@@ -164,7 +183,7 @@ const Show = () => {
                                         }
                                       }}
                                     >
-                                      <MdDelete className="me-2" />
+                                      <MdDelete />
                                       {deletingId === event.id
                                         ? "Deleting..."
                                         : "Delete"}
