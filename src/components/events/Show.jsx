@@ -98,14 +98,10 @@ const Show = () => {
                               <th>Title</th>
                               <th>Description</th>
                               <th>Location</th>
-                              <th>Event Date</th>
-                              <th>Event Time</th>
+                              <th>Date & Time</th>
                               <th>Image</th>
                               <th className="d-none d-md-table-cell">
                                 Creator
-                              </th>
-                              <th className="d-none d-lg-table-cell">
-                                Created_at
                               </th>
                               <th>Edit</th>
                               <th>Delete</th>
@@ -133,8 +129,13 @@ const Show = () => {
                                     {new Date(
                                       event.event_date,
                                     ).toLocaleDateString()}
+
+                                    <br />
+
+                                    <small className="text-muted">
+                                      {event.event_time}
+                                    </small>
                                   </td>
-                                  <td>{event.event_time}</td>
                                   <td>
                                     {event.image ? (
                                       <img
@@ -155,9 +156,6 @@ const Show = () => {
                                     <span className="badge bg-light text-dark">
                                       {event.creator?.name || "Superadmin"}
                                     </span>
-                                  </td>
-                                  <td className="d-none d-lg-table-cell">
-                                    {event.created_at}
                                   </td>
                                   <td>
                                     <Link
