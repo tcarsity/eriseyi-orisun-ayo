@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -13,32 +13,53 @@ import LoadingButton from "../LoadingButton";
 
 const Edit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const editor = useRef(null);
-  const [content, setContent] = useState("");
   const queryClient = useQueryClient();
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const editor = useRef(null);
+
   const config = useMemo(
     () => ({
-      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-      placeholder: placeholder || "",
+      readonly: false,
+      height: 350,
+      toolbarSticky: false,
+      buttons: [
+        "bold",
+        "italic",
+        "underline",
+        "|",
+        "ul",
+        "ol",
+        "|",
+        "font",
+        "fontsize",
+        "|",
+        "align",
+        "|",
+        "link",
+        "image",
+        "|",
+        "undo",
+        "redo",
+      ],
     }),
-    [placeholder],
+    [],
   );
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: async () => {
       if (!id) return {};
       const res = await api.get(`/events/${id}`);
       const event = res.data.data;
-      setContent(res.event.content);
       return {
         title: event.title,
+        description: event.description,
         location: event.location,
         event_date: event.event_date,
         event_time: event.event_time,
@@ -199,14 +220,20 @@ const Edit = () => {
 
                             <label className="form-label">Description</label>
                             <div className="mb-3">
-                              <JoditEditor
-                                ref={editor}
-                                value={content}
-                                config={config}
-                                tabIndex={1} // tabIndex of textarea
-                                onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                onChange={(newContent) => {}}
-                                dangerouslySetInnerHTML={{ __html: content }}
+                              <Controller
+                                name="description"
+                                control={control}
+                                rules={{
+                                  required: "The description field is required",
+                                }}
+                                render={({ field: { value, onChange } }) => (
+                                  <JoditEditor
+                                    ref={editor}
+                                    value={value || ""}
+                                    config={config}
+                                    onChange={onChange}
+                                  />
+                                )}
                               />
 
                               {errors.description && (
