@@ -116,15 +116,23 @@ const Show = () => {
                                   <td>{index + 1}</td>
                                   <td>{event.title}</td>
                                   <td style={{ maxWidth: "200px" }}>
-                                    <span title={stripHtml(event.description)}>
+                                    <div
+                                      style={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
                                       {stripHtml(event.description).slice(
                                         0,
                                         60,
                                       )}
                                       ...
-                                    </span>
+                                    </div>
                                   </td>
-                                  <td>{event.location}</td>
+                                  <td style={{ minWidth: "140px" }}>
+                                    {event.location}
+                                  </td>
                                   <td>
                                     {new Date(
                                       event.event_date,
