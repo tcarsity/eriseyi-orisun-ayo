@@ -9,10 +9,11 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { resizeImage } from "../../utils/resizeImage";
 import JoditEditor from "jodit-react";
-import { Controller } from "react-hook-form";
 import LoadingButton from "../LoadingButton";
 
 const Create = () => {
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
   const [preview, setPreview] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const queryClient = useQueryClient();
@@ -20,40 +21,17 @@ const Create = () => {
   const { user } = useAuth();
   const rolePrefix = user?.role === "superadmin" ? "superadmin" : "admin";
 
-  const editor = useRef(null);
-
   const config = useMemo(
     () => ({
-      readonly: false,
-      height: 350,
-      toolbarSticky: false,
-      buttons: [
-        "bold",
-        "italic",
-        "underline",
-        "|",
-        "ul",
-        "ol",
-        "|",
-        "font",
-        "fontsize",
-        "|",
-        "align",
-        "|",
-        "link",
-        "image",
-        "|",
-        "undo",
-        "redo",
-      ],
+      readonly: false, // all options from https://xdsoft.net/jodit/docs/,
+      placeholder: placeholder || "",
     }),
-    [],
+    [placeholder],
   );
 
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
     reset,
     setError,
@@ -193,20 +171,12 @@ const Create = () => {
 
                           <label className="form-label">Description</label>
                           <div className="mb-3">
-                            <Controller
-                              name="description"
-                              control={control}
-                              rules={{
-                                required: "The description field is required",
-                              }}
-                              render={({ field: { value, onChange } }) => (
-                                <JoditEditor
-                                  ref={editor}
-                                  value={value || ""}
-                                  config={config}
-                                  onChange={onChange}
-                                />
-                              )}
+                            <JoditEditor
+                              ref={editor}
+                              value={content}
+                              config={config}
+                              tabIndex={1} // tabIndex of textarea
+                              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                             />
 
                             {errors.description && (
