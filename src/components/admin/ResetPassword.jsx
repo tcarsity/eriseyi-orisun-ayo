@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../lib/supabase";
 import api from "../../api/axios";
 
 const ResetPassword = () => {

@@ -4,7 +4,7 @@ import Layout from "../common/Layout";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { MdEmail } from "react-icons/md";
-import { supabase } from "../../supabaseClient";
+import { supabase } from "../../lib/supabase";
 
 const ForgotPassword = () => {
   const {
