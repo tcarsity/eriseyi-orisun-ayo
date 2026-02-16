@@ -143,29 +143,6 @@ const Create = () => {
                             )}
                           </div>
 
-                          <label className="form-label">Password</label>
-                          <div className="mb-3 input-group">
-                            <span className="input-group-text">
-                              <RiLockPasswordFill />
-                            </span>
-                            <input
-                              {...register("password", {
-                                required: "The password field is required",
-                              })}
-                              type="password"
-                              className={`form-control ${
-                                errors.password && "is-invalid"
-                              }`}
-                              placeholder="Please enter your password"
-                            />
-
-                            {errors.password && (
-                              <p className="invalid-feedback">
-                                {errors.password?.message}
-                              </p>
-                            )}
-                          </div>
-
                           <LoadingButton
                             type="submit"
                             isLoading={mutation.isPending}
