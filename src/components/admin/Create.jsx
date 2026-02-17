@@ -1,16 +1,13 @@
 import React, { useCallback } from "react";
 import Layout from "../common/Layout";
 import { Link } from "react-router-dom";
-
 import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import api from "../../api/axios";
 import SideBar from "../admincontrol/SideBar";
-import { useAuth } from "../context/AuthContext";
 import LoadingButton from "../LoadingButton";
 
 const Create = () => {

@@ -9,6 +9,7 @@ import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import TableRowSkeleton from "../ui/TableRowSkeleton";
+import dayjs from "dayjs";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,6 +33,29 @@ const Show = () => {
       setDeletingId(null);
     },
   });
+
+  const resendMutation = useMutation({
+    mutationFn: async (userId) => {
+      return await api.post(`/users/${userId}/resend-invite`);
+    },
+
+    onSuccess: (res) => {
+      toast.success(res.data.message || "Invite resent successfully");
+
+      queryClient.invalidateQueries(["users"]);
+    },
+
+    onError: (error) => {
+      const message =
+        error.response?.data?.message || "Failed to resend invite";
+
+      toast.error(message);
+    },
+  });
+
+  const resendInvite = (id) => {
+    resendMutation.mutate(id);
+  };
 
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["users", page, search],
@@ -130,13 +154,14 @@ const Show = () => {
                               <th>Name</th>
                               <th>Email</th>
                               <th>Role</th>
+                              <th>Status</th>
                               <th>Edit</th>
                               <th>Delete</th>
                             </tr>
                           </thead>
                           <tbody>
                             {isLoading || isFetching ? (
-                              <TableRowSkeleton rows={5} columns={7} />
+                              <TableRowSkeleton rows={5} columns={8} />
                             ) : users.length > 0 ? (
                               users.map((user, index) => (
                                 <tr key={user.id}>
@@ -148,6 +173,61 @@ const Show = () => {
                                   <td>{user.name}</td>
                                   <td>{user.email}</td>
                                   <td>{user.role}</td>
+
+                                  <td>
+                                    {(() => {
+                                      const isExpired =
+                                        user.invite_status === "pending" &&
+                                        dayjs().diff(
+                                          dayjs(user.invite_sent_at),
+                                          "hour",
+                                        ) > 24;
+
+                                      if (user.invite_status === "active") {
+                                        return (
+                                          <button
+                                            className="btn btn-success btn-sm"
+                                            disabled
+                                          >
+                                            Active
+                                          </button>
+                                        );
+                                      }
+
+                                      if (
+                                        user.invite_status === "pending" &&
+                                        !isExpired
+                                      ) {
+                                        return (
+                                          <button
+                                            className="btn btn-warning btn-sm"
+                                            disabled
+                                          >
+                                            Pending
+                                          </button>
+                                        );
+                                      }
+
+                                      if (isExpired) {
+                                        return (
+                                          <button
+                                            className="btn btn-primary btn-sm"
+                                            disabled={resendMutation.isPending}
+                                            onClick={() =>
+                                              resendInvite(user.id)
+                                            }
+                                          >
+                                            {resendMutation.isPending
+                                              ? "Resending..."
+                                              : "Resend Invite"}
+                                          </button>
+                                        );
+                                      }
+
+                                      return null;
+                                    })()}
+                                  </td>
+
                                   <td>
                                     <Link
                                       to={`/superadmin-admin/edit/${user.id}`}
@@ -182,7 +262,7 @@ const Show = () => {
                               ))
                             ) : (
                               <tr>
-                                <td colSpan="7" className="text-center">
+                                <td colSpan="8" className="text-center">
                                   No admins yet
                                 </td>
                               </tr>
