@@ -9,7 +9,6 @@ import SearchBar from "../common/SearchBar";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import TableRowSkeleton from "../ui/TableRowSkeleton";
-import dayjs from "dayjs";
 
 const Show = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -175,59 +174,39 @@ const Show = () => {
                                   <td>{user.role}</td>
 
                                   <td>
-                                    {(() => {
-                                      const isExpired =
-                                        user.invite_status === "pending" &&
-                                        dayjs().diff(
-                                          dayjs(user.invite_sent_at),
-                                          "hour",
-                                        ) > 24;
+                                    {user.invite_display_status ===
+                                      "active" && (
+                                      <button
+                                        className="btn btn-success btn-sm"
+                                        disabled
+                                      >
+                                        Active
+                                      </button>
+                                    )}
 
-                                      if (user.invite_status === "active") {
-                                        return (
-                                          <button
-                                            className="btn btn-success btn-sm"
-                                            disabled
-                                          >
-                                            Active
-                                          </button>
-                                        );
-                                      }
+                                    {user.invite_display_status ===
+                                      "pending" && (
+                                      <button
+                                        className="btn btn-warning btn-sm"
+                                        disabled
+                                      >
+                                        Pending
+                                      </button>
+                                    )}
 
-                                      if (
-                                        user.invite_status === "pending" &&
-                                        !isExpired
-                                      ) {
-                                        return (
-                                          <button
-                                            className="btn btn-warning btn-sm"
-                                            disabled
-                                          >
-                                            Pending
-                                          </button>
-                                        );
-                                      }
-
-                                      if (isExpired) {
-                                        return (
-                                          <button
-                                            className="btn btn-primary btn-sm"
-                                            disabled={resendMutation.isPending}
-                                            onClick={() =>
-                                              resendInvite(user.id)
-                                            }
-                                          >
-                                            {resendMutation.isPending
-                                              ? "Resending..."
-                                              : "Resend Invite"}
-                                          </button>
-                                        );
-                                      }
-
-                                      return null;
-                                    })()}
+                                    {user.invite_display_status ===
+                                      "resend" && (
+                                      <button
+                                        className="btn btn-primary btn-sm"
+                                        disabled={resendMutation.isPending}
+                                        onClick={() => resendInvite(user.id)}
+                                      >
+                                        {resendMutation.isPending
+                                          ? "Resending..."
+                                          : "Resend Invite"}
+                                      </button>
+                                    )}
                                   </td>
-
                                   <td>
                                     <Link
                                       to={`/superadmin-admin/edit/${user.id}`}
