@@ -15,6 +15,8 @@ const Show = () => {
   const search = searchParams.get("search") || "";
   const page = parseInt(searchParams.get("page")) || 1;
   const [deletingId, setDeletingId] = useState(null);
+  const [resendingId, setResendingId] = useState(null);
+  const [cooldowns, setCooldowns] = useState({});
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -35,26 +37,59 @@ const Show = () => {
 
   const resendMutation = useMutation({
     mutationFn: async (userId) => {
+      setResendingId(userId);
+
       return await api.post(`/users/${userId}/resend-invite`);
     },
 
-    onSuccess: (res) => {
+    onSuccess: (res, userId) => {
       toast.success(res.data.message || "Invite resent successfully");
 
       queryClient.invalidateQueries(["users"]);
-    },
 
+      // 🔥 Start 10-second cooldown
+
+      setCooldowns((prev) => ({
+        ...prev,
+
+        [userId]: 10,
+      }));
+    },
     onError: (error) => {
       const message =
         error.response?.data?.message || "Failed to resend invite";
 
       toast.error(message);
     },
+
+    onSettled: () => {
+      setResendingId(null);
+    },
   });
 
   const resendInvite = (id) => {
     resendMutation.mutate(id);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCooldowns((prev) => {
+        const updated = { ...prev };
+
+        Object.keys(updated).forEach((id) => {
+          if (updated[id] > 1) {
+            updated[id] -= 1;
+          } else {
+            delete updated[id];
+          }
+        });
+
+        return updated;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["users", page, search],
@@ -198,12 +233,17 @@ const Show = () => {
                                       "resend" && (
                                       <button
                                         className="btn btn-primary btn-sm"
-                                        disabled={resendMutation.isPending}
+                                        disabled={
+                                          resendingId === user.id ||
+                                          cooldowns[user.id]
+                                        }
                                         onClick={() => resendInvite(user.id)}
                                       >
-                                        {resendMutation.isPending
+                                        {resendingId === user.id
                                           ? "Resending..."
-                                          : "Resend Invite"}
+                                          : cooldowns[user.id]
+                                            ? `Wait ${cooldowns[user.id]}s`
+                                            : "Resend Invite"}
                                       </button>
                                     )}
                                   </td>
