@@ -226,7 +226,7 @@ const AdminDashboard = () => {
                   </div>
                 </div>
 
-                <div className="row">
+                <div className="row mt-3">
                   <div className="col-md-6 test">
                     {!stats || isFetching ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
