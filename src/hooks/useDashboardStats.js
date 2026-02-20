@@ -8,11 +8,10 @@ export const useDashboardStats = ({ enabled = true } = {}) => {
       const { data } = await api.get("/dashboard-stats");
       return data;
     },
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
     enabled,
     refetchInterval: 30000,
     refetchOnMount: false,
-    retry: false,
     refetchOnWindowFocus: false,
   });
 };

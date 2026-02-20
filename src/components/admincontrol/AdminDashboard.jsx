@@ -29,7 +29,7 @@ const AdminDashboard = () => {
   const { darkMode, toggleTheme } = useTheme();
   const [progress, setProgress] = useState(0);
 
-  const { data: stats, isFetching } = useDashboardStats({
+  const { data: stats, isLoading } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
                 <div className="row">
                   {/* Total Members */}
                   <div className="col-md-6">
-                    {!stats || isFetching ? (
+                    {!stats || isLoading ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
                       <div className="card shadow border-0">
@@ -211,7 +211,7 @@ const AdminDashboard = () => {
 
                   {/* Testimonials */}
                   <div className="col-md-6 test">
-                    {!stats || isFetching ? (
+                    {!stats || isLoading ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
                       <div className="card shadow border-0">
@@ -228,7 +228,7 @@ const AdminDashboard = () => {
 
                 <div className="row py-4">
                   <div className="col-md-6 test">
-                    {!stats || isFetching ? (
+                    {!stats || isLoading ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
                       <div className="card shadow border-0">
@@ -243,7 +243,7 @@ const AdminDashboard = () => {
                   </div>
 
                   <div className="col-md-6 test">
-                    {!stats || isFetching ? (
+                    {!stats || isLoading ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
                       <div className="card shadow border-0">

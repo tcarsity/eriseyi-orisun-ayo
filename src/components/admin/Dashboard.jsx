@@ -38,7 +38,7 @@ const Dashboard = () => {
   const [dashboardReady, setDashboardReady] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const { data: stats, isFetching } = useDashboardStats({
+  const { data: stats, isLoading } = useDashboardStats({
     enabled: dashboardReady && !!token,
   });
 
@@ -230,7 +230,7 @@ const Dashboard = () => {
               <div className="row">
                 {/* Total Members */}
                 <div className="col-md-4">
-                  {!stats || isFetching ? (
+                  {!stats || isLoading ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
                   ) : (
                     <div className="card shadow border-0">
@@ -246,7 +246,7 @@ const Dashboard = () => {
 
                 {/* Total Admins */}
                 <div className="col-md-4 admins">
-                  {!stats || isFetching ? (
+                  {!stats || isLoading ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
                   ) : (
                     <div className="card shadow border-0">
@@ -262,7 +262,7 @@ const Dashboard = () => {
 
                 {/* Testimonials */}
                 <div className="col-md-4 test">
-                  {!stats || isFetching ? (
+                  {!stats || isLoading ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
                   ) : (
                     <div className="card shadow border-0">
@@ -279,7 +279,7 @@ const Dashboard = () => {
 
               <div className="row py-4">
                 <div className="col-md-6 test">
-                  {!stats || isFetching ? (
+                  {!stats || isLoading ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
                   ) : (
                     <div className="card shadow border-0">
@@ -294,7 +294,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="col-md-6 test">
-                  {!stats || isFetching ? (
+                  {!stats || isLoading ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
                   ) : (
                     <div className="card shadow border-0">
