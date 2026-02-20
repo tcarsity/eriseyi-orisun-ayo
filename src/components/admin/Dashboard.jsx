@@ -276,6 +276,39 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
+
+              <div className="row">
+                <div className="col-md-6 test">
+                  {!stats || isFetching ? (
+                    <DashboardSkeleton variant="stats" showHeader={false} />
+                  ) : (
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{stats.members?.male ?? 0}</h2>
+                        <strong>Total Male Members</strong>
+                      </div>
+
+                      <div className="card-footer">&nbsp;</div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="col-md-6 test">
+                  {!stats || isFetching ? (
+                    <DashboardSkeleton variant="stats" showHeader={false} />
+                  ) : (
+                    <div className="card shadow border-0">
+                      <div className="card-body p-3">
+                        <h2>{stats.members?.female ?? 0}</h2>
+                        <strong>Total Female Members</strong>
+                      </div>
+
+                      <div className="card-footer">&nbsp;</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Cards */}
               <div className="row g-3 py-5 ">
                 <div className="col-md-6 col-lg-6" ref={adminRef}>
