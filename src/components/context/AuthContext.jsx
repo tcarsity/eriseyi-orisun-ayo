@@ -85,7 +85,7 @@ export function AuthProvider({ children }) {
       onWarning: handleWarning,
       onTimeout: handleLogout,
     }),
-    [handleWarning, handleLogout]
+    [handleWarning, handleLogout],
   );
 
   const { resetTimer, clearTimer } = useSessionTimeout(sessionConfig);
@@ -133,17 +133,27 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const events = ["click", "mousemove", "keydown", "scroll", "touchstart"];
+    const events = [
+      "click",
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "touchmove",
+      "visibilitychange",
+    ];
 
     const handleActivity = () => {
-      localStorage.setItem("lastActivity", Date.now().toString());
+      if (document.visibilityState === "visible") {
+        localStorage.setItem("lastActivity", Date.now().toString());
+      }
     };
 
     events.forEach((event) => window.addEventListener(event, handleActivity));
 
     return () => {
       events.forEach((event) =>
-        window.removeEventListener(event, handleActivity)
+        window.removeEventListener(event, handleActivity),
       );
     };
   }, []);
@@ -164,13 +174,41 @@ export function AuthProvider({ children }) {
           handleLogout();
         }
         return Promise.reject(error);
-      }
+      },
     );
     return () => {
       api.interceptors.request.eject(reqInterceptor);
       api.interceptors.response.eject(resInterceptor);
     };
   }, [handleLogout]);
+
+  useEffect(() => {
+    const SESSION_TIMEOUT = 15 * 60 * 1000;
+    const WARNING_TIME = 60 * 1000;
+
+    const interval = setInterval(() => {
+      const lastActivity = localStorage.getItem("lastActivity");
+
+      if (!lastActivity) return;
+
+      const inactiveTime = Date.now() - Number(lastActivity);
+
+      // Show warning at 14 minutes
+      if (
+        inactiveTime >= SESSION_TIMEOUT - WARNING_TIME &&
+        inactiveTime < SESSION_TIMEOUT
+      ) {
+        const secondsLeft = Math.ceil((SESSION_TIMEOUT - inactiveTime) / 1000);
+        handleWarning(secondsLeft);
+      }
+
+      // Force logout at 15 minutes
+      if (inactiveTime >= SESSION_TIMEOUT) {
+        handleLogout();
+      }
+    }, 5000); // check every 5 seconds
+    return () => clearInterval(interval);
+  }, [handleLogout, handleWarning]);
 
   const login = useCallback(
     (userData, token) => {
@@ -184,7 +222,7 @@ export function AuthProvider({ children }) {
 
       resetTimer();
     },
-    [resetTimer]
+    [resetTimer],
   );
 
   useEffect(() => {
@@ -217,7 +255,7 @@ export function AuthProvider({ children }) {
       loading,
       setUser,
     }),
-    [user, login, logout, token, greeting, isAuthenticated, loading, setUser]
+    [user, login, logout, token, greeting, isAuthenticated, loading, setUser],
   );
 
   if (loading) return null;
