@@ -194,7 +194,7 @@ const AdminDashboard = () => {
               <div className="col-lg-9 board">
                 <div className="row">
                   {/* Total Members */}
-                  <div className="col-md-4">
+                  <div className="col-md-6">
                     {!stats || isFetching ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
@@ -210,7 +210,7 @@ const AdminDashboard = () => {
                   </div>
 
                   {/* Testimonials */}
-                  <div className="col-md-4 test">
+                  <div className="col-md-6 test">
                     {!stats || isFetching ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />
                     ) : (
@@ -226,7 +226,7 @@ const AdminDashboard = () => {
                   </div>
                 </div>
 
-                <div className="row mt-3">
+                <div className="row py-4">
                   <div className="col-md-6 test">
                     {!stats || isFetching ? (
                       <DashboardSkeleton variant="stats" showHeader={false} />

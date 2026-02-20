@@ -277,7 +277,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="row mt-3">
+              <div className="row py-4">
                 <div className="col-md-6 test">
                   {!stats || isFetching ? (
                     <DashboardSkeleton variant="stats" showHeader={false} />
