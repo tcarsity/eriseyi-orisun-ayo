@@ -10,7 +10,6 @@ export const useDashboardStats = ({ enabled = true } = {}) => {
     },
     staleTime: 5 * 60 * 1000,
     enabled,
-    refetchInterval: 30000,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
