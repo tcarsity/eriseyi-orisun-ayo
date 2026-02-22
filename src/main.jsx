@@ -7,7 +7,6 @@ import App from "./App.jsx";
 import "./assets/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "./components/context/AuthContext.jsx";
-import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -16,9 +15,8 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <HelmetProvider>
-            <App />
-          </HelmetProvider>
+          <App />
+
           <Toaster position="top-center" reverseOrder={false} />
         </AuthProvider>
       </QueryClientProvider>
