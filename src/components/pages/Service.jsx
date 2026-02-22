@@ -22,7 +22,7 @@ const Service = () => {
                   <div className="service-image">
                     <img
                       src={ShilohImg}
-                      alt=""
+                      alt="Members worshipping during Shiloh service at C & S Eriseyi Orisun Ayo"
                       className="w-100"
                       loading="lazy"
                     />
@@ -51,7 +51,7 @@ const Service = () => {
                   <div className="service-image">
                     <img
                       src={VigilImg}
-                      alt=""
+                      alt="Members worshipping during Vigil service at C & S Eriseyi Orisun Ayo"
                       className="w-100"
                       loading="lazy"
                     />
@@ -79,7 +79,7 @@ const Service = () => {
                   <div className="service-image">
                     <img
                       src={TeachImg}
-                      alt=""
+                      alt="Members learning during bible study at C & S Eriseyi Orisun Ayo"
                       className="w-100"
                       loading="lazy"
                     />
@@ -108,7 +108,7 @@ const Service = () => {
                   <div className="service-image">
                     <img
                       src={SundayImg}
-                      alt=""
+                      alt="Members worshipping during Sunday service at C & S Eriseyi Orisun Ayo"
                       className="w-100"
                       loading="lazy"
                     />

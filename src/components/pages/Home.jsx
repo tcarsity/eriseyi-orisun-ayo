@@ -9,6 +9,7 @@ import EventsSection from "./EventsSection";
 import Preloader from "../Preloader";
 import { useQueryClient } from "@tanstack/react-query";
 import api from "../../api/axios";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const queryClient = useQueryClient();
@@ -60,6 +61,53 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+
+            "@type": "Church",
+
+            name: "C & S Eriseyi Orisun Ayo",
+
+            url: "https://eriseyi-orisun-ayo.vercel.app",
+
+            address: {
+              "@type": "PostalAddress",
+
+              addressLocality: "Lagos",
+
+              addressCountry: "Nigeria",
+            },
+          })}
+        </script>
+        <title>
+          C & S Eriseyi Orisun Ayo | Cherubim & Seraphim Church in Lagos
+        </title>
+
+        <meta
+          name="description"
+          content="C & S Eriseyi Orisun Ayo is a Cherubim and Seraphim church in Lagos focused on worship, spiritual growth, and community service."
+        />
+
+        <link rel="canonical" href="https://eriseyi-orisun-ayo.vercel.app/" />
+
+        {/* Open Graph */}
+
+        <meta property="og:title" content="C & S Eriseyi Orisun Ayo" />
+
+        <meta
+          property="og:description"
+          content="Join us for worship and spiritual growth in Lagos."
+        />
+
+        <meta
+          property="og:image"
+          content="https://eriseyi-orisun-ayo.vercel.app/rosary.webp"
+        />
+
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Layout showAllLinks>
         <Hero />
         <About />

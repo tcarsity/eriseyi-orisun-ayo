@@ -29,7 +29,7 @@ const Shepherd = () => {
             </div>
             {/* <div className="col-md-12 col-lg-6">
             <ScrollFloat direction="right">
-              <img src="" alt="" className="float-item w-100" />
+              <img src="" alt="Picture of the shepherd T.A Olarewaju JP" className="float-item w-100" />
             </ScrollFloat>
             </div> */}
           </div>
