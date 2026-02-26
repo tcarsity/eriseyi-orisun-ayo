@@ -17,8 +17,11 @@ const ChangePassword = () => {
     handleSubmit,
     reset,
     setError,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const new_password = watch("new_password");
 
   if (!user) return null;
 
@@ -126,6 +129,13 @@ const ChangePassword = () => {
                                 {...register("new_password", {
                                   required:
                                     "The new password field is required",
+
+                                  pattern: {
+                                    value:
+                                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                                    message:
+                                      "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number",
+                                  },
                                 })}
                                 type="password"
                                 className={`form-control ${
@@ -154,6 +164,10 @@ const ChangePassword = () => {
                                 {...register("new_password_confirmation", {
                                   required:
                                     "Please confirm new password field is required",
+
+                                  validate: (val) =>
+                                    val === new_password ||
+                                    "Passwords do not match",
                                 })}
                                 type="password"
                                 className={`form-control ${
