@@ -7,10 +7,12 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { supabase } from "../../lib/supabase";
 import api from "../../api/axios";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const [checkingSession, setCheckingSession] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -125,6 +127,16 @@ const ResetPassword = () => {
                         placeholder="Please enter your new password"
                       />
 
+                      <span
+                        className="input-group-text"
+                        role="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                      </span>
+
                       {errors.password && (
                         <div className="invalid-feedback">
                           {errors.password.message}
@@ -152,6 +164,16 @@ const ResetPassword = () => {
                         }`}
                         placeholder="Please confirm password"
                       />
+
+                      <span
+                        className="input-group-text"
+                        role="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                      </span>
 
                       {errors.password_confirmation && (
                         <div className="invalid-feedback">

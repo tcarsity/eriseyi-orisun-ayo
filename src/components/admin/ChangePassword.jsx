@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import Layout from "../common/Layout";
 import { Link } from "react-router-dom";
 import SideBar from "../admincontrol/SideBar";
@@ -9,8 +9,10 @@ import api from "../../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { RiLockPasswordFill } from "react-icons/ri";
 import LoadingButton from "../LoadingButton";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const ChangePassword = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const { user } = useAuth();
   const {
     register,
@@ -144,6 +146,20 @@ const ChangePassword = () => {
                                 placeholder=" Enter your new password"
                               />
 
+                              <span
+                                className="input-group-text"
+                                role="button"
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                style={{ cursor: "pointer" }}
+                              >
+                                {showPassword ? (
+                                  <AiFillEyeInvisible />
+                                ) : (
+                                  <AiFillEye />
+                                )}
+                              </span>
+
                               {errors.new_password && (
                                 <p className="invalid-feedback">
                                   {errors.new_password?.message}
@@ -176,6 +192,20 @@ const ChangePassword = () => {
                                 }`}
                                 placeholder="Confirm your new password"
                               />
+
+                              <span
+                                className="input-group-text"
+                                role="button"
+                                onMouseDown={(e) => e.preventDefault()}
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                style={{ cursor: "pointer" }}
+                              >
+                                {showPassword ? (
+                                  <AiFillEyeInvisible />
+                                ) : (
+                                  <AiFillEye />
+                                )}
+                              </span>
 
                               {errors.new_password_confirmation && (
                                 <p className="invalid-feedback">
