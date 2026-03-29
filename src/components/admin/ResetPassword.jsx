@@ -121,7 +121,7 @@ const ResetPassword = () => {
                               "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number",
                           },
                         })}
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         className={`form-control ${
                           errors.password && "is-invalid"
                         }`}
@@ -159,7 +159,7 @@ const ResetPassword = () => {
                           validate: (val) =>
                             val === password || "Passwords do not match",
                         })}
-                        type="password"
+                        type={showPasswordConfirm ? "text" : "password"}
                         className={`form-control ${
                           errors.password_confirmation && "is-invalid"
                         }`}

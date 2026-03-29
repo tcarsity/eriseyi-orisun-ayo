@@ -12,8 +12,9 @@ import LoadingButton from "../LoadingButton";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const ChangePassword = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const { user } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordNew, setShowPasswordNew] = useState(false);
   const {
     register,
     handleSubmit,
@@ -139,7 +140,7 @@ const ChangePassword = () => {
                                       "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number",
                                   },
                                 })}
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 className={`form-control ${
                                   errors.new_password && "is-invalid"
                                 }`}
@@ -185,7 +186,7 @@ const ChangePassword = () => {
                                     val === new_password ||
                                     "Passwords do not match",
                                 })}
-                                type="password"
+                                type={showPasswordNew ? "text" : "password"}
                                 className={`form-control ${
                                   errors.new_password_confirmation &&
                                   "is-invalid"
@@ -197,10 +198,12 @@ const ChangePassword = () => {
                                 className="input-group-text"
                                 role="button"
                                 onMouseDown={(e) => e.preventDefault()}
-                                onClick={() => setShowPassword((prev) => !prev)}
+                                onClick={() =>
+                                  setShowPasswordNew((prev) => !prev)
+                                }
                                 style={{ cursor: "pointer" }}
                               >
-                                {showPassword ? (
+                                {showPasswordNew ? (
                                   <AiFillEyeInvisible />
                                 ) : (
                                   <AiFillEye />
