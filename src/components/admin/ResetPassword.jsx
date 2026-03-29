@@ -13,6 +13,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [checkingSession, setCheckingSession] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const {
     register,
@@ -169,10 +170,14 @@ const ResetPassword = () => {
                         className="input-group-text"
                         role="button"
                         onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => setShowPassword((prev) => !prev)}
+                        onClick={() => setShowPasswordConfirm((prev) => !prev)}
                         style={{ cursor: "pointer" }}
                       >
-                        {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                        {showPasswordConfirm ? (
+                          <AiFillEyeInvisible />
+                        ) : (
+                          <AiFillEye />
+                        )}
                       </span>
 
                       {errors.password_confirmation && (
