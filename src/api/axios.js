@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -25,9 +26,9 @@ api.interceptors.response.use(
   (error) => {
     // Network error / timeout / no internet
     if (!error.response) {
-      (error.isNetworkError = true),
+      ((error.isNetworkError = true),
         (error.message =
-          "Network error. Please check your internet connection.");
+          "Network error. Please check your internet connection."));
       return Promise.reject(error);
     }
 
@@ -39,7 +40,20 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Network error / timeout / no internet
+    if (error.response?.status === 403) {
+      toast.error("Session changed. Please login again.");
+      window.location.href = "/admin/login";
+    }
+
+    return Promise.reject(error);
+  },
 );
 
 export default api;
