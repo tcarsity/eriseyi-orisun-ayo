@@ -61,10 +61,6 @@ const ResetPassword = () => {
       if (error) throw error;
 
       // 2️⃣ Get authenticated user email from Supabase
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
     },
 
     onSuccess: async () => {
@@ -73,9 +69,6 @@ const ResetPassword = () => {
       // Sign out temporary session
 
       await supabase.auth.signOut();
-      if (!user?.email) {
-        throw new Error("User session lost. Please try again.");
-      }
 
       navigate("/admin/login");
     },
