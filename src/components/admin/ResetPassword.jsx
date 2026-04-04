@@ -52,11 +52,6 @@ const ResetPassword = () => {
 
   const mutation = useMutation({
     mutationFn: async (data) => {
-      const { data } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
       // 1️⃣ Update password in Supabase
 
       const { error } = await supabase.auth.updateUser({
@@ -71,6 +66,7 @@ const ResetPassword = () => {
     onSuccess: async () => {
       toast.success("Password reset successfully!");
 
+      await supabase.auth.signInWithPassword();
       // Sign out temporary session
 
       await supabase.auth.signOut();
