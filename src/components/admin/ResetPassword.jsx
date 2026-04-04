@@ -25,20 +25,29 @@ const ResetPassword = () => {
   const password = watch("password");
 
   // ✅ Check if user came from valid reset link
-
   useEffect(() => {
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+          setCheckingSession(false);
+        }
+      },
+    );
 
+    // fallback check
+    supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
         toast.error("Invalid or expired reset link.");
+
         navigate("/admin/login");
+      } else {
+        setCheckingSession(false);
       }
+    });
 
-      setCheckingSession(false);
+    return () => {
+      listener.subscription.unsubscribe();
     };
-
-    checkSession();
   }, [navigate]);
 
   const mutation = useMutation({
