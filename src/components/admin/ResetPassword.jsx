@@ -65,14 +65,6 @@ const ResetPassword = () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
-      // 3️⃣ Sync password to your own backend DB
-
-      await api.post("/update-admin-password", {
-        email: user.email,
-
-        password: data.password,
-      });
     },
 
     onSuccess: async () => {
@@ -81,6 +73,9 @@ const ResetPassword = () => {
       // Sign out temporary session
 
       await supabase.auth.signOut();
+      if (!user?.email) {
+        throw new Error("User session lost. Please try again.");
+      }
 
       navigate("/admin/login");
     },
